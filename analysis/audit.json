@@ -1,0 +1,86 @@
+[
+  {
+    "hall": "Hall A",
+    "volume_m3": 363.0,
+    "design_airflow_m3h": 2100.0,
+    "design_ach": 5.79,
+    "readings_total": 82420,
+    "readings_teaching_hours": 24467,
+    "span": [
+      "2023-09-01T09:15:20",
+      "2024-08-31T23:59:20"
+    ],
+    "fitted_ach_teaching": 0.74,
+    "fitted_ach_teaching_iqr": [
+      0.63,
+      0.9
+    ],
+    "fits_teaching": 252,
+    "fitted_ach_offhours": 0.75,
+    "fits_offhours": 26,
+    "shortfall_factor": 7.8,
+    "median_co2_teaching": 524,
+    "peak_co2_teaching": 3171,
+    "peak_one_breath_in": 14,
+    "pct_time_above_1000": 17.0,
+    "pct_time_above_1400": 8.2,
+    "pct_time_above_2000": 1.9,
+    "confident": true
+  },
+  {
+    "hall": "Hall B",
+    "volume_m3": 283.0,
+    "design_airflow_m3h": 1700.0,
+    "design_ach": 6.01,
+    "readings_total": 78878,
+    "readings_teaching_hours": 23558,
+    "span": [
+      "2023-09-01T08:54:36",
+      "2024-08-07T21:32:01"
+    ],
+    "fitted_ach_teaching": 1.1,
+    "fitted_ach_teaching_iqr": [
+      0.47,
+      1.7
+    ],
+    "fits_teaching": 323,
+    "fitted_ach_offhours": 0.45,
+    "fits_offhours": 77,
+    "shortfall_factor": 5.5,
+    "median_co2_teaching": 585,
+    "peak_co2_teaching": 4957,
+    "peak_one_breath_in": 8,
+    "pct_time_above_1000": 19.6,
+    "pct_time_above_1400": 9.5,
+    "pct_time_above_2000": 4.4,
+    "confident": false
+  },
+  {
+    "hall": "Hall C",
+    "volume_m3": 1520.0,
+    "design_airflow_m3h": 9000.0,
+    "design_ach": 5.92,
+    "readings_total": 103915,
+    "readings_teaching_hours": 31081,
+    "span": [
+      "2023-09-01T09:33:20",
+      "2024-08-31T23:55:25"
+    ],
+    "fitted_ach_teaching": 0.88,
+    "fitted_ach_teaching_iqr": [
+      0.58,
+      1.26
+    ],
+    "fits_teaching": 259,
+    "fitted_ach_offhours": 0.9,
+    "fits_offhours": 89,
+    "shortfall_factor": 6.8,
+    "median_co2_teaching": 510,
+    "peak_co2_teaching": 2241,
+    "peak_one_breath_in": 21,
+    "pct_time_above_1000": 4.0,
+    "pct_time_above_1400": 0.5,
+    "pct_time_above_2000": 0.0,
+    "confident": true
+  }
+]
