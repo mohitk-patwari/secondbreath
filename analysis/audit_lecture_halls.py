@@ -35,10 +35,11 @@ import argparse
 import csv
 import inspect
 import json
+import subprocess
 import sys
 import urllib.parse
 import urllib.request
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from statistics import median
 
@@ -46,6 +47,7 @@ from statistics import median
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+import figures  # noqa: E402
 import ventilation  # noqa: E402
 from ventilation import (  # noqa: E402
     OUTDOOR_PPM_DEFAULT,
@@ -57,6 +59,10 @@ from ventilation import (  # noqa: E402
 
 ZENODO = "https://zenodo.org/records/18385830/files"
 DATA_DIR = ROOT / "data"
+
+# /health reports this so a judge can see how fresh the audit is.
+SSM_PARAM = "/secondbreath/lastAuditRun"
+AWS_REGION = "ap-south-1"
 
 HALLS = [
     # name, filename, volume m^3, design airflow m^3/h
@@ -137,7 +143,8 @@ def rnd(x: float | None) -> float | None:
     return round(x, 2) if x is not None else None
 
 
-def analyse(name: str, path: Path, volume: float, design_flow: float) -> dict:
+def analyse(name: str, path: Path, volume: float, design_flow: float) -> tuple[dict, list, list, list]:
+    """Returns the summary plus the series and kept fits the figures draw."""
     series, dropped = load_series(path)
     design_ach = design_flow / volume
 
@@ -168,7 +175,7 @@ def analyse(name: str, path: Path, volume: float, design_flow: float) -> dict:
     worst = occupied[-1]
     discarded = len(raw_builds) - len(ident)
 
-    return {
+    summary = {
         "hall": name,
         "volume_m3": volume,
         "design_airflow_m3h": design_flow,
@@ -211,6 +218,7 @@ def analyse(name: str, path: Path, volume: float, design_flow: float) -> dict:
         "pct_time_above_1400": round(share_above(1400.0), 1),
         "pct_time_above_2000": round(share_above(2000.0), 1),
     }
+    return summary, series, day_fits, kept
 
 
 def method() -> dict:
@@ -244,6 +252,19 @@ def method() -> dict:
     }
 
 
+def record_run(stamp: str) -> None:
+    """Publish the run time to SSM. Failure only warns: the audit's numbers
+    are valid without AWS, and /health treats a missing value as stale."""
+    cmd = ["aws", "ssm", "put-parameter", "--region", AWS_REGION, "--name", SSM_PARAM,
+           "--type", "String", "--overwrite", "--value", stamp]
+    try:
+        subprocess.run(cmd, check=True, capture_output=True, text=True)
+        print(f"{SSM_PARAM} = {stamp}", file=sys.stderr)
+    except (OSError, subprocess.CalledProcessError) as exc:
+        print(f"warning: could not write {SSM_PARAM}: {getattr(exc, 'stderr', exc)}",
+              file=sys.stderr)
+
+
 def fmt(v: float | None, n: str) -> str:
     return f"{v:.2f} ({n})" if v is not None else f"- ({n})"
 
@@ -254,9 +275,15 @@ def main() -> None:
     args = ap.parse_args()
 
     results = []
+    fig_dir = ROOT / "analysis" / "figures"
+    fig_dir.mkdir(exist_ok=True)
     for name, filename, volume, flow in HALLS:
         print(f"{name}:", file=sys.stderr)
-        results.append(analyse(name, download(filename), volume, flow))
+        summary, series, decay, build = analyse(name, download(filename), volume, flow)
+        results.append(summary)
+        figures.hall_svg(summary, series, decay, build,
+                         fig_dir / f"{name.lower().replace(' ', '_')}.svg")
+    figures.summary_svg(results, fig_dir / "design_vs_measured.svg")
 
     if args.json:
         out = {"method": method(), "halls": results}
@@ -293,6 +320,8 @@ def main() -> None:
               f"{r['pct_time_above_1400']}% over 1400; "
               f"{r['readings_dropped_below_floor']} readings dropped below "
               f"{SENSOR_FLOOR_PPM:.0f} ppm.")
+
+    record_run(datetime.now(timezone.utc).isoformat(timespec="seconds"))
 
 
 if __name__ == "__main__":

@@ -1,40 +1,40 @@
-# STATUS — 29 Sep 2026, 01:20 IST
+# STATUS — 29 Sep 2026, 01:25 IST (T3 block ends 01:20 IST)
 
 ## Phase
-1 — data (T3): two-method audit
+2 — data and evidence (T3). T1/T2 phase-1 state below is carried over, not re-verified by T3.
 
 ## Done since last update
-- analysis/audit_lecture_halls.py runs decay + buildup per hall (seated_quiet, weekday 08–18, identifiable only)
-- Removed seats = volume/2.5 and the required_ach projection entirely
-- Implied occupancy sanity check: 1 ≤ occupants ≤ volume / 2 m³; out-of-bounds fits are flagged, listed in JSON and excluded. Result: 0 flagged in any hall
-- analysis/audit.json now `{method, halls}`; method block records every threshold (fitter params read from the function signatures, so it cannot drift)
+- T3: every audit run writes UTC time to SSM `/secondbreath/lastAuditRun` (ap-south-1). /health now returns `lastAuditRun: 2026-09-28T19:46:00+00:00`, `auditStale: false`. If AWS is unreachable the run warns and carries on
+- T3: `analysis/export_cloudtrail.py` → evidence/cloudtrail-timeline.md + cloudtrail-raw.json: 349 events from 18:45Z to 19:43Z, one principal (the build IAM user), IP and access key redacted
+- T3: analysis/figures/ has plain SVG with no library: hall_a/b/c.svg (the week with the most fits, trace plus decay in blue and buildup in orange, hover titles) and design_vs_measured.svg. Themed for light and dark, checked by rendering in both
+- T3: evidence/README.md explains each file and its limits
+- T1 (01:25): /fit, /predict, /health live; build.py drift check; docs/API.md exact shapes. T2: web/index.html ready, static single file
 
-## Final table (`python analysis/audit_lecture_halls.py`)
-| Hall | Design ACH | Decay ACH (n) | Buildup ACH (kept / identifiable of r²-passing) | Implied occupants (median) | Shortfall decay / buildup |
+## Audit table (analysis/audit.json, the single source of truth)
+| Hall | Design | Decay ACH (n) | Buildup ACH (kept) | Occupants | Shortfall dec/bld |
 |---|---|---|---|---|---|
-| A | 5.8 | 0.74 (252), IQR 0.63–0.90 | 1.02 (27, 27/33, 18% discarded), IQR 0.52–1.18 | 42 | 7.8x / 5.7x |
-| B | 6.0 | 1.10 (323), IQR 0.47–1.70 **uncertain** | 0.93 (31, 31/39, 21% discarded), IQR 0.64–1.50 **uncertain** | 30 | 5.5x / 6.4x |
-| C | 5.9 | 0.88 (259), IQR 0.58–1.26 | 1.09 (8, 8/10, 20% discarded), IQR 0.80–1.25 | 135 | 6.8x / 5.4x |
-
-Reading: the occupied-phase rate agrees with the decay rate to within ~0.3 ACH in every hall. Both methods put every hall at 5–8x below design, so the infiltration objection does not rescue the design figure.
+| A | 5.8 | 0.74 (252) | 1.02 (27) | 42 | 7.8x / 5.7x |
+| B | 6.0 | 1.10 (323) **uncertain** | 0.93 (31) **uncertain** | 30 | 5.5x / 6.4x |
+| C | 5.9 | 0.88 (259) | 1.09 (8, thin) | 135 | 6.8x / 5.4x |
 
 ## Live state
-- Site: none yet (T2)
-- /health: https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/health — last checked by T1 at 00:22 IST; T3 has not re-checked
-- Deployed stack: secondbreath, ap-south-1
+- API: https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com — /health 200 at 01:17 IST (three checks)
+- Deployed stack: secondbreath, ap-south-1, UPDATE_COMPLETE 19:46Z
+- Site: not hosted yet (T2/T1)
 
 ## Broken or blocked
-- **The CLAUDE.md headline table does not match this run.** It gives buildup A 0.72 and B 0.78; this run gives 1.02 and 0.93 (C matches at 1.09). Two other variants I tried (no hour filter, and filtering fits by start time) also miss: A 0.95 / 0.91, B 0.93. Someone needs to trace where 0.72/0.78 came from, or replace them with audit.json values.
-- Buildup for Hall B is also not confident (IQR/median ≥ 0.8), so Hall B stays uncertain under both methods.
-- Hall C has only 8 kept buildup fits; it is confident, but the sample is thin.
-- Discard counts cover only fits that already passed r² ≥ 0.95; segments that fit_buildups rejected earlier are not counted (recorded in method.buildup.discard_note).
+- **evidence/mcp-connection-verified.txt not created.** No AWS MCP server is configured in any session here (`claude mcp list` shows only claude.ai Docs, Canva, Calendar, Gmail). It won't be faked. The human needs to add one (e.g. awslabs aws-api-mcp-server); T3 then captures the tool list, ARN and timestamp
+- **/health returned 500 twice (19:43Z, ~19:46Z)** while T1's stack updates were running, the first ending in UPDATE_ROLLBACK. Both recovered within a minute. With a live gate, deploys need to be quiet or run off-hours (→ T1)
+- CloudTrail export is a snapshot and Event history lags ~15 min. Rerun `python analysis/export_cloudtrail.py` at the end of the build
+- Bedrock: 2 Converse calls → ValidationException in CloudTrail (18:56Z, 18:57Z); /explain not started
 
 ## Next 3 actions
-1. Settle the headline buildup figures (audit.json vs CLAUDE.md) with the human
-2. Pull Zenodo 5062837 and 18195710 and run the same two-method pipeline on them
-3. README dataset attribution block (all three DOIs, CC BY 4.0)
+1. Human: configure an AWS MCP server → T3 writes mcp-connection-verified.txt
+2. T2: embed analysis/figures/*.svg (copy them or `<img>`; each has its own surface and a dark-mode media query)
+3. T3: Zenodo 5062837 / 18195710 through the two-method pipeline; README attribution block
 
 ## Decisions taken
-- Buildup: the series is filtered to teaching hours, not the fits, so the overnight gap stops segments crossing the window
-- Out-of-bounds occupancy fits are excluded from both ACH and occupancy medians — an absurd source term makes the rate suspect too
-- audit.json shape changed to {method, halls[]}; nothing in backend/ or web/ reads it yet
+- Per-hall figure shows the ISO week with the most fits of both kinds, not a hand-picked week; the choice rule is in figures.busiest_week
+- CloudTrail split is by userAgent: agent and human share one IAM user, so principal alone can't separate them. Stated in the evidence README
+- Home IP and access key ID are masked in the raw export; nothing else is edited
+- SSM is written through the aws CLI subprocess, so analysis/ gains no boto3 dependency

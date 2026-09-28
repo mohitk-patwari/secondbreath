@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 330" width="100%" role="img" aria-labelledby="t d">
+<title id="t">Design vs measured air changes per hour, three lecture halls</title>
+<desc id="d">Hall A: design 5.8, decay 0.74, buildup 1.02; Hall B: design 6.0, decay 1.10 (uncertain), buildup 0.93 (uncertain); Hall C: design 5.9, decay 0.88, buildup 1.09. Source: Zenodo 18385830, CC BY 4.0; analysis/audit.json.</desc>
+<style>
+  svg { --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --grid: #e4e3df; --trace: #8a8984;
+        --decay: #2a78d6; --build: #eb6834; --design: #b9b8b2;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  @media (prefers-color-scheme: dark) {
+    svg { --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --grid: #3a3a37; --trace: #8f8e88;
+          --decay: #3987e5; --build: #d95926; --design: #5e5d58; }
+  }
+  .t { fill: var(--ink); font-size: 15px; font-weight: 600; }
+  .s { fill: var(--ink-2); font-size: 12px; }
+  .a { fill: var(--ink-2); font-size: 11px; }
+  .g { stroke: var(--grid); stroke-width: 1; }
+  .trace { fill: none; stroke: var(--trace); stroke-width: 1.25; stroke-linejoin: round; }
+  .decay { fill: none; stroke: var(--decay); stroke-width: 3; stroke-linecap: round; }
+  .build { fill: none; stroke: var(--build); stroke-width: 3; stroke-linecap: round; }
+  .ref { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 4 4; }
+</style>
+<rect width="800" height="330" rx="8" fill="var(--surface)"/>
+<text class="t" x="56" y="24">Design vs measured air changes per hour</text>
+<text class="s" x="56" y="42">Teaching-hours medians, full academic year 2023–24 · “uncertain” = fits disagree too much to quote</text>
+<rect x="56" y="56" width="12" height="12" rx="2" fill="var(--design)"/>
+<text class="s" x="74" y="66">Design</text>
+<rect x="138" y="56" width="12" height="12" rx="2" fill="var(--decay)"/>
+<text class="s" x="156" y="66">Decay (emptying)</text>
+<rect x="290" y="56" width="12" height="12" rx="2" fill="var(--build)"/>
+<text class="s" x="308" y="66">Buildup (occupied)</text>
+<line class="g" x1="150.0" x2="150.0" y1="84" y2="300"/>
+<text class="a" x="150.0" y="318" text-anchor="middle">0</text>
+<line class="g" x1="232.9" x2="232.9" y1="84" y2="300"/>
+<text class="a" x="232.9" y="318" text-anchor="middle">1</text>
+<line class="g" x1="315.7" x2="315.7" y1="84" y2="300"/>
+<text class="a" x="315.7" y="318" text-anchor="middle">2</text>
+<line class="g" x1="398.6" x2="398.6" y1="84" y2="300"/>
+<text class="a" x="398.6" y="318" text-anchor="middle">3</text>
+<line class="g" x1="481.4" x2="481.4" y1="84" y2="300"/>
+<text class="a" x="481.4" y="318" text-anchor="middle">4</text>
+<line class="g" x1="564.3" x2="564.3" y1="84" y2="300"/>
+<text class="a" x="564.3" y="318" text-anchor="middle">5</text>
+<line class="g" x1="647.1" x2="647.1" y1="84" y2="300"/>
+<text class="a" x="647.1" y="318" text-anchor="middle">6</text>
+<line class="g" x1="730.0" x2="730.0" y1="84" y2="300"/>
+<text class="a" x="730.0" y="318" text-anchor="middle">7</text>
+<text class="a" x="730.0" y="318" text-anchor="end" dx="40">ACH</text>
+<text class="t" x="138" y="126" text-anchor="end">Hall A</text>
+<path d="M150.0,96 h475.7 a4,4 0 0 1 4,4 v8 a4,4 0 0 1 -4,4 h-475.7 z" fill="var(--design)"><title>Hall A design, 2100 m³/h: 5.79 ACH</title></path>
+<text class="s" x="635.7" y="108">5.79</text>
+<path d="M150.0,114 h57.3 a4,4 0 0 1 4,4 v8 a4,4 0 0 1 -4,4 h-57.3 z" fill="var(--decay)"><title>Hall A decay, 252 fits: 0.74 ACH</title></path>
+<text class="s" x="217.3" y="126">0.74</text>
+<path d="M150.0,132 h80.5 a4,4 0 0 1 4,4 v8 a4,4 0 0 1 -4,4 h-80.5 z" fill="var(--build)"><title>Hall A buildup, 27 fits: 1.02 ACH</title></path>
+<text class="s" x="240.5" y="144">1.02</text>
+<text class="t" x="138" y="200" text-anchor="end">Hall B</text>
+<path d="M150.0,170 h494.0 a4,4 0 0 1 4,4 v8 a4,4 0 0 1 -4,4 h-494.0 z" fill="var(--design)"><title>Hall B design, 1700 m³/h: 6.01 ACH</title></path>
+<text class="s" x="654.0" y="182">6.01</text>
+<path d="M150.0,188 h87.1 a4,4 0 0 1 4,4 v8 a4,4 0 0 1 -4,4 h-87.1 z" fill="var(--decay)"><title>Hall B decay, 323 fits: 1.10 ACH (uncertain)</title></path>
+<text class="s" x="247.1" y="200">1.10 uncertain</text>
+<path d="M150.0,206 h73.1 a4,4 0 0 1 4,4 v8 a4,4 0 0 1 -4,4 h-73.1 z" fill="var(--build)"><title>Hall B buildup, 31 fits: 0.93 ACH (uncertain)</title></path>
+<text class="s" x="233.1" y="218">0.93 uncertain</text>
+<text class="t" x="138" y="274" text-anchor="end">Hall C</text>
+<path d="M150.0,244 h486.5 a4,4 0 0 1 4,4 v8 a4,4 0 0 1 -4,4 h-486.5 z" fill="var(--design)"><title>Hall C design, 9000 m³/h: 5.92 ACH</title></path>
+<text class="s" x="646.5" y="256">5.92</text>
+<path d="M150.0,262 h68.9 a4,4 0 0 1 4,4 v8 a4,4 0 0 1 -4,4 h-68.9 z" fill="var(--decay)"><title>Hall C decay, 259 fits: 0.88 ACH</title></path>
+<text class="s" x="228.9" y="274">0.88</text>
+<path d="M150.0,280 h86.3 a4,4 0 0 1 4,4 v8 a4,4 0 0 1 -4,4 h-86.3 z" fill="var(--build)"><title>Hall C buildup, 8 fits: 1.09 ACH</title></path>
+<text class="s" x="246.3" y="292">1.09</text>
+</svg>
