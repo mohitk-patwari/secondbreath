@@ -1,31 +1,40 @@
-# STATUS — 29 Sep 2026, 00:35 IST
+# STATUS — 29 Sep 2026, 01:20 IST
 
 ## Phase
-0 — data (T3). T1's backend skeleton from 00:25 still stands (see Live state).
+1 — data (T3): two-method audit
 
 ## Done since last update
-- `python analysis/ventilation.py` → "all self-tests passed"
-- analysis/audit_lecture_halls.py imports ventilation from repo root (falls back to its own dir); data/ and audit.json paths are anchored to the repo, not the cwd
-- Downloaded 3 Zenodo 18385830 CSVs (26 MB) into data/, which is gitignored
-- analysis/audit.json written. Teaching-hours fits: A 0.74 ACH (252 fits), B 1.10 (323), C 0.88 (259) = 834; design ~6 ACH; shortfall 7.8x / 5.5x / 6.8x; peak 4,957 ppm (B) = 1 breath in 8
-- evidence/README.md describes the three proof sets (agent screenshots, CloudTrail, MCP)
+- analysis/audit_lecture_halls.py runs decay + buildup per hall (seated_quiet, weekday 08–18, identifiable only)
+- Removed seats = volume/2.5 and the required_ach projection entirely
+- Implied occupancy sanity check: 1 ≤ occupants ≤ volume / 2 m³; out-of-bounds fits are flagged, listed in JSON and excluded. Result: 0 flagged in any hall
+- analysis/audit.json now `{method, halls}`; method block records every threshold (fitter params read from the function signatures, so it cannot drift)
+
+## Final table (`python analysis/audit_lecture_halls.py`)
+| Hall | Design ACH | Decay ACH (n) | Buildup ACH (kept / identifiable of r²-passing) | Implied occupants (median) | Shortfall decay / buildup |
+|---|---|---|---|---|---|
+| A | 5.8 | 0.74 (252), IQR 0.63–0.90 | 1.02 (27, 27/33, 18% discarded), IQR 0.52–1.18 | 42 | 7.8x / 5.7x |
+| B | 6.0 | 1.10 (323), IQR 0.47–1.70 **uncertain** | 0.93 (31, 31/39, 21% discarded), IQR 0.64–1.50 **uncertain** | 30 | 5.5x / 6.4x |
+| C | 5.9 | 0.88 (259), IQR 0.58–1.26 | 1.09 (8, 8/10, 20% discarded), IQR 0.80–1.25 | 135 | 6.8x / 5.4x |
+
+Reading: the occupied-phase rate agrees with the decay rate to within ~0.3 ACH in every hall. Both methods put every hall at 5–8x below design, so the infiltration objection does not rescue the design figure.
 
 ## Live state
 - Site: none yet (T2)
-- /health: https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/health — 200 at 00:22 IST (T1's check; not re-checked by T3)
+- /health: https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/health — last checked by T1 at 00:22 IST; T3 has not re-checked
 - Deployed stack: secondbreath, ap-south-1
 
 ## Broken or blocked
-- **ventilation.py is still at analysis/ventilation.py, not the repo root.** Moving it was refused by the permission guard because it is a shared file. The human needs to run `git mv analysis/ventilation.py ventilation.py` or approve the move. The audit script needs no change after the move. T1's /fit is waiting on this.
-- **Hall B fingerprint is `confident: false`** (IQR 0.47–1.7). The CLAUDE.md headline quotes B's 1.10 ACH without a caveat, and rule 7 says it needs one.
-- Off-hours vs teaching: A 0.75 vs 0.74 and C 0.90 vs 0.88 are almost identical, which is consistent with the AHU being off at decay time, i.e. an infiltration reading. Only B differs (0.45 off vs 1.10 on). This has to be reported in the write-up.
-- The audit's "holding N people needs 12.4 ACH" line uses seats = volume / 2.5, which is not in the dataset. It is console-only today; do not surface it in the UI.
+- **The CLAUDE.md headline table does not match this run.** It gives buildup A 0.72 and B 0.78; this run gives 1.02 and 0.93 (C matches at 1.09). Two other variants I tried (no hour filter, and filtering fits by start time) also miss: A 0.95 / 0.91, B 0.93. Someone needs to trace where 0.72/0.78 came from, or replace them with audit.json values.
+- Buildup for Hall B is also not confident (IQR/median ≥ 0.8), so Hall B stays uncertain under both methods.
+- Hall C has only 8 kept buildup fits; it is confident, but the sample is thin.
+- Discard counts cover only fits that already passed r² ≥ 0.95; segments that fit_buildups rejected earlier are not counted (recorded in method.buildup.discard_note).
 
 ## Next 3 actions
-1. Move ventilation.py to root once approved, then re-run self-tests plus the audit
-2. Pull Zenodo 5062837 and 18195710 and check whether the same fit pipeline runs on them
-3. Draft the README dataset attribution block (all three DOIs, CC BY 4.0)
+1. Settle the headline buildup figures (audit.json vs CLAUDE.md) with the human
+2. Pull Zenodo 5062837 and 18195710 and run the same two-method pipeline on them
+3. README dataset attribution block (all three DOIs, CC BY 4.0)
 
 ## Decisions taken
-- audit.json is committed, raw CSVs are not — they are reproducible from Zenodo in one command
-- Import path: repo root is inserted into sys.path so the script runs the same from any cwd, before and after the move
+- Buildup: the series is filtered to teaching hours, not the fits, so the overnight gap stops segments crossing the window
+- Out-of-bounds occupancy fits are excluded from both ACH and occupancy medians — an absurd source term makes the rate suspect too
+- audit.json shape changed to {method, halls[]}; nothing in backend/ or web/ reads it yet
