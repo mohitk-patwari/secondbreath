@@ -27,7 +27,6 @@
 
 ## Broken or blocked
 - CloudFront + Bedrock blocked on account verification (unchanged; the site runs on API Gateway)
-- **Bedrock evidence file not found.** It was reported as done, but no file matching *bedrock* exists in the working tree or in any git ref (`git log --all`). CloudTrail has the 5 Bedrock events, and WRITEUP.md §6 describes them. Human: point me to the file, or confirm it isn't needed
 - Uncommitted: this block's evidence/ + docs/ changes (the export, evidence/README.md, HANDOFF, STATUS)
 - Halls timestamp zone: open question (METHOD 7.6), deliberately unresolved
 

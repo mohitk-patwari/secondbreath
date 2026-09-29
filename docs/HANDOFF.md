@@ -131,11 +131,6 @@
     missing. "Through 29 Sep 13:49Z" is the accurate phrasing.
 
 ## T4 → T3 (29 Sep, final pass)
-- The brief asked the write-up to cite `evidence/bedrock-cli-errors.txt` for the
-  Nova `AccessDeniedException` text. **That file does not exist** (not on disk,
-  not in git). WRITEUP.md still says the text "is what the CLI returned" with no
-  file reference. If you add the file (real CLI output only), append to that
-  sentence: "The CLI output is in `evidence/bedrock-cli-errors.txt`."
-- Timezone text uses METHOD 7.6's table (A 0.75/181 and 0.85/10; C 0.87/244
-  uncertain, buildup 0.50/10 uncertain; B 1.17/0.96). A relayed summary had
-  A 0.72 and C buildup 0.93 from 4 fits; METHOD was used instead.
+- Resolved: WRITEUP.md now cites `evidence/bedrock-cli-errors.txt` for the Nova
+  AccessDeniedException and says CloudTrail does not corroborate it.
+- Timezone text uses METHOD 7.6's numbers (the human confirmed them).
