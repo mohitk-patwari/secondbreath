@@ -1,10 +1,10 @@
 # CloudTrail timeline
 
-Exported 2026-09-29T13:35:46+00:00 by `analysis/export_cloudtrail.py` from CloudTrail Event history (ap-south-1, us-east-1), filtered to `Username` in `MohitkPatwari@2005`, `secondbreath-dev`, from 2026-09-28T00:00:00Z.
+Exported 2026-09-29T13:56:55+00:00 by `analysis/export_cloudtrail.py` from CloudTrail Event history (ap-south-1, us-east-1), filtered to `Username` in `MohitkPatwari@2005`, `secondbreath-dev`, from 2026-09-28T00:00:00Z.
 
 - Principal(s): `arn:aws:iam::232351199908:user/MohitkPatwari@2005`, `arn:aws:iam::232351199908:user/secondbreath-dev`
-- Events: 1516 (130 returned an error)
-- First: 2026-09-28T18:45:22Z · Last: 2026-09-29T13:33:35Z
+- Events: 1554 (133 returned an error)
+- First: 2026-09-28T18:45:22Z · Last: 2026-09-29T13:49:42Z
 - Raw events: `cloudtrail-raw.json` (the full CloudTrail record for each call; `sourceIPAddress` and `userIdentity.accessKeyId` masked as REDACTED, nothing else changed)
 
 Scope: management events only (Event history does not hold data events such as Lambda Invoke or S3 object reads). Calls made by the deployed Lambdas' own roles are excluded by the principal filter. The terminal agents and the human share the build user (`MohitkPatwari@2005`), so for its rows the **Caller** column (from userAgent) is the only split: `aws-cli` / `sam-cli` are terminal calls (agent sessions, or the human typing in the same terminal), `console` is the human in a browser, `aws-mcp` is the agent calling through the AWS MCP server (user `secondbreath-dev`, `invokedBy` and `userAgent` = `aws-mcp.amazonaws.com`), `mcp-proxy` is the MCP session itself as seen by the MCP service (`AwsMcpEvent`), and `service:*` is AWS acting for the user (e.g. CloudFormation creating resources).
@@ -16,14 +16,14 @@ Scope: management events only (Event history does not hold data events such as L
 | lambda | 348 |
 | s3 | 313 |
 | iam | 233 |
-| cloudformation | 220 |
-| cloudtrail | 126 |
+| cloudformation | 221 |
+| cloudtrail | 161 |
 | kms | 96 |
 | logs | 70 |
 | apigateway | 16 |
+| ssm | 16 |
 | events | 16 |
 | aws-mcp | 15 |
-| ssm | 14 |
 | sns | 11 |
 | monitoring | 9 |
 | cloudfront | 7 |
@@ -38,7 +38,7 @@ Scope: management events only (Event history does not hold data events such as L
 | Caller | Calls |
 |---|---|
 | service:cloudformation | 983 |
-| aws-cli | 194 |
+| aws-cli | 232 |
 | sam-cli | 163 |
 | service:lambda | 96 |
 | aws-mcp | 41 |
@@ -1567,3 +1567,41 @@ Scope: management events only (Event history does not hold data events such as L
 | 2026-09-29T13:30:51Z | ap-south-1 | cloudformation | DescribeStacks | aws-cli |  |
 | 2026-09-29T13:32:52Z | ap-south-1 | ssm | PutParameter | aws-cli |  |
 | 2026-09-29T13:33:35Z | ap-south-1 | ssm | PutParameter | aws-cli |  |
+| 2026-09-29T13:35:15Z | ap-south-1 | ssm | PutParameter | aws-cli |  |
+| 2026-09-29T13:35:31Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:31Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:31Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:31Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:31Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:31Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:32Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:32Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:32Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:32Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:32Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:32Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:32Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:32Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:33Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli | ThrottlingException |
+| 2026-09-29T13:35:33Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:33Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:33Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:33Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:33Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:35Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:35Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:35Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:35Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:36Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli | ThrottlingException |
+| 2026-09-29T13:35:36Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:36Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli | ThrottlingException |
+| 2026-09-29T13:35:37Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:40Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:41Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:41Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:42Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:42Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:45Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:35:46Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:39:44Z | ap-south-1 | ssm | GetParameter | aws-cli |  |
+| 2026-09-29T13:49:42Z | ap-south-1 | cloudformation | DescribeStacks | aws-cli |  |

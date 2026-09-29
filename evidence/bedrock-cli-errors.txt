@@ -1,0 +1,79 @@
+Bedrock access attempts, ap-south-1, 2026-09-28
+================================================
+
+Source: terminal output captured by the human on 2026-09-28, pasted verbatim
+below. The terminal did not print timestamps. This file was added on
+2026-09-29 because the write-up quotes the AccessDeniedException text, and
+CloudTrail does not contain it (see section 3).
+
+
+1. Converse calls (verbatim terminal output)
+--------------------------------------------
+
+$ aws bedrock-runtime converse --region ap-south-1 --no-cli-pager \
+    --model-id apac.amazon.nova-lite-v1:0 --messages file://test-msg.json
+aws: [ERROR]: An error occurred (AccessDeniedException) when calling the
+Converse operation: Your account is currently being verified.
+Verification normally takes less than 2 hours. Until your account is
+verified, you may not have access to this operation. If you are still
+receiving this message after more than 2 hours, please let us know by
+writing to aws-verification@amazon.com. We appreciate your patience.
+
+$ aws bedrock-runtime converse --region ap-south-1 --no-cli-pager \
+    --model-id global.anthropic.claude-haiku-4-5-20251001-v1:0 \
+    --messages file://test-msg.json
+aws: [ERROR]: An error occurred (ValidationException) when calling the
+Converse operation: Operation not allowed
+
+
+2. Model and profile listings (same session, reported by the human)
+-------------------------------------------------------------------
+
+This is a summary of what the commands returned, not verbatim output:
+
+  aws bedrock list-foundation-models --by-inference-type ON_DEMAND
+      (ap-south-1) listed no Anthropic models and no Amazon Nova models.
+
+  aws bedrock list-inference-profiles
+      (ap-south-1) listed apac.* and in.* inference profiles with status
+      ACTIVE.
+
+So in ap-south-1 these models are reachable only through an
+inference-profile ID, not a bare model ID (apac.* = Asia-Pacific
+processing, which is not an in-India guarantee; in.* = India-only
+processing). Both calls in section 1 used a profile ID and were still
+refused, for the reasons shown there. The deployed app does not call Bedrock: /explain
+uses deterministic templates (docs/API.md).
+
+
+3. Discrepancy with CloudTrail (stated, not explained)
+------------------------------------------------------
+
+evidence/cloudtrail-raw.json holds these Bedrock events from the same
+session, all under user MohitkPatwari@2005 with an aws-cli/2.36.23 user
+agent, in ap-south-1:
+
+  2026-09-28T18:48:52Z  ListFoundationModels   ok
+  2026-09-28T18:50:20Z  ListInferenceProfiles  ok
+  2026-09-28T18:52:15Z  ListInferenceProfiles  ok
+  2026-09-28T18:56:10Z  Converse               ValidationException  "Operation not allowed"
+  2026-09-28T18:57:08Z  Converse               ValidationException  "Operation not allowed"
+
+The terminal and CloudTrail disagree:
+
+- The terminal shows two different errors. The Nova call got
+  AccessDeniedException (account verification) and the Claude Haiku call
+  got ValidationException.
+- CloudTrail logs **both** Converse calls as ValidationException, "Operation
+  not allowed". The AccessDeniedException does not appear anywhere in the
+  export.
+- Neither CloudTrail Converse event records a model ID (requestParameters is
+  null). So CloudTrail cannot say which event belongs to which command, and
+  this file does not guess.
+
+The discrepancy is recorded rather than resolved. The two sources are
+different records: the CLI prints the error the API returned to it, and
+CloudTrail writes its own event for the call. For the account-verification
+AccessDeniedException, this file is the only source; CloudTrail does not
+corroborate it. For the fact that two Converse calls were made and refused
+on 28 Sep, both sources agree.

@@ -64,7 +64,15 @@ Three lecture halls in Limassol, Cyprus, were recorded for a full academic year.
 | B (283 m³) | 6.01 | 1.10 · 323 fits · IQR 0.47–1.70 · **uncertain** | 0.93 · 31 kept · IQR 0.64–1.50 · **uncertain** | not claimed |
 | C (1,520 m³) | 5.92 | **0.88** · 259 fits · IQR 0.58–1.26 | **1.09** · 8 kept · IQR 0.80–1.25 · **thin** | 6.8× / 5.4× |
 
-Halls A and C fit cleanly at 0.74 and 0.88 air changes per hour. Hall B's decay fits scatter (interquartile range 0.47 to 1.70), and it is reported as uncertain rather than averaged into the headline. Its buildup fits scatter too (0.64 to 1.50). The audit file does compute shortfall factors for Hall B (5.5× and 6.4×), but they are divisions by medians that should not be quoted, so they are left out of the table above.
+Halls A and C fit cleanly at 0.74 and 0.88 air changes per hour. **That statement is fully true only if the halls' timestamps are local time.** The dataset's `recorded` column carries no timezone. The audit treats it as Cyprus local time, but the timestamps run straight through both 2023–24 clock changes without a gap or a repeated hour, so the column is really UTC or a fixed offset, and the data cannot tell which. With the timestamps read as UTC (same code, same parameters), the results change like this:
+
+- **Hall A holds.** Decay 0.75 (181 fits) and buildup 0.85 (10 fits), both confident.
+- **Hall C does not.** Its decay stays at 0.87 (244 fits), but the spread (IQR divided by median) becomes 0.83. That is just over the 0.8 limit, so the fit reads as *uncertain*. Its buildup falls to 0.50 (10 fits), also uncertain.
+- **Hall B stays uncertain** on both methods (decay 1.17, buildup 0.96).
+
+What does not change is the shortfall. **Every hall stays at or below 1.17 air changes per hour against a design of about six, on both methods and under both timestamp readings.** The timezone question decides whether Hall C's rate can be quoted with confidence, not whether the halls fall short. The UTC figures come from a one-off check recorded in `analysis/METHOD.md` (section 7, item 6); `audit.json` and the table above use the local-time reading.
+
+Hall B's decay fits scatter (interquartile range 0.47 to 1.70), and it is reported as uncertain rather than averaged into the headline. Its buildup fits scatter too (0.64 to 1.50). The audit file does compute shortfall factors for Hall B (5.5× and 6.4×), but they are divisions by medians that should not be quoted, so they are left out of the table above.
 
 The two methods do not agree to the decimal. Buildup reads higher in both clean halls, and Hall A's buildup median sits just outside its decay interquartile range. But they could have disagreed by a factor of six, and they don't. If the air handlers delivered their design airflow during lectures and shut off afterwards, the occupied-room fit would read near six. It reads 1.02 and 1.09.
 
@@ -80,7 +88,7 @@ So the halls' 0.74 and 0.88 fall within the ordinary-classroom range, even thoug
 **The honesty machinery.** Each of these rules either removed a number or labelled one as weak. None of them made a result look better.
 
 - **Hall B is uncertain on both methods.** Its median is shown struck through and is never used as the room's rate.
-- **Hall C's buildup is thin.** Eight fits is enough for the result to count as confident, but it is labelled *Thin* wherever it appears.
+- **Hall C's buildup is thin.** Eight fits is enough for the result to count as confident, but it is labelled *Thin* wherever it appears. Hall C's confidence also depends on the timezone reading described above.
 - **One sensor was stuck at exactly 658 ppm.** ENSENSIA School 18 reported exactly 658 ppm for 46,826 consecutive readings, about 90% of its record, while its temperature and humidity readings kept changing. This turned out to be a device fill value, not air. The rule that now removes it: any value repeated unchanged for 13 or more readings spanning at least 2 hours is treated as a dead sensor and dropped, and the drop is counted per room in `audit.json`. It fired in 8 of the 25 ENSENSIA rooms (School 19 lost 25,445 readings, School 21 lost 22,927) and in none of the halls, so the halls' numbers did not change. School 18 is still counted among the 40 rooms, but it has no usable fit.
 - **Readings below 350 ppm are dropped.** Clean outdoor air is about 420 ppm, so a reading well below that is sensor drift (low-cost sensors re-baseline themselves automatically). Such readings are dropped, never clamped up, and the count is reported. The halls lost none. One Spanish classroom lost 186. ENSENSIA School 19 lost 10,198.
 - **The school rooms get no design comparison.** Neither school dataset publishes room volumes or design airflow, so no shortfall is claimed and no implied occupancy is computed for any of those 37 rooms. `audit.json` says this in a `design_note` for each dataset, and the page shows that note word for word. Air-change rates can still be fitted without a volume, because volume only scales the occupancy estimate, not the rate.
@@ -125,14 +133,14 @@ Claude Code built this project from a terminal, with three sessions working in p
 
 The MCP server signs its requests as its own scoped IAM user, `secondbreath-dev`, not as the human's user. CloudTrail therefore separates the agent's calls from the human's by principal, not just by user agent. `evidence/mcp-connection-verified.txt` records a `run_script` call (STS `GetCallerIdentity` and CloudFormation `DescribeStacks` on the `secondbreath` stack at 2026-09-29T12:52:46–47Z). CloudTrail recorded that call independently: the user is `secondbreath-dev`, and `invokedBy`, `userAgent` and `sourceIPAddress` are all `aws-mcp.amazonaws.com`. A matching `AwsMcpEvent` in us-east-1 shows the MCP client's user agent ending in `claude-code/2.1.284`. That record links the agent to the account call without relying on anything we wrote ourselves.
 
-The full export in `evidence/cloudtrail-timeline.md` has 1,516 management events between 2026-09-28T18:45Z and 2026-09-29T13:33Z, of which 130 returned an error. The per-caller breakdown shows how the stack was built:
+The full export in `evidence/cloudtrail-timeline.md` has 1,554 management events from 2026-09-28T18:45Z through 2026-09-29T13:49Z. Of these, 1,201 came from the build user and 353 from `secondbreath-dev`, the MCP user. 133 returned an error. None of the errors is a failed deploy: 105 are CloudFormation or SAM probing S3 bucket settings that were never set, 12 are `GetFunction` calls made before the function existed, 2 are the refused Bedrock `Converse` calls and 1 is the refused CloudFront `CreateDistributionWithTags`. The per-caller breakdown shows how the stack was built:
 
 - 983 events by CloudFormation acting for us, 96 by Lambda and 1 by API Gateway
-- 194 from `aws-cli`, 163 from `sam-cli` and 21 from `Boto3`
+- 232 from `aws-cli`, 163 from `sam-cli` and 21 from `Boto3`
 - 41 from the agent through the MCP server (`aws-mcp`), plus 15 MCP session events (`mcp-proxy`)
 - 2 from the console
 
-The errors are left in. So is the limit: before the MCP user existed, the agent and the human shared one IAM user, and for those rows only the user agent separates them.
+CloudTrail's event history lags by up to 15 minutes, so events after about 13:42Z may be missing from the export. The errors are left in. So is the limit: before the MCP user existed, the agent and the human shared one IAM user, and for those rows only the user agent separates them.
 
 **The obstacles, in the order we hit them.**
 
@@ -155,11 +163,11 @@ The errors are left in. So is the limit: before the MCP user existed, the agent 
 
 ## 7. Impact
 
-**What has been measured.** Three lecture halls, each designed for about six air changes per hour, deliver between 0.74 and 1.09 on the two clean halls, measured two independent ways across a full academic year. Hall B is too scattered to quote. The same method ran on 37 school rooms, where it produced confident rates for 22 of them by decay and 7 by buildup. Every figure can be regenerated from open data with one command.
+**What has been measured.** Three lecture halls, each designed for about six air changes per hour, deliver between 0.74 and 1.09 on the two clean halls (reading the timestamps as local time), and every hall is at or below 1.17 under either reading, measured two independent ways across a full academic year. Hall B is too scattered to quote. The same method ran on 37 school rooms, where it produced confident rates for 22 of them by decay and 7 by buildup. Every figure can be regenerated from open data with one command.
 
 **What has not been measured.** Health outcomes, attendance and learning: none of that. Nothing has been validated against a tracer-gas test or the halls' own air-handler logs, so the gap between design and measurement is a strong inference from two methods, not a direct inspection. We don't know why the halls fall short. It could be the fan schedules, the dampers or the controls. The site collects no analytics, so we also can't say who has used it.
 
-The halls' timezone is also unresolved. Their `recorded` timestamps carry no timezone, and the pipeline reads them as local Cyprus time. If they are actually UTC, the 08:00–18:00 teaching-hours window is 2 to 3 hours off. The decay fits themselves would not change, because they are fitted on the whole series and only labelled by their start time. What would change is which of them count as teaching hours, and which readings go into the buildup fits, since buildups are fitted on teaching-hours data only. Details are in `analysis/METHOD.md`, section 7, item 6.
+The halls' timezone is also unresolved (see section 4). Their timestamps are UTC or a fixed offset, not local time with daylight saving, and the data cannot tell which. The audit reads them as local time. If they are UTC, the halls still fall short of design by the same margin, but Hall C's decay and buildup fits both become uncertain. The dataset's authors could settle it. Details are in `analysis/METHOD.md`, section 7, item 6.
 
 **Who it's for.** People who already own a CO2 monitor and have no way to act on its readings:
 
@@ -174,6 +182,6 @@ This is the Community lane, and the method is designed to be reused. Every CC BY
 
 ## 8. What I'd do next
 
-1. **Check the finding against the building.** Send the Hall A–C results to the dataset's authors in Limassol and ask for the halls' air-handler schedules, or for one tracer-gas or door-closed test. This is the direct test of the infiltration objection, and it could confirm or overturn the headline.
+1. **Check the finding against the building.** Send the Hall A–C results to the dataset's authors in Limassol and ask for the halls' air-handler schedules, or for one tracer-gas or door-closed test. Ask them too which clock the `recorded` column uses, since that decides whether Hall C's rate is confident. This is the direct test of the infiltration objection, and it could confirm or overturn the headline.
 2. **Accept exports from consumer monitors as they come.** The halls were recorded with Airthings sensors, and the parser already handles semicolon, comma and tab delimiters, ISO and epoch timestamps, and interleaved multi-sensor rows. The next step is a tested import for the two or three monitors that teachers actually own, so that step 8 of the click path works with anyone's file.
 3. **Switch on CloudFront and a model for `/explain` once verification clears, without giving up the rule.** CloudFront needs its `/judges` rewrite. For `/explain`, the model would phrase the sentences, but the existing test that every number in `sentences` appears in `facts` would stay mandatory, and the template would remain as the fallback.

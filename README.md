@@ -6,7 +6,7 @@ SecondBreath works out a room's real ventilation rate from its CO2 log, then tel
 
 ```bash
 curl https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/health
-# {"ok": true, "service": "secondbreath", "lastAuditRun": "<UTC time of the last audit run>", "auditStale": false}
+# {"ok": true, "service": "secondbreath", "lastAuditRun": "2026-09-29T13:35:13Z", "auditStale": false}   (as of 29 Sep 2026)
 ```
 
 `/health` returns 200 even when the audit is stale. In that case `auditStale` is true: the service is degraded, not down.
@@ -25,7 +25,7 @@ Three university lecture halls in Limassol, Cyprus, were measured for a full aca
 
 These are teaching hours only (Mon–Fri, 08:00–17:59). Every number is copied from [`analysis/audit.json`](analysis/audit.json).
 
-- **Halls A and C** fit cleanly: 0.74 and 0.88 ACH by decay, and 1.02 and 1.09 by buildup. That is 5.4 to 7.8 times below their design on either method.
+- **Halls A and C** fit cleanly: 0.74 and 0.88 ACH by decay, and 1.02 and 1.09 by buildup. That is 5.4 to 7.8 times below their design on either method. This is fully true only if the dataset's timestamps are local time. They carry no timezone, and the audit reads them as local. If they are UTC, Hall A still holds (decay 0.75 from 181 fits, buildup 0.85 from 10, both confident), but Hall C's decay spread crosses the confidence limit and its buildup falls to 0.50 (10 fits). Both of Hall C's results would then read as uncertain. Either way, **every hall stays at or below 1.17 ACH against a design of about six, on both methods.** See [`analysis/METHOD.md`](analysis/METHOD.md), section 7, item 6.
 - **Hall B** is uncertain on both methods. Its decay fits scatter across an interquartile range of 0.47 to 1.70 and its buildup fits across 0.64 to 1.50. The medians (1.10 and 0.93) are not the room's rate and should not be quoted as if they were. Hall B is left out of the headline, not averaged into it.
 - **Hall C's buildup** rests on only 8 fits. It is thin, and it is labelled that way.
 

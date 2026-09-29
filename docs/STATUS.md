@@ -1,48 +1,42 @@
-# STATUS — 29 Sep 2026, 19:30 IST (T2 block; T3 19:15, T1 19:00)
+# STATUS — 29 Sep 2026, 19:30 IST (T3 final block; T2 19:30, T1 19:00)
 
 ## Phase
-4 — T3 reproducibility + method; T2 frontend: static finding, 40 rooms, attribution; T1 backend complete
+4 complete — all terminals finished; final CloudTrail export done
 
 ## Done since last update
-- T2 (19:30): **phone pass at 380px** (real mobile emulation over DevTools): page never scrolls sideways. Hall table scrolls in its own box with the Hall column pinned and a CSS-only "scroll sideways" hint; rooms table now fits 380px with all 5 columns (the 24 / 9 always visible). New judges-tour step for the 40 rooms. Deployed, live md5 = local (4174644…)
-- T2: **the finding is plain HTML now.** `web/.sync_audit.py` writes the headline, hall table (design, decay + fit count, buildup + kept/discarded, shortfall, peak), the two-methods paragraph and the judges' tour numbers at sync time. JS builders deleted, not duplicated. Word-for-word identical to the old JS output (diffed); curl with scripts stripped shows every number
-- T2: dropped the inlined audit.json blob (67 KB, nothing read it any more): page 339 KB → 271 KB, 73 KB gzipped
-- T2: new section "Are the halls unusual?": 40 rooms / 3 datasets **with 24 confident decay, 9 confident buildup, 3 design figures in the same sentence**, a per-dataset table, each dataset's `design_note` verbatim with "No shortfall is claimed", and the all_rooms figure (its caption carries the confident counts too)
-- T2: footer cites all three datasets with authors, year, title, DOI and CC BY 4.0 (titles/creators from the Zenodo API), plus "no shortfall claimed" for Spain/ENSENSIA
-- T2: **deployed**; live checksum = local web/index.html; demo still fits on load (4,254 readings, decay 34 fits); no JS errors
-- T1 (19:00): HEAD returns 200 on /, /judges, /health; / and /judges gzipped; backend tests 11/11
-- T3: **reproducibility verified.** A fresh clone of 8960f6b with no data/ downloaded all 30 CSVs from Zenodo (~6 min) and reproduced audit.json + all 5 SVGs with identical content; the inputs matched the dev copies byte for byte. Outputs are now written with LF on every OS, and a rerun matches the committed files byte for byte (audit.json sha256 4e5689cc…). Hashes of outputs and inputs are in METHOD.md
-- T3: **analysis/METHOD.md**: every filter and threshold, where it lives, why, and what it discarded. Floor <350: halls 0, Spain 186, ENSENSIA 19,694. Flatline: 99,763 ENSENSIA readings in 8 schools. Unidentifiable buildup: halls 16/82, Spain 3/9, ENSENSIA 178/767. Judgment calls are labelled as such
-- T3: outdoor-CO2 sensitivity (METHOD 4.4): ±20 ppm moves hall decay rates 0.71–0.78 (A) and 0.81–0.95 (C); buildup does not move at all
-- T3: CloudTrail re-exported: 1,516 events through 29 Sep 13:33Z (130 errors, all benign: 105 are CFN/SAM probing unset S3 bucket configs, 12 are GetFunction before a function existed)
+- T3: **final CloudTrail export** (the last one, 13:56:55Z): 1,554 events, 2026-09-28T18:45:22Z → 2026-09-29T13:49:42Z, 133 errors, none a failed deploy. By caller: service:cloudformation 983, aws-cli 232, sam-cli 163, service:lambda 96, aws-mcp 41, Boto3 21, mcp-proxy 15, console 2, service:apigateway 1. Breakdown in evidence/README.md
+- T3: **METHOD 7.6** (commit 2b4273e): the halls' timestamps run straight through both 2023–24 clock changes, so they are UTC or a fixed offset, not DST local time. Under the UTC reading the shortfall stands (all ≤ 1.17 ACH), Hall A is robust, and **Hall C decay turns uncertain** (spread 0.83 vs the 0.8 cut) with buildup 0.50. Left open; audit unchanged
+- T3: CLAUDE.md sensor-floor sentence now matches the code (drop < 350, keep 350–420; /fit drops below outdoorPpm), pointing to METHOD 4.1
+- T3: HANDOFF T3 → T4: final counts, the three WRITEUP.md line-128/131 numbers to change, and the Hall C qualifier
+- T2 (19:30): phone pass at 380 px, judges-tour step for the 40 rooms, deployed (live md5 = local)
+- Earlier this phase: reproducibility verified byte for byte from a fresh clone (METHOD §1); METHOD.md written; the finding rendered as plain HTML
 
 ## Audit table (halls, unchanged; analysis/audit.json is the source)
 | Hall | Design | Decay ACH (n) | Buildup ACH (kept) | Shortfall dec/bld |
 |---|---|---|---|---|
 | A | 5.8 | 0.74 (252) | 1.02 (27) | 7.8x / 5.7x |
 | B | 6.0 | 1.10 (323) **uncertain** | 0.93 (31) **uncertain** | 5.5x / 6.4x |
-| C | 5.9 | 0.88 (259) | 1.09 (8, thin) | 6.8x / 5.4x |
+| C | 5.9 | 0.88 (259)* | 1.09 (8, thin)* | 6.8x / 5.4x |
+
+\* Confident only if the timestamps are local time; see METHOD 7.6.
 
 ## Live state
-- Site: https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/ — 200, 272,979 B / 73,068 B gzip, 19:30 IST
-- /judges 200 (19:10 IST); /health 200, lastAuditRun 2026-09-29T13:35:13Z, auditStale false (19:09 IST)
-- Uptime alarm `secondbreath-down` OK; SNS confirmed. Stack secondbreath, ap-south-1
+- Site / and /judges: https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/ — 200, 272,979 B, 19:28 IST
+- /health: 200, lastAuditRun 2026-09-29T13:35:13Z, auditStale false, 19:28 IST
+- Stack secondbreath, ap-south-1; uptime alarm OK, SNS confirmed
 
 ## Broken or blocked
-- CloudFront + Bedrock still blocked on account verification
-- **Uncommitted:** web/ (this block, deployed), T1 backend/ (deployed), T3 analysis/ + docs/, CLAUDE.md. The live site runs code that is not in git
-- ENSENSIA peaks are raw single readings; the page shows no school peaks, so nothing to fix yet
-- **Open question, recorded in METHOD 7.6:** the halls' `recorded` column has no timezone. Readings above 1,000 ppm run 06:00–18:59, which fits local time or UTC. If it is UTC, the teaching window is 2–3 h off. Decay fits are unaffected (they're labelled, not filtered). Not changed; data work is closed
-- **CLAUDE.md wording vs code:** it says readings "below outdoor level" are dropped, but the code drops below 350 and keeps 350–420 (11% of school readings). METHOD 4.1 explains why. Human: fix the CLAUDE.md sentence, or ask for the code to change
+- CloudFront + Bedrock blocked on account verification (unchanged; the site runs on API Gateway)
+- **Bedrock evidence file not found.** It was reported as done, but no file matching *bedrock* exists in the working tree or in any git ref (`git log --all`). CloudTrail has the 5 Bedrock events, and WRITEUP.md §6 describes them. Human: point me to the file, or confirm it isn't needed
+- Uncommitted: this block's evidence/ + docs/ changes (the export, evidence/README.md, HANDOFF, STATUS)
+- Halls timestamp zone: open question (METHOD 7.6), deliberately unresolved
 
 ## Next 3 actions
-1. Human: commit everything that is deployed
-2. T3: README attribution for 5062837 and 18195710 (README.md exists, untracked; check it cites all three DOIs)
-3. T2: nothing queued; open to review feedback
+1. Human: commit and push this block
+2. T4: apply the WRITEUP.md line 128/131 numbers from HANDOFF; keep the Hall C qualifier
+3. Nothing queued for T3
 
 ## Decisions taken
-- Finding rendered at sync time, not in the browser — scorers without JS must see the numbers; one renderer, not two
-- Removed the audit.json blob from the page — dead after the above; the repo file stays the source of truth
-- Same fit parameters for every dataset — tuning per dataset would be fitting to the answer
-- 40 is never printed without 24 / 9 beside it, including the figure caption (the SVG title alone didn't)
-- T3: outputs written with LF, not the platform default — a reproducibility claim should be checkable by sha256 on any OS
+- The export ran after every other terminal committed, so it covers the build; its own lookups can't be in it, by definition
+- Hall C qualifier added to the table, not a changed number — the question is open, so the reported value stays and its dependence is flagged
+- 40 is never printed without 24 / 9 beside it; outputs written with LF so the reproducibility claim is checkable by sha256

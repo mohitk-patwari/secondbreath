@@ -64891,5 +64891,1497 @@
    "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
    "clientProvidedHostHeader": "ssm.ap-south-1.amazonaws.com"
   }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:15Z",
+  "eventSource": "ssm.amazonaws.com",
+  "eventName": "PutParameter",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#ssm.put-parameter",
+  "requestParameters": {
+   "name": "/secondbreath/lastAuditRun",
+   "value": "HIDDEN_DUE_TO_SECURITY_REASONS",
+   "type": "String",
+   "overwrite": true
+  },
+  "responseElements": {
+   "version": 11,
+   "tier": "Standard"
+  },
+  "requestID": "3d6fe8c4-57c8-4f56-9a0b-c1fe6ceae60d",
+  "eventID": "90c33f6b-68c4-4595-aa7d-f1d26ab564d4",
+  "readOnly": false,
+  "resources": [
+   {
+    "accountId": "232351199908",
+    "ARN": "arn:aws:ssm:ap-south-1:232351199908:parameter/secondbreath/lastAuditRun"
+   }
+  ],
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.2",
+   "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+   "clientProvidedHostHeader": "ssm.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:31Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z"
+  },
+  "responseElements": null,
+  "requestID": "d7eaa51e-8519-4371-9c60-d9ced185b61b",
+  "eventID": "9cda6efd-d47f-411c-9bee-406e1179f8eb",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:31Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "7WRfqj/V0HfVp0JgcweWb6L968PEv4kqgSANpcdzb8mVqe82IP6s8vfbvJw2t27f"
+  },
+  "responseElements": null,
+  "requestID": "d240d1cd-e5e9-4393-87ea-91089f9a90cb",
+  "eventID": "b82cd8a5-1fd7-49b1-8b35-0d515f5117d8",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:31Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "g5la1SNfjUuOXv+NK7I/jFeaL4HC3/MQti7Xs7DCg3g1sJSsRNYCOcZ6q0gilqkV"
+  },
+  "responseElements": null,
+  "requestID": "4da73f24-f684-4acf-9739-8bfe9d932a97",
+  "eventID": "b8db5841-1eea-4f41-bdc4-7bbefe4aec75",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:31Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "o+O+VeeHiC9T4ungN24UXITwF1Jr4ZPV+0cHVunQY3ZEmAwH8J7gPOwMiAYOqjGN"
+  },
+  "responseElements": null,
+  "requestID": "428104bb-bf5b-44f0-9a26-29060b28f52f",
+  "eventID": "f05d27a2-8990-4e64-a254-b63cdcb84aa8",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:31Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "awaWBCuC/ou82POM+y/VIX7i6Y/5zf5UclRr3mg7xNHr88soD0h4zuinXa4MT3tu"
+  },
+  "responseElements": null,
+  "requestID": "d94f6515-c74e-44b6-83a2-7c0981c48fb2",
+  "eventID": "f466ee72-4e13-4905-811e-0e3ed0f75bbf",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:31Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "hRzRnA7Ddfu7VRPT/ftFDNKFv2y309vyb+UC0+IBDZFfvcIIjOGTMhc6mBhZNVla"
+  },
+  "responseElements": null,
+  "requestID": "75cbbd80-1c30-4c41-b4ac-424d6c1791e5",
+  "eventID": "f7a1e318-9ee5-4b26-9f6f-75696513728f",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:32Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "I2hKkBRjlpy5y/qedaKPH5G8q1Qx86ayPgnJhfuFv2eJDvDEn20PQ1KN0oO/FKUK"
+  },
+  "responseElements": null,
+  "requestID": "ce37bf3b-a05a-4707-a8b0-c151452cd77d",
+  "eventID": "10a9e9d9-f263-4556-b393-a75ed074eac2",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:32Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "sfalTuWLkXuVRmLVkoRzAV6VJbOCFRGLh1MTIdM0FR0jNakdoi1STtNTJQn6FkrV"
+  },
+  "responseElements": null,
+  "requestID": "76d83b31-4d2e-49b2-b1ef-809bd94d8eb7",
+  "eventID": "3760ab86-6bc8-476e-ad88-4041d6d0a5f9",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:32Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "yUYN8wVEKC1GrRmcsHHMD719GWZ0Yz0qYF+bIjcKuWZZJgX+zIK71Dap15KGMCHy"
+  },
+  "responseElements": null,
+  "requestID": "da7d156d-f109-4e15-bef9-34e8118a9fe5",
+  "eventID": "450c7f58-d315-45c1-b5cd-7a2d2ff76c31",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:32Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "HBhc1cAuIHFB+kpAZ74NsIbvDnIHQQngwW4CyeAwkwIi4ud9y+WDKpZ33vjM+lWT"
+  },
+  "responseElements": null,
+  "requestID": "77067a4b-0a49-4fc1-b289-d7a2ea40136f",
+  "eventID": "6dbbc591-2abc-47b7-84c7-3bf0087dcb5b",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:32Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "42bZ+PG5F/hCb7ZOCrml/AQ6PC3076uDSYrEKi4ysuNNRx8mmC9ttJNaZYLAsAWA"
+  },
+  "responseElements": null,
+  "requestID": "1b837e81-41fd-4b4b-8d2a-d8228ffaacf1",
+  "eventID": "8f80b7bf-82d5-4f77-a09f-2dbcafbc1416",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:32Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "It1W4eANzLeFsdXy/Iu1OWGhWRR+iM6kCVkXvQ7sLzUeRcUDewQHn4diwrMmowNT"
+  },
+  "responseElements": null,
+  "requestID": "a4365695-666a-49c8-a896-f6b566ae0e98",
+  "eventID": "a9f830a8-73c4-4b75-99e8-28dae79d58a5",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:32Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "1rY17WIBcc3xB0ejo6hnIgjz+yBatQcVOvGmaMa3uybG14sR7BaMUxzwTXvAZZaA"
+  },
+  "responseElements": null,
+  "requestID": "1e2c7e08-1abf-47d8-beb9-07b52e31a567",
+  "eventID": "b5d95250-ab3c-4294-8876-050192ec2c36",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:32Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "JUUMqxbXm4NaTlAT5YR1yjqZwef3xj4pxHDFrRwcgzf/CPa4CVCv6w2CIqx0VDqv"
+  },
+  "responseElements": null,
+  "requestID": "4dc1d081-e293-409a-b1bf-10bb01980112",
+  "eventID": "bbf7a6e8-8acf-416c-8ca2-fe0944dad0d1",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:33Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "errorCode": "ThrottlingException",
+  "errorMessage": "Rate exceeded",
+  "requestParameters": null,
+  "responseElements": null,
+  "requestID": "16250889-de61-4ff6-98fe-dea65e8dede5",
+  "eventID": "148476f9-bad6-44b5-babf-ae860291fed0",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:33Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "VZPDzDAERUwh4y811UzlTfVwlZt/tBMnEVhrV/qQLPGW/jgbr48/xNgAvfMn/DYg"
+  },
+  "responseElements": null,
+  "requestID": "f5984402-fce3-497e-8225-67401af4dd14",
+  "eventID": "2cd488a2-6568-4a39-935d-66717f76dd1d",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:33Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "51DuvUb114Yk5lSl83tly6b9RdlkvLWh0JEg07k5paHHaYEPxQ7bJcREEBd7nfWe"
+  },
+  "responseElements": null,
+  "requestID": "a45037a0-f3d4-4cf0-9310-b82febe42c82",
+  "eventID": "7e39827d-0ca5-4b09-bcea-470dc95532fa",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:33Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "hKrDTw/bh/x3+Mx1ss034LNnsGTiWo6WctTa3FtJ4er6HK70j3KbBPey2hOAHdmB"
+  },
+  "responseElements": null,
+  "requestID": "f8b9eb72-3900-4606-a014-0e8877df78c3",
+  "eventID": "8ebe96fe-3817-4dbc-87fa-e0db62f08f7f",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:33Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "NVlMp3yTGTxKECCUxPuryawsNon5k35mU43JDBLNjTOFu7gOKgnQaFrfQiY68Uzn"
+  },
+  "responseElements": null,
+  "requestID": "a96d3bfc-cf52-4322-bfd1-7eb93104199c",
+  "eventID": "9de7408e-34d3-41cc-ac25-9e405ca45ca9",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:33Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "FVdFNwDVaVcueeiPqHPZgzWV/goAFgF/PRUL4WAPSX1GKVqfVDEB0I6S7leiLQsl"
+  },
+  "responseElements": null,
+  "requestID": "b1ae38dd-9415-4bb4-bd53-8e5da501dece",
+  "eventID": "bc79a9b9-d36d-47d8-949f-7c1e37e4d196",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:35Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "secondbreath-dev"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "lbOk5IGQM7JQ9K1GQ1UG1PLM8drg6ndBBfnFUxqiBW4oJfpc+OycuAOLG8NWAcpPk1PBWYZCJh5S68vSRXYzTA=="
+  },
+  "responseElements": null,
+  "requestID": "104afe05-1bb3-42b6-a8c8-4c71f07cd03c",
+  "eventID": "4d84f5e5-e914-479b-84a7-5a451857f790",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:35Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "secondbreath-dev"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "v4+Wn1kO2PKPCMs9z1XaTD+96nayL6uFmyNN6RGnNdEF5ybDBEKb4D+WIwGZasQnuALCHSFk4ari3IY8eOnlow=="
+  },
+  "responseElements": null,
+  "requestID": "4ecb064f-464a-45f4-838b-5fc4135f2242",
+  "eventID": "743ff945-d89a-49ea-bbd8-a31eb970c799",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:35Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "secondbreath-dev"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z"
+  },
+  "responseElements": null,
+  "requestID": "5a8e3baf-f206-4a21-8393-3a7a7a55353f",
+  "eventID": "c618f9c8-6834-4c4d-ac61-20f10d7b94b6",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:35Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "secondbreath-dev"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "+ivdkfazAumPEiVCBeSACn45miBLbYxoj5ulMrroY0u0G6rz+iY5HoL0d2jsifCuTW4k6IrzFjFEXJu4C7TfuQ=="
+  },
+  "responseElements": null,
+  "requestID": "004d0d56-250b-4605-a3df-f32c38a07722",
+  "eventID": "f82c7291-47c5-4eb6-900f-f1b921473ca5",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:36Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "errorCode": "ThrottlingException",
+  "errorMessage": "Rate exceeded",
+  "requestParameters": null,
+  "responseElements": null,
+  "requestID": "54a0bb2f-ff1f-4a7a-9edf-ff1a28dd7928",
+  "eventID": "1193df0d-3006-4be9-a90a-578af1df1ea5",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:36Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "secondbreath-dev"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "+Vn/IQMje5FALG/44p4uRZxT7p5I4oLRsQlaieAYy7s5BdrCvBrddf+3h8KFs+5JC8P/qdN5D5LwZA0tLq9fIg=="
+  },
+  "responseElements": null,
+  "requestID": "2938145a-4236-41e6-a641-768470aef7d6",
+  "eventID": "b994ead9-233d-4321-b603-52ca8d4448f4",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:36Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "errorCode": "ThrottlingException",
+  "errorMessage": "Rate exceeded",
+  "requestParameters": null,
+  "responseElements": null,
+  "requestID": "64c782a7-fcda-497b-94c9-c2cb637ac26d",
+  "eventID": "d3234342-8da2-4d21-9e9a-adede58155b0",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:37Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "secondbreath-dev"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "S9KO9yURELTCK/vQA12+KmXfvPn1lfa+g1gtBx1MqwANrvJNLTMZD/6po7tNnLoGxSOHFuCUY4F57gdTia4rLg=="
+  },
+  "responseElements": null,
+  "requestID": "b836d0ad-bf2e-4435-b74f-d9ac630f648d",
+  "eventID": "05861f28-e3cd-4d1c-8ac8-4a1574dadb0a",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:40Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "us-east-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z"
+  },
+  "responseElements": null,
+  "requestID": "a7092d9f-04b5-488d-80d7-fd7cd4d5bc2f",
+  "eventID": "3e621b21-7d8b-480a-af31-e7145648f1fa",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.us-east-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:41Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "us-east-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "Cab3kB+AmCijJBXOvUxZO2uKH8PDj3xy3bs1FFI14qK1p6vGwL1/jrCCn69wqIr1"
+  },
+  "responseElements": null,
+  "requestID": "6889c867-e0d1-429e-aab6-04318d73f7a9",
+  "eventID": "01137991-6a33-4131-97a2-a37ef3ca949e",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.us-east-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:41Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "us-east-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "8ucf1L2FYOHfEp+gXxOKhqnuPe/5UjUiNNff1pMocqHFAscfPTGQnoTGe3dEVg1+"
+  },
+  "responseElements": null,
+  "requestID": "4b94031e-f680-422a-b0cc-317e0658b8df",
+  "eventID": "96371efa-5152-4181-8ad3-bb2c2076447c",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.us-east-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:42Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "us-east-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "MV6PJHBHYI0/ZJzdF3m5MAQv1w+2TR4IWG+11eYlUcThlg62Uv1WtRH+xwKRnN4x"
+  },
+  "responseElements": null,
+  "requestID": "5b4545d3-eaa9-4078-b6c8-5d88c96daa38",
+  "eventID": "68a39a5f-73a6-4dce-8881-50e81dfccb5e",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.us-east-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:42Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "us-east-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "MohitkPatwari@2005"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "HQbSH7Irpq8TnCLVuUfQ/ZOgEVMRwAreoZBwynJ7pFfkF+RwaTmO5cSNOLm0T95z"
+  },
+  "responseElements": null,
+  "requestID": "bba816df-f0c7-4687-a3b1-7a49d8fdb3ee",
+  "eventID": "d91bc5d0-0d5f-42cc-9e98-59daa6998052",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.us-east-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:45Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "us-east-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "secondbreath-dev"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z"
+  },
+  "responseElements": null,
+  "requestID": "7a9d1610-f4fd-4c81-8a40-ddb13ebb2522",
+  "eventID": "bceb6c48-1032-48b4-b436-922991bce62a",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.us-east-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:35:46Z",
+  "eventSource": "cloudtrail.amazonaws.com",
+  "eventName": "LookupEvents",
+  "awsRegion": "us-east-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudtrail.lookup-events",
+  "requestParameters": {
+   "lookupAttributes": [
+    {
+     "attributeKey": "Username",
+     "attributeValue": "secondbreath-dev"
+    }
+   ],
+   "startTime": "2026-09-28T00:00:00Z",
+   "nextToken": "vdIUD16Dh5CwJJE8Bc+XvrrSE4sqAl2eBZQmo3x7k/8TNiqLM8WlN1370xmcRMIm1dDWtY2oEf/2i+c6r0ynLQ=="
+  },
+  "responseElements": null,
+  "requestID": "47e06e03-be43-4c04-b9d1-3c75359247eb",
+  "eventID": "4ea463d0-da0e-4c45-bfd7-c824bad346f5",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudtrail.us-east-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:39:44Z",
+  "eventSource": "ssm.amazonaws.com",
+  "eventName": "GetParameter",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#ssm.get-parameter",
+  "requestParameters": {
+   "name": "C:/Program Files/Git/secondbreath/lastAuditRun"
+  },
+  "responseElements": null,
+  "requestID": "1bc6d882-b8c5-4704-8829-9153eb4b9bf8",
+  "eventID": "39b47b9b-1db4-4922-8af2-e7bfaaf4f37a",
+  "readOnly": true,
+  "resources": [
+   {
+    "accountId": "232351199908",
+    "ARN": "arn:aws:ssm:ap-south-1:232351199908:parameter/C"
+   }
+  ],
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.2",
+   "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+   "clientProvidedHostHeader": "ssm.ap-south-1.amazonaws.com"
+  }
+ },
+ {
+  "eventVersion": "1.11",
+  "userIdentity": {
+   "type": "IAMUser",
+   "principalId": "AIDATMGJV6KSBGHSNCCJC",
+   "arn": "arn:aws:iam::232351199908:user/MohitkPatwari@2005",
+   "accountId": "232351199908",
+   "accessKeyId": "REDACTED",
+   "userName": "MohitkPatwari@2005"
+  },
+  "eventTime": "2026-09-29T13:49:42Z",
+  "eventSource": "cloudformation.amazonaws.com",
+  "eventName": "DescribeStacks",
+  "awsRegion": "ap-south-1",
+  "sourceIPAddress": "REDACTED",
+  "userAgent": "aws-cli/2.36.23 md/awscrt#0.36.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.6 md/pyimpl#CPython m/AN,n,Z,E,C,b cfg/retry-mode#standard md/installer#exe sid/cf9cf02bb896 md/prompt#off md/command#cloudformation.describe-stacks",
+  "requestParameters": {
+   "stackName": "secondbreath"
+  },
+  "responseElements": null,
+  "requestID": "7f2789e4-da4a-4582-9bb7-bd8f50518bcf",
+  "eventID": "c03f0b86-da52-4f47-aa25-f3e6fbf34355",
+  "readOnly": true,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "232351199908",
+  "eventCategory": "Management",
+  "tlsDetails": {
+   "tlsVersion": "TLSv1.3",
+   "cipherSuite": "TLS_AES_128_GCM_SHA256",
+   "clientProvidedHostHeader": "cloudformation.ap-south-1.amazonaws.com"
+  }
  }
 ]

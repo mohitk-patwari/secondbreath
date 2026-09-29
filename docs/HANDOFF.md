@@ -91,3 +91,51 @@
   outdoorPpm. Both docs describe the two rules as they are.
 - The /explain agree/disagree sentence will say Hall A's methods *disagree*
   (buildup 1.02 is outside decay IQR 0.63–0.90). The docs say this openly.
+
+## T3 → T4 (29 Sep, evening IST)
+- **METHOD 7.6 rewritten (commit 2b4273e); please write the time-zone point from it.**
+  The halls' `recorded` column runs straight through both clock changes
+  (144 readings 00:00–06:00 on 29 Oct 2023 and 31 Mar 2024, no step > 5 min),
+  so it is **not** local time with daylight saving. It is UTC or a fixed
+  offset. Still open; the audit treats it as local.
+- If it is UTC: the shortfall stands (every hall ≤ 1.17 ACH vs ~6 design, both
+  methods). Hall A is robust (decay 0.74 → 0.75). **Hall C is not:** its decay
+  0.88 → 0.87 but the spread becomes 0.83, over the 0.8 cut, so it reads as
+  *uncertain*; its buildup 1.09 → 0.50. So "Halls A and C fit cleanly" holds
+  for C only under the local-time reading. Please don't write the C line
+  without that qualifier.
+- CLAUDE.md's sensor-floor sentence now matches the code (drop < 350, keep
+  350–420; /fit drops below outdoorPpm) and points to METHOD 4.1. Thanks for
+  flagging it.
+- **Final CloudTrail export (the last one), 29 Sep 13:56:55Z.** Quote these
+  figures; evidence/README.md has the full breakdown.
+  - 1,554 events, 2026-09-28T18:45:22Z → 2026-09-29T13:49:42Z; 133 errors,
+    none a failed deploy. 105 are S3 bucket settings that were never set,
+    probed by CloudFormation/SAM; 12 are GetFunction before a function
+    existed. Also 2 Bedrock `Converse` refused and 1 CloudFront
+    `CreateDistributionWithTags` refused.
+  - By caller: service:cloudformation 983 · aws-cli 232 · sam-cli 163 ·
+    service:lambda 96 · aws-mcp 41 · Boto3 21 · mcp-proxy 15 · console 2 ·
+    service:apigateway 1.
+  - By user: MohitkPatwari@2005 1,201 · secondbreath-dev (MCP) 353.
+  - **WRITEUP.md line 128 needs 3 numbers changed, nothing else.** It has
+    the previous export: "1,516 … 13:33Z … 130 returned an error" becomes
+    "1,554 … 13:49Z … 133 returned an error". Line 131's "194 from `aws-cli`"
+    becomes **232**. Every other caller count (983, 96, 1, 163, 21, 41, 15, 2)
+    is unchanged. The new events since then are my exports' own CloudTrail
+    lookups, one SSM audit timestamp, and read-only CLI checks.
+  - Bedrock paragraph (lines 144–149): already matches the export
+    (`ValidationException` in CloudTrail, the AccessDenied text from the
+    CLI). No change.
+  - Event history lags up to 15 min, so anything after ~13:42Z may be
+    missing. "Through 29 Sep 13:49Z" is the accurate phrasing.
+
+## T4 → T3 (29 Sep, final pass)
+- The brief asked the write-up to cite `evidence/bedrock-cli-errors.txt` for the
+  Nova `AccessDeniedException` text. **That file does not exist** (not on disk,
+  not in git). WRITEUP.md still says the text "is what the CLI returned" with no
+  file reference. If you add the file (real CLI output only), append to that
+  sentence: "The CLI output is in `evidence/bedrock-cli-errors.txt`."
+- Timezone text uses METHOD 7.6's table (A 0.75/181 and 0.85/10; C 0.87/244
+  uncertain, buildup 0.50/10 uncertain; B 1.17/0.96). A relayed summary had
+  A 0.72 and C buildup 0.93 from 4 fits; METHOD was used instead.
