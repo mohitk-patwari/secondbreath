@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="100%" role="img" aria-labelledby="t d">
+<title id="t">Two ways to measure the same room: buildup and decay fits, Hall A</title>
+<desc id="d">Real CO2 readings from Hall A on 3 Nov 2023, 07:30 to 12:10. The buildup fit (orange, 08:00 to 09:00) gives 0.90 air changes per hour for this session; the decay fit (blue, 09:00 to 11:50) gives 0.90. Chosen as the Hall A buildup fit followed within 30 minutes by a same-day decay fit with the largest CO2 range. Right: Hall A whole-year medians from analysis/audit.json, buildup 1.02 (27 fits) and decay 0.74 (252 fits), against the design 5.79; shortfall factors 5.7 and 7.8 are audit.json&#x27;s.</desc>
+<style>
+  svg { --surface: #fcfcfb; --card: #f3f2ef; --ink: #0b0b0b; --ink-2: #52514e; --grid: #e4e3df; --trace: #8a8984;
+        --decay: #2a78d6; --build: #eb6834; --design: #8a8984; --line: #b9b8b2;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  @media (prefers-color-scheme: dark) {
+    svg { --surface: #1a1a19; --card: #242422; --ink: #ffffff; --ink-2: #c3c2b7; --grid: #3a3a37; --trace: #8f8e88;
+          --decay: #3987e5; --build: #d95926; --design: #8f8e88; --line: #5e5d58; }
+  }
+  .t { fill: var(--ink); font-size: 26px; font-weight: 650; }
+  .s { fill: var(--ink-2); font-size: 16px; }
+  .l { fill: var(--ink); font-size: 18px; font-weight: 600; }
+  .m { fill: var(--ink-2); font-size: 15px; }
+  .g { stroke: var(--grid); stroke-width: 1; }
+  .trace { fill: none; stroke: var(--trace); stroke-width: 2; stroke-linejoin: round; }
+  .decay { fill: none; stroke: var(--decay); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+  .build { fill: none; stroke: var(--build); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+  .box { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+  .pend { fill: none; stroke: var(--ink-2); stroke-width: 1.5; stroke-dasharray: 7 5; }
+  .ar { fill: none; stroke: var(--trace); stroke-width: 2; marker-end: url(#h); }
+  .ard { fill: none; stroke: var(--trace); stroke-width: 2; stroke-dasharray: 7 5; marker-end: url(#h); }
+  .fb { fill: var(--build); } .fd { fill: var(--decay); } .fg { fill: var(--design); }
+</style>
+<defs><marker id="h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M0,0 L10,5 L0,10 z" fill="#8a8984"/></marker></defs>
+<rect width="1200" height="675" rx="10" fill="var(--surface)"/>
+<text class="t" x="40" y="52">Two ways to measure the same room</text>
+<text class="s" x="40" y="80">Hall A, one real session: 3 Nov 2023, CO2 every 5 minutes. Both fits come from ventilation.py.</text>
+<text class="s" x="40" y="102">The rates on the right are Hall A's whole academic year.</text>
+<line class="g" x1="90" x2="700" y1="543.8" y2="543.8"/><text class="m" x="80" y="548.8" text-anchor="end">500</text>
+<line class="g" x1="90" x2="700" y1="462.5" y2="462.5"/><text class="m" x="80" y="467.5" text-anchor="end">1,000</text>
+<line class="g" x1="90" x2="700" y1="381.2" y2="381.2"/><text class="m" x="80" y="386.2" text-anchor="end">1,500</text>
+<line class="g" x1="90" x2="700" y1="300.0" y2="300.0"/><text class="m" x="80" y="305.0" text-anchor="end">2,000</text>
+<line class="g" x1="90" x2="700" y1="218.8" y2="218.8"/><text class="m" x="80" y="223.8" text-anchor="end">2,500</text>
+<text class="m" x="80" y="162" text-anchor="end">ppm</text>
+<text class="m" x="154.2" y="586" text-anchor="middle">08:00</text>
+<text class="m" x="282.6" y="586" text-anchor="middle">09:00</text>
+<text class="m" x="411.1" y="586" text-anchor="middle">10:00</text>
+<text class="m" x="539.5" y="586" text-anchor="middle">11:00</text>
+<text class="m" x="667.9" y="586" text-anchor="middle">12:00</text>
+<text class="m" x="395.0" y="610" text-anchor="middle">time as recorded in the dataset</text>
+<path class="trace" d="M90.8,390.8 L101.6,372.3 L112.2,360.8 L123.0,351.7 L133.6,339.3 L144.4,326.2 L155.0,316.6 L165.8,304.1 L176.4,285.2 L187.2,277.1 L197.8,271.1 L208.6,253.0 L219.2,251.6 L230.0,249.3 L240.6,236.0 L251.5,228.5 L262.0,223.9 L272.9,213.2 L283.4,203.6 L294.3,210.8 L304.8,214.5 L315.6,226.2 L326.2,247.5 L337.1,255.8 L347.6,265.1 L358.5,276.6 L369.0,284.7 L379.8,307.3 L390.4,331.0 L401.3,350.9 L411.8,376.0 L422.7,393.4 L433.2,408.4 L444.1,425.9 L454.6,439.9 L465.5,451.6 L476.0,463.1 L486.9,470.8 L497.4,476.5 L508.3,481.4 L518.9,485.4 L529.7,491.8 L540.3,498.1 L551.1,500.4 L561.6,501.2 L572.5,503.4 L583.0,505.4 L593.9,505.9 L604.5,508.2 L615.3,512.5 L625.9,515.5 L636.7,519.9 L647.2,523.3 L658.1,522.8 L668.7,521.6 L679.5,521.8 L690.1,527.7"/>
+<path class="build" d="M155.0,316.6 L165.8,304.1 L176.4,285.2 L187.2,277.1 L197.8,271.1 L208.6,253.0 L219.2,251.6 L230.0,249.3 L240.6,236.0 L251.5,228.5 L262.0,223.9 L272.9,213.2 L283.4,203.6"/>
+<path class="decay" d="M283.4,203.6 L294.3,210.8 L304.8,214.5 L315.6,226.2 L326.2,247.5 L337.1,255.8 L347.6,265.1 L358.5,276.6 L369.0,284.7 L379.8,307.3 L390.4,331.0 L401.3,350.9 L411.8,376.0 L422.7,393.4 L433.2,408.4 L444.1,425.9 L454.6,439.9 L465.5,451.6 L476.0,463.1 L486.9,470.8 L497.4,476.5 L508.3,481.4 L518.9,485.4 L529.7,491.8 L540.3,498.1 L551.1,500.4 L561.6,501.2 L572.5,503.4 L583.0,505.4 L593.9,505.9 L604.5,508.2 L615.3,512.5 L625.9,515.5 L636.7,519.9 L647.2,523.3"/>
+<text class="l" x="100" y="176" style="fill:var(--build)">buildup fit → rate + implied occupancy</text>
+<text class="m" x="100" y="198">room occupied · this session 0.90/h</text>
+<text class="l" x="422" y="324" style="fill:var(--decay)">decay fit → rate</text>
+<text class="m" x="422" y="345">room emptying · this session 0.90/h</text>
+<text class="l" x="790" y="146">Air changes per hour</text>
+<line class="g" x1="820" x2="820" y1="560" y2="170"/>
+<line class="g" x1="814" x2="826" y1="560.0" y2="560.0"/><text class="m" x="806" y="565.0" text-anchor="end">0</text>
+<line class="g" x1="814" x2="826" y1="500.0" y2="500.0"/><text class="m" x="806" y="505.0" text-anchor="end">1</text>
+<line class="g" x1="814" x2="826" y1="440.0" y2="440.0"/><text class="m" x="806" y="445.0" text-anchor="end">2</text>
+<line class="g" x1="814" x2="826" y1="380.0" y2="380.0"/><text class="m" x="806" y="385.0" text-anchor="end">3</text>
+<line class="g" x1="814" x2="826" y1="320.0" y2="320.0"/><text class="m" x="806" y="325.0" text-anchor="end">4</text>
+<line class="g" x1="814" x2="826" y1="260.0" y2="260.0"/><text class="m" x="806" y="265.0" text-anchor="end">5</text>
+<line class="g" x1="814" x2="826" y1="200.0" y2="200.0"/><text class="m" x="806" y="205.0" text-anchor="end">6</text>
+<circle class="fg" cx="820" cy="212.6" r="9"/>
+<text class="l" x="842" y="210.6" style="fill:var(--ink)">5.79  as designed</text>
+<text class="m" x="842" y="230.6">2,100 m³/h of fresh air ÷ 363 m³</text>
+<circle class="fb" cx="820" cy="498.8" r="9"/>
+<text class="l" x="842" y="464.8" style="fill:var(--build)">1.02  buildup fit, occupied</text>
+<text class="m" x="842" y="484.8">median of 27 fits · implies 42 people*</text>
+<circle class="fd" cx="820" cy="515.6" r="9"/>
+<text class="l" x="842" y="537.6" style="fill:var(--decay)">0.74  decay fit, emptying</text>
+<text class="m" x="842" y="557.6">median of 252 fits</text>
+<line class="g" x1="850" x2="850" y1="243" y2="439" style="stroke-dasharray:4 4"/>
+<text class="m" x="862" y="356">the design is 5.7× the buildup rate</text>
+<text class="m" x="862" y="376">and 7.8× the decay rate</text>
+<path class="ar" d="M435,170 L690,170 C 765,170 770,499 804,499"/>
+<path class="ar" d="M708,523 C 760,523 775,516 804,516"/>
+<text class="m" x="40" y="648">* Implied occupancy is an output of the model, not a head count.  Data: Zenodo 18385830 (CC BY 4.0). Annual figures: analysis/audit.json.</text>
+</svg>

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 690" width="100%" role="img" aria-labelledby="t d">
+<title id="t">SecondBreath architecture on AWS</title>
+<desc id="d">Browser to API Gateway HTTP API (live today). CloudFront in front of the private S3 bucket is dashed: pending account verification. API Gateway routes to five Lambda functions: site (reads one S3 object, index.html), fit, predict and explain (no IAM policy), and health (reads one SSM parameter, /secondbreath/lastAuditRun). Side branch: an EventBridge rule every 5 minutes runs an uptime Lambda that fetches / and /health; a CloudWatch alarm on 2 failures in 10 minutes emails via SNS; a $20 monthly AWS Budget emails on actual or forecast spend. Source: backend/template.yaml.</desc>
+<style>
+  svg { --surface: #fcfcfb; --card: #f3f2ef; --ink: #0b0b0b; --ink-2: #52514e; --grid: #e4e3df; --trace: #8a8984;
+        --decay: #2a78d6; --build: #eb6834; --design: #8a8984; --line: #b9b8b2;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  @media (prefers-color-scheme: dark) {
+    svg { --surface: #1a1a19; --card: #242422; --ink: #ffffff; --ink-2: #c3c2b7; --grid: #3a3a37; --trace: #8f8e88;
+          --decay: #3987e5; --build: #d95926; --design: #8f8e88; --line: #5e5d58; }
+  }
+  .t { fill: var(--ink); font-size: 26px; font-weight: 650; }
+  .s { fill: var(--ink-2); font-size: 16px; }
+  .l { fill: var(--ink); font-size: 18px; font-weight: 600; }
+  .m { fill: var(--ink-2); font-size: 15px; }
+  .g { stroke: var(--grid); stroke-width: 1; }
+  .trace { fill: none; stroke: var(--trace); stroke-width: 2; stroke-linejoin: round; }
+  .decay { fill: none; stroke: var(--decay); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+  .build { fill: none; stroke: var(--build); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+  .box { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+  .pend { fill: none; stroke: var(--ink-2); stroke-width: 1.5; stroke-dasharray: 7 5; }
+  .ar { fill: none; stroke: var(--trace); stroke-width: 2; marker-end: url(#h); }
+  .ard { fill: none; stroke: var(--trace); stroke-width: 2; stroke-dasharray: 7 5; marker-end: url(#h); }
+  .fb { fill: var(--build); } .fd { fill: var(--decay); } .fg { fill: var(--design); }
+</style>
+<defs><marker id="h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M0,0 L10,5 L0,10 z" fill="#8a8984"/></marker></defs>
+<rect width="1200" height="690" rx="10" fill="var(--surface)"/>
+<text class="t" x="40" y="52">How SecondBreath runs</text>
+<text class="s" x="40" y="80">Serverless, one region (ap-south-1). Every box is a resource in backend/template.yaml.</text>
+<rect class="box" x="40" y="300" width="150" height="72" rx="8"/>
+<text class="l" x="54" y="327">Browser</text>
+<text class="m" x="54" y="349">or a scorer</text>
+<rect class="pend" x="262" y="116" width="250" height="76" rx="8"/>
+<text class="l" x="276" y="143">CloudFront</text>
+<text class="m" x="276" y="165">pending account verification</text>
+<rect class="box" x="262" y="290" width="250" height="94" rx="8"/>
+<text class="l" x="276" y="317">API Gateway</text>
+<text class="m" x="276" y="339">HTTP API · CORS on</text>
+<text class="m" x="276" y="358">GET and HEAD routes</text>
+<rect class="box" x="600" y="116" width="300" height="72" rx="8"/>
+<text class="l" x="614" y="143">λ site</text>
+<text class="m" x="614" y="165">GET /  and  /judges</text>
+<text class="m" x="614" y="184">IAM: one S3 object (index.html)</text>
+<path class="ar" d="M512,337 C 556,337 556,152 596,152"/>
+<rect class="box" x="600" y="200" width="300" height="72" rx="8"/>
+<text class="l" x="614" y="227">λ fit</text>
+<text class="m" x="614" y="249">POST /fit</text>
+<text class="m" x="614" y="268">IAM: no policy</text>
+<path class="ar" d="M512,337 C 556,337 556,236 596,236"/>
+<rect class="box" x="600" y="284" width="300" height="72" rx="8"/>
+<text class="l" x="614" y="311">λ predict</text>
+<text class="m" x="614" y="333">POST /predict</text>
+<text class="m" x="614" y="352">IAM: no policy</text>
+<path class="ar" d="M512,337 C 556,337 556,320 596,320"/>
+<rect class="box" x="600" y="368" width="300" height="72" rx="8"/>
+<text class="l" x="614" y="395">λ explain</text>
+<text class="m" x="614" y="417">POST /explain</text>
+<text class="m" x="614" y="436">IAM: no policy</text>
+<path class="ar" d="M512,337 C 556,337 556,404 596,404"/>
+<rect class="box" x="600" y="452" width="300" height="72" rx="8"/>
+<text class="l" x="614" y="479">λ health</text>
+<text class="m" x="614" y="501">GET /health</text>
+<text class="m" x="614" y="520">IAM: one SSM read</text>
+<path class="ar" d="M512,337 C 556,337 556,488 596,488"/>
+<rect class="box" x="960" y="106" width="210" height="92" rx="8"/>
+<text class="l" x="974" y="133">S3 bucket</text>
+<text class="m" x="974" y="155">private</text>
+<text class="m" x="974" y="174">public access blocked</text>
+<rect class="box" x="960" y="442" width="210" height="92" rx="8"/>
+<text class="l" x="974" y="469">SSM parameter</text>
+<text class="m" x="974" y="491">/secondbreath/</text>
+<text class="m" x="974" y="510">lastAuditRun</text>
+<path class="ar" d="M900,152 L956,152"/>
+<path class="ar" d="M900,488 L956,488"/>
+<path class="ar" d="M190,337 L258,337"/>
+<text class="m" x="224" y="327" text-anchor="middle">today</text>
+<path class="ard" d="M115,300 C 120,210 180,154 258,154"/>
+<path class="ard" d="M512,140 C 620,70 900,60 1050,102"/>
+<text class="m" x="690" y="62">when enabled: reads the bucket via origin access control</text>
+<line class="g" x1="40" x2="1160" y1="536" y2="536"/>
+<text class="m" x="40" y="558">Keeping it up and cheap</text>
+<rect class="box" x="40" y="570" width="200" height="72" rx="8"/>
+<text class="l" x="54" y="597">EventBridge</text>
+<text class="m" x="54" y="619">rate(5 minutes)</text>
+<path class="ar" d="M240,606 L286,606"/>
+<rect class="box" x="290" y="570" width="250" height="72" rx="8"/>
+<text class="l" x="304" y="597">λ uptime</text>
+<text class="m" x="304" y="619">GETs / and /health</text>
+<text class="m" x="304" y="638">IAM: no policy</text>
+<path class="ard" d="M400,570 C 400,480 380,440 380,388"/>
+<text class="m" x="410" y="470">over HTTPS, from outside</text>
+<path class="ar" d="M540,606 L586,606"/>
+<rect class="box" x="590" y="570" width="290" height="72" rx="8"/>
+<text class="l" x="604" y="597">CloudWatch alarm</text>
+<text class="m" x="604" y="619">2 failures in 10 min → SNS email</text>
+<rect class="box" x="910" y="570" width="260" height="72" rx="8"/>
+<text class="l" x="924" y="597">AWS Budget, $20/month</text>
+<text class="m" x="924" y="619">actual or forecast → email</text>
+<text class="m" x="40" y="668">Every log group keeps 7 days. Nothing runs between requests.</text>
+</svg>

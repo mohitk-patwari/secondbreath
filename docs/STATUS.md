@@ -4,6 +4,7 @@
 4 complete. Housekeeping: licence, evidence tidy, line endings
 
 ## Done since last update
+- **Submission visuals**: analysis/figures/png/ (the 5 figures at 1200 px on the page's dark background), method.svg/png (one real Hall A session, 3 Nov 2023, with its buildup and decay fits; year medians 1.02 / 0.74 vs design 5.79 from audit.json), architecture.svg/png (from template.yaml; CloudFront dashed, in front of S3), docs/cover.png (live hero, 1200x675, "1 breath in 17")
 - **LICENSE (MIT, 2026, Mohit Kumar Patwari)** at the root; README.md has a Licence section. MIT covers this repository's code only; the three Zenodo datasets keep their CC BY 4.0 terms. The write-up's "designed to be reused" is now true in law, not just intent
 - **test-msg.json moved to evidence/** (moved, not deleted: it is the `--messages` body of both Converse calls in bedrock-cli-errors.txt). evidence/README.md says what it is. The transcript still reads `file://test-msg.json` on purpose, because it is verbatim terminal output from the repo root
 - **.gitattributes `* text=auto eol=lf`**, `git add --renormalize .` run. **No committed blob changed**: all 34 text files were already LF in the index (core.autocrlf only made working copies CRLF). audit.json and the 5 SVGs are untouched, so METHOD.md's hashes need no update
