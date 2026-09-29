@@ -16,10 +16,14 @@ Values are printed exactly as audit.json holds them, never recomputed.
 import base64
 import html
 import json
+import math
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+import ventilation as v  # noqa: E402  the shared core, same file the Lambdas copy
 PAGE = ROOT / "web" / "index.html"
 FIGS = ["design_vs_measured", "hall_a", "hall_b", "hall_c"]
 THIN = 10  # ponytail: editorial label only, no number depends on it
@@ -124,6 +128,126 @@ def rooms(audit) -> str:
     return "".join(out)
 
 
+# ---- Hero: "Where are you sitting right now?" ----
+# Pre-rendered with the same ventilation.predict the API runs, so the page shows a real
+# answer with JavaScript off, and the first animation needs no network. The page's JS
+# replaces these numbers with live POST /predict results once the visitor changes anything.
+ACTIVITY, OUTDOOR = "seated_quiet", 420.0  # the audit's buildup assumption; the hero says so
+PEOPLE, MINUTES = 60, 90                  # the Predict panel's defaults, so the two agree
+DOTS = 24                                 # people drawn; "+N" past that
+
+
+def presets(audit) -> list[dict]:
+    by = {h["hall"]: h for h in audit["halls"]}
+    a, c = by["Hall A"], by["Hall C"]
+    # Hall B is left out on purpose: its fits are uncertain and it must never read as a headline.
+    assert a["decay"]["confident"] and c["decay"]["confident"], "hero presets assume Halls A and C fit cleanly"
+    spain = next(d for d in audit["other_datasets"] if "Spain" in d["label"])
+    best = max((r for r in spain["rooms"] if r["decay"]["confident"]), key=lambda r: r["decay"]["ach_teaching"])
+    assert best["volume_m3"] is None  # if Spain ever publishes volumes, use the room's own
+    rate = lambda h: f'{n(h["decay"]["ach_teaching"])}/h, {h["decay"]["fits_teaching"]} decay fits'
+    return [
+        {"name": "Lecture hall A", "sub": f'{loc(a["volume_m3"])} m³, measured {rate(a)}',
+         "vol": a["volume_m3"], "ach": a["decay"]["ach_teaching"]},
+        {"name": "Lecture hall C", "sub": f'{loc(c["volume_m3"])} m³, measured {rate(c)}',
+         "vol": c["volume_m3"], "ach": c["decay"]["ach_teaching"]},
+        {"name": "Hall A as designed", "sub": f'{loc(a["volume_m3"])} m³ at its specified {n(a["design_ach"])}/h',
+         "vol": a["volume_m3"], "ach": a["design_ach"]},
+        # Spain publishes no room volumes, so this classroom cannot be simulated as itself
+        # without inventing one. Its measured rate goes into Hall A's real volume instead, labelled.
+        {"name": "Hall A, aired like Spain's best classroom",
+         "sub": f'{loc(a["volume_m3"])} m³ at {n(best["decay"]["ach_teaching"])}/h, measured in Spain',
+         "vol": a["volume_m3"], "ach": best["decay"]["ach_teaching"],
+         "note": f"\"Aired like Spain's best classroom\" uses Hall A's real {loc(a['volume_m3'])} m³ with the {rate(best)} "
+                 f'measured in {html.escape(best["hall"])} ({html.escape(spain["dataset"])}). Spain publishes no room volumes, '
+                 'so that classroom cannot be simulated as itself, and no volume is invented for it.'},
+    ]
+
+
+def simulate(p: dict, people: int, minutes: int) -> dict:
+    """The fields of POST /predict the hero reads, from the same functions (backend/src/api.py)."""
+    pr = v.predict(p["vol"], p["ach"], people, minutes, ACTIVITY, None, OUTDOOR)
+    return {"curve": [{"minute": s.minute, "ppm": s.co2_ppm, "rebreathedFraction": s.rebreathed_fraction} for s in pr.curve],
+            "withinValidatedRange": pr.within_validated_range, "validatedMaxPpm": v.VALIDATED_MAX_PPM,
+            "maxOccupancy": {"1000": v.max_occupancy(p["vol"], p["ach"], minutes, 1000.0, ACTIVITY, OUTDOOR)}}
+
+
+# Text and levels below are mirrored line for line by heroText() in index.html. Rounding
+# never flatters the room: "1 in N" and ACH down, ppm, percentages and red breaths up.
+def hero_text(p: dict, res: dict, people: int, minutes: int, m: int) -> dict:
+    s = res["curve"][m]
+    f = min(1.0, s["rebreathedFraction"])
+    cap = res["maxOccupancy"]["1000"]
+    held = "500 or more" if cap >= 500 else f"{cap:,}"
+    t = {"conseq": f"For {minutes} minutes, this room's air can take <b>{held}</b> {'person' if cap == 1 else 'people'} "
+                   f"before CO2 passes 1,000 ppm. You set {people}."}
+    if not res["withinValidatedRange"]:
+        t.update(head=f"{people} people for {minutes} minutes would take this room past {loc(res['validatedMaxPpm'])} ppm, "
+                      "the 8-hour workplace exposure limit. Past that the useful answer is to leave the room, not a number: "
+                      "try fewer people or a shorter session.",
+                 red=0, level="na", detail=f"{loc(p['vol'])} m³ at {n(p['ach'])} air changes an hour")
+        return t
+    t["head"] = (f"After {m} minute{'' if m == 1 else 's'}, <b>1 breath in {max(1, math.floor(1 / f))}</b> "
+                 "has already been through someone else's lungs." if f > 0 else "The air in the room is still outdoor air.")
+    t["red"] = min(100, math.ceil(f * 100))
+    t["level"] = "ok" if s["ppm"] < 1000 else "warn" if s["ppm"] < 1400 else "bad"
+    t["detail"] = (f"{math.ceil(s['ppm']):,} ppm · {math.ceil(f * 1000) / 10:.1f}% of each breath rebreathed · "
+                   f"{loc(p['vol'])} m³ at {n(p['ach'])} air changes an hour · seated, quiet · outdoor {n(OUTDOOR)} ppm")
+    return t
+
+
+def hero(audit) -> str:
+    ps = presets(audit)
+    p, res = ps[0], simulate(ps[0], PEOPLE, MINUTES)
+    t = hero_text(p, res, PEOPLE, MINUTES, MINUTES)
+    buttons = "".join(
+        f'    <button type="button" class="preset" aria-pressed="{"true" if i == 0 else "false"}" data-vol="{n(q["vol"])}" data-ach="{n(q["ach"])}">'
+        f'<b>{q["name"]}</b><span>{q["sub"]}</span></button>\n' for i, q in enumerate(ps))
+    dots = "".join(f'<circle cx="{25 + (i % 6) * 30}" cy="{24 + (i // 6) * 28}" r="8"{"" if i < PEOPLE else " hidden"}/>' for i in range(DOTS))
+    more = f"+{PEOPLE - DOTS}" if PEOPLE > DOTS else ""
+    grid = "".join('<i class="r"></i>' if i < t["red"] else "<i></i>" for i in range(100))
+    data = json.dumps({"minutes": MINUTES, "people": PEOPLE, "result": res}, separators=(",", ":"))
+    return f'''  <div class="presets" role="group" aria-label="Choose a room">
+{buttons}  </div>
+  <div class="sliders">
+    <div class="slide"><label for="hPeople">People in the room</label><output id="hPeopleOut" for="hPeople">{PEOPLE}</output>
+      <input class="bigrange" id="hPeople" type="range" min="1" max="120" step="1" value="{PEOPLE}"></div>
+    <div class="slide"><label for="hMins">How long</label><output id="hMinsOut" for="hMins">{MINUTES} min</output>
+      <input class="bigrange" id="hMins" type="range" min="5" max="240" step="5" value="{MINUTES}"></div>
+  </div>
+  <div class="answer">
+    <figure class="panel"><figcaption>The room from above</figcaption>
+      <svg viewBox="0 0 200 150" role="img" aria-label="Room seen from above with {PEOPLE} people">
+        <rect id="hRoom" class="room {t["level"]}" x="3" y="3" width="194" height="144" rx="18"/>
+        <g id="hDots">{dots}</g>
+        <text id="hMore" x="186" y="138" text-anchor="end">{more}</text>
+      </svg>
+    </figure>
+    <figure class="panel"><figcaption>Your next 100 breaths</figcaption>
+      <div id="hGrid" class="breaths{" na" if t["level"] == "na" else ""}" role="img" aria-label="{t["red"]} of 100 breaths already exhaled by someone else">{grid}</div>
+    </figure>
+  </div>
+  <p class="headline" id="hHead" aria-live="polite">{t["head"]}</p>
+  <p id="hConseq">{t["conseq"]}</p>
+  <p class="small muted" id="hDetail">{t["detail"]}</p>
+  <div class="clock"><button type="button" id="hPlay" class="ghost" aria-label="Play the session">▶</button>
+    <input class="bigrange" id="hScrub" type="range" min="0" max="{MINUTES}" step="1" value="{MINUTES}" aria-label="Minute of the session">
+    <output id="hMinute" for="hScrub">{MINUTES} min</output></div>
+  <p class="small muted">Room colour: green under 1,000 ppm, amber to 1,400, red above. Red breaths: the share of each breath already exhaled by someone else, rounded up. If the session's peak would pass {loc(v.VALIDATED_MAX_PPM)} ppm, the 8-hour workplace exposure limit (OSHA PEL, ACGIH TLV) used here as a ceiling, the page says so instead of giving a number. Predicted with the same model as <a href="#predict">Predict a session</a>, seated and quiet, outdoor air at {n(OUTDOOR)} ppm. Rates are each hall's decay-fit median over teaching hours; Hall B is left out because its fits are uncertain. {ps[3]["note"]}</p>
+  <script type="application/json" id="heroData">{data}</script>
+'''
+
+
+def tour_hero(audit) -> str:
+    ps = presets(audit)
+    txt = [hero_text(q, simulate(q, PEOPLE, MINUTES), PEOPLE, MINUTES, MINUTES) for q in ps]
+    plain = lambda s: re.sub(r"<[^>]+>", "", s)
+    return (f'    <li><a href="#hero">Where are you sitting right now?</a> No click, no file: it has already run and plays once on arrival.\n'
+            f'      <span class="expect">Expect: {ps[0]["name"]}, {PEOPLE} people, {MINUTES} minutes. "{plain(txt[0]["head"])}" '
+            f'{txt[0]["red"]} of the 100 breaths are red. Now tap "{ps[3]["name"]}": {txt[3]["red"]} red, '
+            f'"{plain(txt[3]["head"])}" Drag the clock to watch the session build.</span></li>\n')
+
+
 def tour_values(audit, page: str) -> str:
     """Fill <span data-a="halls.0.decay.fits_teaching"> in the judges' tour from audit.json."""
     def val(path):
@@ -143,6 +267,15 @@ page = block("findhead", head, page)
 page = block("findtable", table, page)
 page = block("agree", agree, page)
 page = block("rooms", rooms(audit), page)
+r = audit["rooms_analysed"]
+page = block("forty", f'  <p class="muted">{r["confident_decay"]} of them with a confident decay fit and {r["confident_buildup"]} with a confident '
+                      f'buildup fit, across {len(r["by_dataset"])} open datasets. Only the {r["with_design_figure"]} lecture halls publish '
+                      'a design figure, so the finding starts there.</p>\n', page)
+page = block("hero", hero(audit), page)
+# The explainer slider starts at 2,000 ppm; same wording and rounding as explain() in the page.
+page = block("explain", f"  At 2,000 ppm, <b>1 breath in {math.floor(v.one_breath_in(2000.0, OUTDOOR))}</b> "
+                        "has already been through someone else's lungs.\n", page)
+page = block("tourhero", tour_hero(audit), page)
 page = tour_values(audit, page)
 PAGE.write_text(page, encoding="utf-8", newline="\n")
 print(f"synced audit.json, the finding, {audit['rooms_analysed']['total']} rooms and {len(FIGS) + 1} figures into {PAGE.relative_to(ROOT)}")

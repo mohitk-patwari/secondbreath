@@ -95,6 +95,74 @@ ul { padding-left: 20px; }
 li { margin-bottom: 8px; }
 footer { padding: 24px 16px 48px; font-size: .875rem; color: var(--ink2); }
 a { color: var(--co2); }
+
+/* ---- Hero: 380px first ---- */
+:root { --red: #c62828; --room-ok: #1d5c38; --room-warn: #9a6410; --room-bad: #7d1a1a; --room-na: #55544f; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --red: #ff5c5c; } }
+:root[data-theme="dark"] { --red: #ff5c5c; }
+#hero { padding-top: 16px; }
+.topbar { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.topbar h1 { margin: 0; }
+.topbar .toplink { margin: 0; font-size: .875rem; }
+.ask { font-size: clamp(1.45rem, 6vw, 2.4rem); line-height: 1.15; margin: 8px 0 12px; }
+.presets { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.preset { text-align: left; background: var(--card); color: var(--ink); border: 2px solid transparent; border-radius: 10px; padding: 8px 10px; }
+.preset b { display: block; font-size: .95rem; line-height: 1.25; }
+.preset span { display: block; font-size: .75rem; color: var(--ink2); margin-top: 2px; line-height: 1.3; }
+.preset[aria-pressed="true"] { border-color: var(--co2); }
+.sliders { display: grid; gap: 0 16px; margin: 10px 0 4px; }
+.slide { display: grid; grid-template-columns: 1fr auto; align-items: baseline; }
+.slide label { font-size: 1rem; color: var(--ink); }
+.slide output { font-size: 1.45rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.slide input { grid-column: 1 / -1; }
+/* Big, obviously draggable ranges: 32px thumb on a thick track. */
+.bigrange { -webkit-appearance: none; appearance: none; height: 34px; background: transparent; margin: 0; cursor: grab; touch-action: pan-y; }
+.bigrange:active { cursor: grabbing; }
+.bigrange::-webkit-slider-runnable-track { height: 8px; border-radius: 4px; background: var(--line); }
+.bigrange::-moz-range-track { height: 8px; border-radius: 4px; background: var(--line); }
+.bigrange::-webkit-slider-thumb { -webkit-appearance: none; width: 32px; height: 32px; margin-top: -12px; border-radius: 50%; background: var(--co2); border: 3px solid var(--bg); box-shadow: 0 1px 4px rgba(0,0,0,.4); }
+.bigrange::-moz-range-thumb { width: 26px; height: 26px; border-radius: 50%; background: var(--co2); border: 3px solid var(--bg); box-shadow: 0 1px 4px rgba(0,0,0,.4); }
+.bigrange:focus-visible { outline: 2px solid var(--co2); outline-offset: 2px; }
+.answer { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0; align-items: start; }
+.panel { margin: 0; }
+.panel figcaption { margin: 0 0 6px; font-size: .8rem; }
+.panel svg { display: block; width: 100%; height: auto; }
+.room { transition: fill .8s ease; }
+.room.ok { fill: var(--room-ok); } .room.warn { fill: var(--room-warn); } .room.bad { fill: var(--room-bad); } .room.na { fill: var(--room-na); }
+#hDots circle { fill: #f4f3ee; opacity: .92; }
+#hMore { fill: #f4f3ee; font: 600 15px system-ui, sans-serif; }
+.breaths { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; }
+.breaths i { aspect-ratio: 1; border-radius: 50%; background: var(--line); transition: background .35s, transform .35s; }
+.breaths i.r { background: var(--red); transform: scale(1.3); }
+.breaths.na i { opacity: .35; }
+.headline { font-size: clamp(20px, 4.4vw, 30px); font-weight: 600; line-height: 1.25; margin: 8px 0; }
+.headline b { color: var(--red); font-variant-numeric: tabular-nums; }
+.clock { display: flex; align-items: center; gap: 10px; margin: 12px 0; }
+.clock button { width: 44px; height: 44px; padding: 0; border-radius: 50%; flex: none; font-size: 1rem; }
+.clock input { flex: 1; }
+.clock output { min-width: 4.5em; text-align: right; font-variant-numeric: tabular-nums; color: var(--ink2); }
+@media (min-width: 720px) {
+  .presets { grid-template-columns: repeat(4, 1fr); }
+  .sliders { grid-template-columns: 1fr 1fr; }
+  .answer { gap: 32px; grid-template-columns: repeat(2, minmax(0, 260px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .room, .breaths i { transition: none; }
+  #hPlay { display: none; }
+}
+/* Explainer slider: a value bubble that rides on the thumb. */
+.dragme { margin: 8px 0 12px; }
+.dragme label { font-size: 1rem; color: var(--ink); }
+.hint { display: inline-block; margin-left: 6px; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--co2); }
+.bubblewrap { position: relative; height: 34px; }
+.bubblewrap output { position: absolute; left: clamp(3em, var(--p, 34%), calc(100% - 3em)); transform: translateX(-50%); bottom: 2px; white-space: nowrap; background: var(--co2); color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 6px; font-variant-numeric: tabular-nums; }
+/* Fingerprint panel folds away: most visitors have no CO2 log. */
+#fit > summary { cursor: pointer; list-style: none; }
+#fit > summary::-webkit-details-marker { display: none; }
+#fit > summary h2 { display: inline; }
+#fit > summary h2::before { content: "▸ "; color: var(--co2); }
+#fit[open] > summary h2::before { content: "▾ "; }
+#fit > summary span { display: block; margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -102,18 +170,22 @@ a { color: var(--co2); }
 
 <section id="judges">
   <h2>Judges: a 3-minute tour</h2>
-  <p class="muted">Every number below comes from the live API or from the committed audit. Nothing needs a login, and the page has already run the demo by the time you read this.</p>
+  <p class="muted">Every number below comes from the live API or from the committed audit. Nothing needs a login or a file, and the page has already run by the time you read this.</p>
   <ol>
-    <li><a href="#hero">Hero</a>: drag the slider to the far right (5,000 ppm).
+<!-- sync:tourhero -->
+    <li><a href="#hero">Where are you sitting right now?</a> No click, no file: it has already run and plays once on arrival.
+      <span class="expect">Expect: Lecture hall A, 60 people, 90 minutes. "After 90 minutes, 1 breath in 17 has already been through someone else's lungs." 6 of the 100 breaths are red. Now tap "Hall A, aired like Spain's best classroom": 2 red, "After 90 minutes, 1 breath in 58 has already been through someone else's lungs." Drag the clock to watch the session build.</span></li>
+<!-- /sync:tourhero -->
+    <li><a href="#explain">What the number means</a>, just under it: drag the slider to the far right (5,000 ppm).
       <span class="expect">Expect: "1 breath in 8 has already been through someone else's lungs." The lecture-hall peak was <span data-a="halls.1.peak_co2_teaching">4,957</span> ppm.</span></li>
     <li><a href="#finding">The finding</a>: read the table.
       <span class="expect">Expect: Hall A designed for <span data-a="halls.0.design_ach">5.79</span> ACH, measured <span data-a="halls.0.decay.ach_teaching">0.74</span> by decay (<span data-a="halls.0.decay.fits_teaching">252</span> fits) and <span data-a="halls.0.buildup.ach">1.02</span> by buildup (<span data-a="halls.0.buildup.kept">27</span> fits). Hall B is marked uncertain on both methods, and Hall C's buildup is marked thin (<span data-a="halls.2.buildup.kept">8</span> fits). Four SVG figures follow.</span></li>
     <li><a href="#rooms">Are the halls unusual?</a>: read the rooms table and the figure under it.
       <span class="expect">Expect: <span data-a="rooms_analysed.total">40</span> rooms in 3 open datasets, and in the same sentence <span data-a="rooms_analysed.confident_decay">24</span> with a confident decay fit and <span data-a="rooms_analysed.confident_buildup">9</span> with a confident buildup fit. Only the <span data-a="rooms_analysed.with_design_figure">3</span> halls publish a design figure, so the Spain and ENSENSIA rooms carry no shortfall claim, and each says so. In the figure, the halls' confident decay rates sit inside the range of ordinary school classrooms; hollow markers are fits not confident enough to quote.</span></li>
-    <li><a href="#fit">Fingerprint your own room</a>: no click needed; the demo (Hall A, 2–27 Oct 2023) loaded on arrival.
-      <span class="expect">Expect: decay 0.75 ACH from 34 fits. Buildup 0.61 ACH, struck through and badged "Uncertain" (4 identifiable, 1 discarded). The chart shows a grey CO2 trace with blue decay and orange buildup stretches highlighted, and a break from 14 to 25 Oct where the sensor logged nothing.</span></li>
     <li><a href="#predict">Predict a session</a>: already filled in (60 people, 90 minutes, seated quiet, 363 m³, 0.75 ACH).
       <span class="expect">Expect: peak 2,579 ppm, 1 breath in 17. Max safe occupancy: 16 people at 1,000 ppm, 27 at 1,400. Set occupants to 16 and press Predict: the peak drops to 996 ppm.</span></li>
+    <li>Open <a href="#fit">Fingerprint your own CO2 log</a> near the bottom (it is folded away because it needs a monitor). The demo (Hall A, 2–27 Oct 2023) already ran inside it.
+      <span class="expect">Expect: decay 0.75 ACH from 34 fits. Buildup 0.61 ACH, struck through and badged "Uncertain" (4 identifiable, 1 discarded). The chart shows a grey CO2 trace with blue decay and orange buildup stretches highlighted, and a break from 14 to 25 Oct where the sensor logged nothing.</span></li>
     <li>Back in <a href="#fit">Fingerprint</a>, tick "Teaching hours only".
       <span class="expect">Expect: the demo refits with only weekday 08:00–17:59 data. Decay 0.76 ACH from 30 fits; buildup 11 identifiable fits, still uncertain. A note says upload numbers are not comparable to the audit.</span></li>
     <li>Optional, about 1 minute: download <a href="https://zenodo.org/records/18385830">Lecture Hall A_raw_data.csv</a> (8 MB) from Zenodo, drop it on the upload box, enter volume 363, keep "Teaching hours only" ticked, press Fingerprint.
@@ -125,17 +197,66 @@ a { color: var(--co2); }
 </section>
 
 <section id="hero">
-  <a class="toplink" href="#judges">Judges: 3-minute tour →</a>
-  <h1>SecondBreath</h1>
+  <div class="topbar"><h1>SecondBreath</h1><a class="toplink" href="#judges">Judges: 3-minute tour →</a></div>
+  <h2 class="ask">Where are you sitting right now?</h2>
+<!-- sync:hero -->
+  <div class="presets" role="group" aria-label="Choose a room">
+    <button type="button" class="preset" aria-pressed="true" data-vol="363" data-ach="0.74"><b>Lecture hall A</b><span>363 m³, measured 0.74/h, 252 decay fits</span></button>
+    <button type="button" class="preset" aria-pressed="false" data-vol="1520" data-ach="0.88"><b>Lecture hall C</b><span>1,520 m³, measured 0.88/h, 259 decay fits</span></button>
+    <button type="button" class="preset" aria-pressed="false" data-vol="363" data-ach="5.79"><b>Hall A as designed</b><span>363 m³ at its specified 5.79/h</span></button>
+    <button type="button" class="preset" aria-pressed="false" data-vol="363" data-ach="3.65"><b>Hall A, aired like Spain's best classroom</b><span>363 m³ at 3.65/h, measured in Spain</span></button>
+  </div>
+  <div class="sliders">
+    <div class="slide"><label for="hPeople">People in the room</label><output id="hPeopleOut" for="hPeople">60</output>
+      <input class="bigrange" id="hPeople" type="range" min="1" max="120" step="1" value="60"></div>
+    <div class="slide"><label for="hMins">How long</label><output id="hMinsOut" for="hMins">90 min</output>
+      <input class="bigrange" id="hMins" type="range" min="5" max="240" step="5" value="90"></div>
+  </div>
+  <div class="answer">
+    <figure class="panel"><figcaption>The room from above</figcaption>
+      <svg viewBox="0 0 200 150" role="img" aria-label="Room seen from above with 60 people">
+        <rect id="hRoom" class="room bad" x="3" y="3" width="194" height="144" rx="18"/>
+        <g id="hDots"><circle cx="25" cy="24" r="8"/><circle cx="55" cy="24" r="8"/><circle cx="85" cy="24" r="8"/><circle cx="115" cy="24" r="8"/><circle cx="145" cy="24" r="8"/><circle cx="175" cy="24" r="8"/><circle cx="25" cy="52" r="8"/><circle cx="55" cy="52" r="8"/><circle cx="85" cy="52" r="8"/><circle cx="115" cy="52" r="8"/><circle cx="145" cy="52" r="8"/><circle cx="175" cy="52" r="8"/><circle cx="25" cy="80" r="8"/><circle cx="55" cy="80" r="8"/><circle cx="85" cy="80" r="8"/><circle cx="115" cy="80" r="8"/><circle cx="145" cy="80" r="8"/><circle cx="175" cy="80" r="8"/><circle cx="25" cy="108" r="8"/><circle cx="55" cy="108" r="8"/><circle cx="85" cy="108" r="8"/><circle cx="115" cy="108" r="8"/><circle cx="145" cy="108" r="8"/><circle cx="175" cy="108" r="8"/></g>
+        <text id="hMore" x="186" y="138" text-anchor="end">+36</text>
+      </svg>
+    </figure>
+    <figure class="panel"><figcaption>Your next 100 breaths</figcaption>
+      <div id="hGrid" class="breaths" role="img" aria-label="6 of 100 breaths already exhaled by someone else"><i class="r"></i><i class="r"></i><i class="r"></i><i class="r"></i><i class="r"></i><i class="r"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </figure>
+  </div>
+  <p class="headline" id="hHead" aria-live="polite">After 90 minutes, <b>1 breath in 17</b> has already been through someone else's lungs.</p>
+  <p id="hConseq">For 90 minutes, this room's air can take <b>16</b> people before CO2 passes 1,000 ppm. You set 60.</p>
+  <p class="small muted" id="hDetail">2,592 ppm · 5.8% of each breath rebreathed · 363 m³ at 0.74 air changes an hour · seated, quiet · outdoor 420 ppm</p>
+  <div class="clock"><button type="button" id="hPlay" class="ghost" aria-label="Play the session">▶</button>
+    <input class="bigrange" id="hScrub" type="range" min="0" max="90" step="1" value="90" aria-label="Minute of the session">
+    <output id="hMinute" for="hScrub">90 min</output></div>
+  <p class="small muted">Room colour: green under 1,000 ppm, amber to 1,400, red above. Red breaths: the share of each breath already exhaled by someone else, rounded up. If the session's peak would pass 5,000 ppm, the 8-hour workplace exposure limit (OSHA PEL, ACGIH TLV) used here as a ceiling, the page says so instead of giving a number. Predicted with the same model as <a href="#predict">Predict a session</a>, seated and quiet, outdoor air at 420 ppm. Rates are each hall's decay-fit median over teaching hours; Hall B is left out because its fits are uncertain. "Aired like Spain's best classroom" uses Hall A's real 363 m³ with the 3.65/h, 9 decay fits measured in ValldAba CO2_05 (Zenodo 5062837 (doi:10.5281/zenodo.5062837), CC BY 4.0). Spain publishes no room volumes, so that classroom cannot be simulated as itself, and no volume is invented for it.</p>
+  <script type="application/json" id="heroData">{"minutes":90,"people":60,"result":{"curve":[{"minute":0.0,"ppm":420.0,"rebreathedFraction":0.0},{"minute":1.0,"ppm":459.69958623839193,"rebreathedFraction":0.001044725953641893},{"minute":2.0,"ppm":498.91255124579357,"rebreathedFraction":0.00207664608541562},{"minute":3.0,"ppm":537.644859825491,"rebreathedFraction":0.0030959173638287116},{"minute":4.0,"ppm":575.902403666661,"rebreathedFraction":0.004102694833333185},{"minute":5.0,"ppm":613.6910022405718,"rebreathedFraction":0.005097131637909785},{"minute":6.0,"ppm":651.0164036858018,"rebreathedFraction":0.006079379044363206},{"minute":7.0,"ppm":687.8842856826077,"rebreathedFraction":0.007049586465331782},{"minute":8.0,"ppm":724.3002563165705,"rebreathedFraction":0.008007901482015014},{"minute":9.0,"ppm":760.2698549316619,"rebreathedFraction":0.008954469866622683},{"minute":10.0,"ppm":795.7985529728485,"rebreathedFraction":0.009889435604548644},{"minute":11.0,"ppm":830.8917548183708,"rebreathedFraction":0.010812940916272917},{"minute":12.0,"ppm":865.5547986018182,"rebreathedFraction":0.011725126278995216},{"minute":13.0,"ppm":899.7929570241322,"rebreathedFraction":0.012626130448003479},{"minute":14.0,"ppm":933.6114381556495,"rebreathedFraction":0.013516090477780249},{"minute":15.0,"ppm":967.0153862283178,"rebreathedFraction":0.014395141742850467},{"minute":16.0,"ppm":1000.0098824182019,"rebreathedFraction":0.015263417958373734},{"minute":17.0,"ppm":1032.5999456183972,"rebreathedFraction":0.016121051200484137},{"minute":18.0,"ppm":1064.7905332024666,"rebreathedFraction":0.0169681719263807},{"minute":19.0,"ppm":1096.586541778523,"rebreathedFraction":0.01780490899417166},{"minute":20.0,"ppm":1127.9928079340689,"rebreathedFraction":0.018631389682475498},{"minute":21.0,"ppm":1159.0141089717,"rebreathedFraction":0.019447739709781576},{"minute":22.0,"ppm":1189.6551636357995,"rebreathedFraction":0.020254083253573668},{"minute":23.0,"ppm":1219.9206328303194,"rebreathedFraction":0.021050542969218933},{"minute":24.0,"ppm":1249.8151203277635,"rebreathedFraction":0.021837240008625355},{"minute":25.0,"ppm":1279.3431734694818,"rebreathedFraction":0.022614294038670574},{"minute":26.0,"ppm":1308.5092838573828,"rebreathedFraction":0.02338182325940481},{"minute":27.0,"ppm":1337.3178880371602,"rebreathedFraction":0.024139944422030532},{"minute":28.0,"ppm":1365.773368173153,"rebreathedFraction":0.024888772846661918},{"minute":29.0,"ppm":1393.8800527149292,"rebreathedFraction":0.025628422439866558},{"minute":30.0,"ppm":1421.6422170556975,"rebreathedFraction":0.02635900571199204},{"minute":31.0,"ppm":1449.064084182653,"rebreathedFraction":0.027080633794280343},{"minute":32.0,"ppm":1476.1498253193467,"rebreathedFraction":0.027793416455772282},{"minute":33.0,"ppm":1502.903560560184,"rebreathedFraction":0.02849746212000484},{"minute":34.0,"ppm":1529.3293594971433,"rebreathedFraction":0.029192877881503772},{"minute":35.0,"ppm":1555.4312418388172,"rebreathedFraction":0.029879769522074138},{"minute":36.0,"ppm":1581.2131780218592,"rebreathedFraction":0.03055824152689103},{"minute":37.0,"ppm":1606.6790898149393,"rebreathedFraction":0.03122839710039314},{"minute":38.0,"ppm":1631.8328509152993,"rebreathedFraction":0.03189033818198156},{"minute":39.0,"ppm":1656.6782875379888,"rebreathedFraction":0.03254416546152602},{"minute":40.0,"ppm":1681.2191789978845,"rebreathedFraction":0.03318997839468117},{"minute":41.0,"ppm":1705.4592582845728,"rebreathedFraction":0.03382787521801507},{"minute":42.0,"ppm":1729.402212630186,"rebreathedFraction":0.034457952963952265},{"minute":43.0,"ppm":1753.0516840702787,"rebreathedFraction":0.03508030747553365},{"minute":44.0,"ppm":1776.411269997829,"rebreathedFraction":0.0356950334209955},{"minute":45.0,"ppm":1799.4845237104485,"rebreathedFraction":0.0363022243081697},{"minute":46.0,"ppm":1822.2749549508849,"rebreathedFraction":0.0369019724987075},{"minute":47.0,"ppm":1844.7860304409007,"rebreathedFraction":0.03749436922212897},{"minute":48.0,"ppm":1867.0211744086062,"rebreathedFraction":0.038079504589700164},{"minute":49.0,"ppm":1888.983769109328,"rebreathedFraction":0.03865746760814021},{"minute":50.0,"ppm":1910.677155340098,"rebreathedFraction":0.03922834619316047},{"minute":51.0,"ppm":1932.1046329478256,"rebreathedFraction":0.039792227182837515},{"minute":52.0,"ppm":1953.2694613312551,"rebreathedFraction":0.0403491963508225},{"minute":53.0,"ppm":1974.174859936757,"rebreathedFraction":0.040899338419388344},{"minute":54.0,"ppm":1994.8240087480513,"rebreathedFraction":0.04144273707231714},{"minute":55.0,"ppm":2015.2200487699204,"rebreathedFraction":0.041979474967629486},{"minute":56.0,"ppm":2035.366082506002,"rebreathedFraction":0.04250963375015795},{"minute":57.0,"ppm":2055.265174430717,"rebreathedFraction":0.043033294063966235},{"minute":58.0,"ppm":2074.920351455417,"rebreathedFraction":0.04355053556461624},{"minute":59.0,"ppm":2094.3346033888156,"rebreathedFraction":0.04406143693128462},{"minute":60.0,"ppm":2113.5108833917807,"rebreathedFraction":0.04456607587873107},{"minute":61.0,"ppm":2132.4521084265443,"rebreathedFraction":0.045064529169119585},{"minute":62.0,"ppm":2151.1611597004157,"rebreathedFraction":0.04555687262369515},{"minute":63.0,"ppm":2169.6408831040444,"rebreathedFraction":0.046043181134316956},{"minute":64.0,"ppm":2187.8940896443223,"rebreathedFraction":0.04652352867485059},{"minute":65.0,"ppm":2205.9235558719733,"rebreathedFraction":0.04699798831242035},{"minute":66.0,"ppm":2223.7320243039017,"rebreathedFraction":0.04746663221852373},{"minute":67.0,"ppm":2241.3222038403646,"rebreathedFraction":0.047929531680009595},{"minute":68.0,"ppm":2258.696770177034,"rebreathedFraction":0.04838675710992195},{"minute":69.0,"ppm":2275.858366212,"rebreathedFraction":0.04883837805821053},{"minute":70.0,"ppm":2292.8096024477954,"rebreathedFraction":0.04928446322231041},{"minute":71.0,"ppm":2309.5530573884826,"rebreathedFraction":0.04972508045759164},{"minute":72.0,"ppm":2326.09127793188,"rebreathedFraction":0.05016029678768105},{"minute":73.0,"ppm":2342.42677975698,"rebreathedFraction":0.05059017841465737},{"minute":74.0,"ppm":2358.5620477066122,"rebreathedFraction":0.05101479072912137},{"minute":75.0,"ppm":2374.4995361654246,"rebreathedFraction":0.05143419832014275},{"minute":76.0,"ppm":2390.2416694332237,"rebreathedFraction":0.05184846498508484},{"minute":77.0,"ppm":2405.790842093747,"rebreathedFraction":0.05225765373930913},{"minute":78.0,"ppm":2421.149419378905,"rebreathedFraction":0.052661826825760656},{"minute":79.0,"ppm":2436.3197375285677,"rebreathedFraction":0.05306104572443599},{"minute":80.0,"ppm":2451.3041041459355,"rebreathedFraction":0.05345537116173515},{"minute":81.0,"ppm":2466.1047985485566,"rebreathedFraction":0.053844863119698855},{"minute":82.0,"ppm":2480.7240721150392,"rebreathedFraction":0.05422958084513261},{"minute":83.0,"ppm":2495.164148627518,"rebreathedFraction":0.054609582858618895},{"minute":84.0,"ppm":2509.427224609918,"rebreathedFraction":0.0549849269634189},{"minute":85.0,"ppm":2523.5154696620766,"rebreathedFraction":0.055355670254265174},{"minute":86.0,"ppm":2537.4310267897667,"rebreathedFraction":0.05572186912604649},{"minute":87.0,"ppm":2551.176012730676,"rebreathedFraction":0.05608357928238621},{"minute":88.0,"ppm":2564.7525182763907,"rebreathedFraction":0.056440855744115545},{"minute":89.0,"ppm":2578.162608590432,"rebreathedFraction":0.05679375285764294},{"minute":90.0,"ppm":2591.4083235223943,"rebreathedFraction":0.0571423243032209}],"withinValidatedRange":true,"validatedMaxPpm":5000.0,"maxOccupancy":{"1000":16}}}</script>
+<!-- /sync:hero -->
+</section>
+
+<section id="explain">
+  <h2>What the number means</h2>
   <p class="muted">Every breath out carries about 38,000 ppm of CO2, so the CO2 in a room above the outdoor level tells you how much of the air has already been through someone else's lungs.</p>
-  <p class="hero-line" id="heroLine" aria-live="polite"></p>
-  <label for="heroPpm">Indoor CO2: <span id="heroPpmOut"></span> ppm</label>
-  <input id="heroPpm" type="range" min="420" max="5000" step="10" value="2000">
+  <p class="hero-line" id="heroLine" aria-live="polite">
+<!-- sync:explain -->
+  At 2,000 ppm, <b>1 breath in 24</b> has already been through someone else's lungs.
+<!-- /sync:explain -->
+  </p>
+  <div class="dragme">
+    <label for="heroPpm">Indoor CO2 <span class="hint">drag me</span></label>
+    <div class="bubblewrap"><output id="heroPpmOut" for="heroPpm">2,000 ppm</output></div>
+    <input class="bigrange" id="heroPpm" type="range" min="420" max="5000" step="10" value="2000">
+  </div>
   <p class="small muted">Rebreathed fraction = (indoor − 420 ppm outdoor) ÷ 38,000 ppm (Rudnick &amp; Milton, 2003). The highest reading in the lecture-hall dataset is 4,957 ppm, about 1 breath in 8.</p>
 </section>
 
 <section id="finding">
-  <h2>The finding</h2>
+  <h2>We did this to 40 real rooms</h2>
+<!-- sync:forty -->
+  <p class="muted">24 of them with a confident decay fit and 9 with a confident buildup fit, across 3 open datasets. Only the 3 lecture halls publish a design figure, so the finding starts there.</p>
+<!-- /sync:forty -->
+  <h3>The finding</h3>
   <p>Three university lecture halls in Limassol, Cyprus, each designed for 100% fresh air at about six air changes per hour, measured for a full academic year (2023–24).</p>
   <p class="hero-line" id="findHead">
 <!-- sync:findhead -->
@@ -197,34 +318,6 @@ a { color: var(--co2); }
 <!-- /sync:rooms -->
 </section>
 
-<section id="fit">
-  <h2>Fingerprint your own room</h2>
-  <p class="muted">Upload a CO2 log (CSV with a timestamp column and a CO2 column). We measure the air-change rate two ways: from how fast CO2 falls once people leave (decay), and from how it rises while they are in the room (buildup).</p>
-  <label class="drop" id="drop">Drop a CSV here, or choose a file
-    <input type="file" id="file" accept=".csv,.txt,text/csv">
-  </label>
-  <div class="grid">
-    <div><label for="vol">Room volume (m³)</label><input id="vol" type="number" min="1" max="1000000" step="any" required></div>
-    <div><label for="out">Outdoor CO2 (ppm)</label><input id="out" type="number" min="300" max="600" value="420"></div>
-  </div>
-  <label class="check"><input type="checkbox" id="teach"> Teaching hours only</label>
-  <p class="small muted">Fits only weekday 08:00–17:59 data, in the file's own clock time, using the same rule as the audit above.</p>
-  <div class="row">
-    <button id="fitBtn">Fingerprint</button>
-    <button id="demoBtn" class="ghost">Load demo: Hall A, Oct 2023</button>
-  </div>
-  <p id="fitMsg" aria-live="polite"></p>
-  <div id="fitOut" hidden>
-    <p class="note small" id="fitScope"></p>
-    <p id="fitSummary" class="small muted"></p>
-    <div class="cards">
-      <div class="card" id="decayCard"></div>
-      <div class="card" id="buildCard"></div>
-    </div>
-    <div class="legend" id="fitLegend"></div>
-    <div class="chart" id="fitChart"></div>
-  </div>
-</section>
 
 <section id="predict">
   <h2>Predict a session</h2>
@@ -252,6 +345,37 @@ a { color: var(--co2); }
     </div>
     <div class="chart" id="predChart"></div>
   </div>
+</section>
+
+<section id="fitwrap">
+<details id="fit">
+  <summary><h2>Fingerprint your own CO2 log</h2><span class="muted">For people who own a CO2 monitor: upload its log and we measure your room's real air-change rate.</span></summary>
+  <p class="muted">Upload a CO2 log (CSV with a timestamp column and a CO2 column). We measure the air-change rate two ways: from how fast CO2 falls once people leave (decay), and from how it rises while they are in the room (buildup).</p>
+  <label class="drop" id="drop">Drop a CSV here, or choose a file
+    <input type="file" id="file" accept=".csv,.txt,text/csv">
+  </label>
+  <div class="grid">
+    <div><label for="vol">Room volume (m³)</label><input id="vol" type="number" min="1" max="1000000" step="any" required></div>
+    <div><label for="out">Outdoor CO2 (ppm)</label><input id="out" type="number" min="300" max="600" value="420"></div>
+  </div>
+  <label class="check"><input type="checkbox" id="teach"> Teaching hours only</label>
+  <p class="small muted">Fits only weekday 08:00–17:59 data, in the file's own clock time, using the same rule as the audit above.</p>
+  <div class="row">
+    <button id="fitBtn">Fingerprint</button>
+    <button id="demoBtn" class="ghost">Load demo: Hall A, Oct 2023</button>
+  </div>
+  <p id="fitMsg" aria-live="polite"></p>
+  <div id="fitOut" hidden>
+    <p class="note small" id="fitScope"></p>
+    <p id="fitSummary" class="small muted"></p>
+    <div class="cards">
+      <div class="card" id="decayCard"></div>
+      <div class="card" id="buildCard"></div>
+    </div>
+    <div class="legend" id="fitLegend"></div>
+    <div class="chart" id="fitChart"></div>
+  </div>
+</details>
 </section>
 
 <section id="caveats">
@@ -4550,19 +4674,112 @@ const $ = id => document.getElementById(id);
 const achFmt = x => (Math.floor(x * 100) / 100).toFixed(2);
 const ppmFmt = x => Math.ceil(x).toLocaleString("en");
 const oneIn = n => n == null ? "none (at outdoor level)" : "1 breath in " + Math.floor(n);
-const pct = f => (Math.ceil(f * 1000) / 10).toFixed(1) + "%";
+const pct = f => (Math.ceil(Math.min(1, f) * 1000) / 10).toFixed(1) + "%";
+const cap1 = f => Math.min(1, Math.max(0, f)); // a breath can't be more than entirely exhaled air
 
-// Hero: same formula as ventilation.rebreathed_fraction, outdoor fixed at 420.
-function hero() {
-  const c = +$("heroPpm").value;
-  $("heroPpmOut").textContent = c.toLocaleString("en");
-  const f = (c - 420) / EXHALED;
+// Explainer: same formula as ventilation.rebreathed_fraction, outdoor fixed at 420.
+function explain() {
+  const el = $("heroPpm"), c = +el.value;
+  $("heroPpmOut").textContent = c.toLocaleString("en") + " ppm";
+  // Keep the bubble over the thumb: its centre travels the track minus the 32px thumb.
+  const r = (c - el.min) / (el.max - el.min);
+  $("heroPpmOut").style.setProperty("--p", `calc(${r * 100}% + ${(0.5 - r) * 32}px)`);
+  const f = cap1((c - 420) / EXHALED);
   $("heroLine").innerHTML = f <= 0
     ? `At ${c.toLocaleString("en")} ppm, the air is as fresh as outdoors.`
-    : `At ${c.toLocaleString("en")} ppm, <b>1 breath in ${Math.floor(1 / f)}</b> has already been through someone else's lungs.`;
+    : `At ${c.toLocaleString("en")} ppm, <b>1 breath in ${Math.max(1, Math.floor(1 / f))}</b> has already been through someone else's lungs.`;
 }
-$("heroPpm").addEventListener("input", hero);
-hero();
+$("heroPpm").addEventListener("input", explain);
+explain();
+
+// ---- Hero: "Where are you sitting right now?" ----
+// The default session is pre-rendered by web/.sync_audit.py from ventilation.predict, and
+// embedded, so the first view needs no network. Any change asks the live POST /predict.
+// heroText() mirrors hero_text() in .sync_audit.py line for line: keep them in step.
+const HERO = JSON.parse($("heroData").textContent);
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const hs = { vol: 0, ach: 0, people: HERO.people, minutes: HERO.minutes, res: HERO.result, m: HERO.minutes };
+{ const b = document.querySelector('.preset[aria-pressed="true"]'); hs.vol = +b.dataset.vol; hs.ach = +b.dataset.ach; }
+
+function heroText(m) {
+  const { res, people, minutes } = hs, s = res.curve[m], f = cap1(s.rebreathedFraction);
+  const cap = res.maxOccupancy["1000"], held = cap >= 500 ? "500 or more" : cap.toLocaleString("en");
+  const t = { conseq: `For ${minutes} minutes, this room's air can take <b>${held}</b> ${cap === 1 ? "person" : "people"} before CO2 passes 1,000 ppm. You set ${people}.` };
+  const room = `${hs.vol.toLocaleString("en")} m³ at ${hs.ach} air changes an hour`;
+  if (!res.withinValidatedRange) return Object.assign(t, {
+    head: `${people} people for ${minutes} minutes would take this room past ${res.validatedMaxPpm.toLocaleString("en")} ppm, the 8-hour workplace exposure limit. Past that the useful answer is to leave the room, not a number: try fewer people or a shorter session.`,
+    red: 0, level: "na", detail: room });
+  t.head = f > 0 ? `After ${m} minute${m === 1 ? "" : "s"}, <b>1 breath in ${Math.max(1, Math.floor(1 / f))}</b> has already been through someone else's lungs.`
+                 : "The air in the room is still outdoor air.";
+  t.red = Math.min(100, Math.ceil(f * 100));
+  t.level = s.ppm < 1000 ? "ok" : s.ppm < 1400 ? "warn" : "bad";
+  t.detail = `${ppmFmt(s.ppm)} ppm · ${(Math.ceil(f * 1000) / 10).toFixed(1)}% of each breath rebreathed · ${room} · seated, quiet · outdoor 420 ppm`;
+  return t;
+}
+
+const grid = [...$("hGrid").children], dots = [...$("hDots").children];
+function heroDraw(m) {
+  hs.m = m;
+  const t = heroText(m);
+  $("hHead").innerHTML = t.head; $("hConseq").innerHTML = t.conseq; $("hDetail").textContent = t.detail;
+  $("hRoom").setAttribute("class", "room " + t.level);
+  grid.forEach((el, i) => el.classList.toggle("r", i < t.red));
+  $("hGrid").classList.toggle("na", t.level === "na");
+  $("hGrid").setAttribute("aria-label", `${t.red} of 100 breaths already exhaled by someone else`);
+  $("hScrub").max = hs.minutes; $("hScrub").value = m; $("hMinute").textContent = m + " min";
+}
+function heroPeople() {
+  dots.forEach((d, i) => d.toggleAttribute("hidden", i >= hs.people));
+  $("hMore").textContent = hs.people > dots.length ? "+" + (hs.people - dots.length) : "";
+  $("hPeopleOut").textContent = hs.people; $("hMinsOut").textContent = hs.minutes + " min";
+}
+
+// Session clock: about 12 modelled minutes per real second.
+let raf = 0;
+function heroStop() { cancelAnimationFrame(raf); raf = 0; $("hPlay").textContent = "▶"; $("hPlay").setAttribute("aria-label", "Play the session"); }
+function heroPlay() {
+  if (reduce) return heroDraw(hs.minutes); // finished session at once, no animation
+  let t0 = null, from = hs.m >= hs.minutes ? 0 : hs.m;
+  $("hPlay").textContent = "❚❚"; $("hPlay").setAttribute("aria-label", "Pause");
+  const step = now => {
+    t0 ??= now;
+    const m = Math.min(hs.minutes, Math.floor(from + (now - t0) * 12 / 1000));
+    if (m !== hs.m) heroDraw(m);
+    if (m < hs.minutes) raf = requestAnimationFrame(step); else heroStop();
+  };
+  raf = requestAnimationFrame(step);
+}
+$("hPlay").addEventListener("click", () => raf ? heroStop() : heroPlay());
+$("hScrub").addEventListener("input", e => { heroStop(); heroDraw(+e.target.value); });
+
+// Live answer on any change. Debounced so dragging a slider sends one request, not fifty;
+// a sequence number drops replies that arrive after a newer one.
+let heroSeq = 0, heroTimer = 0;
+function heroAsk() {
+  heroStop(); heroPeople();
+  clearTimeout(heroTimer);
+  heroTimer = setTimeout(async () => {
+    const seq = ++heroSeq;
+    try {
+      const d = await post("/predict", { volumeM3: hs.vol, ach: hs.ach, occupants: hs.people, minutes: hs.minutes, activity: "seated_quiet", outdoorPpm: 420 });
+      if (seq !== heroSeq) return;
+      hs.res = d; heroDraw(hs.minutes); // d.withinValidatedRange is the API's own flag, read as is
+    } catch (e) {
+      // e.g. the API's 400 for an impossible density: show its message, not a stale answer.
+      if (seq !== heroSeq) return;
+      $("hHead").textContent = e.message; $("hConseq").textContent = ""; $("hDetail").textContent = "";
+      grid.forEach(el => el.classList.remove("r")); $("hGrid").classList.add("na"); $("hRoom").setAttribute("class", "room na");
+    }
+  }, 180);
+}
+for (const b of document.querySelectorAll(".preset")) b.addEventListener("click", () => {
+  document.querySelectorAll(".preset").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+  hs.vol = +b.dataset.vol; hs.ach = +b.dataset.ach; heroAsk();
+});
+$("hPeople").addEventListener("input", e => { hs.people = +e.target.value; heroAsk(); });
+$("hMins").addEventListener("input", e => { hs.minutes = +e.target.value; heroAsk(); });
+heroDraw(hs.minutes);
+heroPlay(); // plays the embedded default once on arrival; reduced motion leaves it finished
 
 async function post(path, body) {
   const s = JSON.stringify(body);
@@ -4728,12 +4945,19 @@ async function runPredict() {
     });
     $("predMsg").textContent = "";
     $("predOut").hidden = false;
-    $("pPeak").innerHTML = `${ppmFmt(d.peakPpm)} <small>ppm</small>`;
-    $("pPeakSub").innerHTML = `${oneIn(d.peakOneBreathIn)} at the peak.<br>Average rebreathed over the session: ${pct(d.meanRebreathedFraction)}. ${Math.ceil(d.minutesAbove1000)} minutes above 1,000 ppm.`;
+    // Past the 5,000 ppm ceiling (the API's withinValidatedRange flag) the answer is "leave the room",
+    // not a number: say so instead of printing the peak, curve and fractions. Max occupancy stays valid, so it is still shown.
+    const ok = d.withinValidatedRange;
+    $("predChart").hidden = !ok;
+    $("pPeak").innerHTML = ok ? `${ppmFmt(d.peakPpm)} <small>ppm</small>` : `Over ${d.validatedMaxPpm.toLocaleString("en")} <small>ppm</small>`;
+    $("pPeakSub").innerHTML = ok
+      ? `${oneIn(d.peakOneBreathIn)} at the peak.<br>Average rebreathed over the session: ${pct(d.meanRebreathedFraction)}. ${Math.ceil(d.minutesAbove1000)} minutes above 1,000 ppm.`
+      : `This session would take the room past ${d.validatedMaxPpm.toLocaleString("en")} ppm, the 8-hour workplace exposure limit, so no peak or breath figure is given: past that the useful answer is to leave the room. Try fewer people, a shorter session, a larger room or more ventilation.`;
     const cap = n => n >= 500 ? "500 or more" : n.toLocaleString("en");
     $("pMax").innerHTML = `<p>Staying at or under <b>1,000 ppm</b>: <span class="big">${cap(d.maxOccupancy["1000"])}</span> people</p>
       <p>Staying at or under <b>1,400 ppm</b>: <span class="big">${cap(d.maxOccupancy["1400"])}</span> people</p>
       <p class="small muted">For this room, duration and activity.</p>`;
+    if (!ok) return;
     const pts = d.curve.map(p => [p.minute, p.ppm]), n = pts[pts.length - 1][0];
     chart($("predChart"), pts, {
       xs: `Predicted CO2 over ${n} minutes, peak ${ppmFmt(d.peakPpm)} ppm`,
@@ -4741,9 +4965,16 @@ async function runPredict() {
       refs: [{ y: 1000, label: "1,000 ppm" }, { y: 1400, label: "1,400 ppm" }],
       tip: p => `${p[0]} min: ${ppmFmt(p[1])} ppm`, color: "var(--ink)",
     });
-  } catch (e) { $("predMsg").className = "err"; $("predMsg").textContent = e.message; }
+  } catch (e) {
+    // e.g. the API's 400 for an impossible density: its message, and no stale result under it.
+    $("predMsg").className = "err"; $("predMsg").textContent = e.message; $("predOut").hidden = true;
+  }
 }
 $("predBtn").addEventListener("click", runPredict);
+
+// The fingerprint panel is folded; a link to #fit (the tour uses one) should open it.
+const openFit = () => { if (location.hash === "#fit") $("fit").open = true; };
+addEventListener("hashchange", openFit); openFit();
 
 // /judges shows the tour. Until that path is routed, #judges does the same thing.
 if (/\/judges\/?$/.test(location.pathname) && !location.hash) location.hash = "judges";

@@ -127,6 +127,44 @@ class Explain(unittest.TestCase):
         self.assertEqual(call(api.explain, {"kind": "fit", "result": {"outdoorPpm": 420, "peakPpm": "big"}})[0], 400)
 
 
+class PhysicalBounds(unittest.TestCase):
+    ROOM = {"volumeM3": 363, "ach": 0.74, "minutes": 90}
+
+    def test_rebreathed_fraction_never_exceeds_one(self):
+        self.assertEqual(api.v.rebreathed_fraction(1e6), 1.0)
+        self.assertEqual(api.v.one_breath_in(1e6), 1.0)
+        self.assertLess(api.v.rebreathed_fraction(38_000), 1.0)
+
+    def test_impossible_density_is_400(self):
+        for n in (10_000, 2_000):  # 0.04 and 0.18 m3 each, under the 0.2 floor
+            status, r = call(api.predict, {**self.ROOM, "occupants": n})
+            self.assertEqual(status, 400, n)
+            self.assertIn("cannot fit", r["error"])
+        # At exactly the floor the input is allowed (then flagged, below).
+        at_floor = int(363 / api.v.MIN_INPUT_M3_PER_PERSON)
+        self.assertEqual(call(api.predict, {**self.ROOM, "occupants": at_floor})[0], 200)
+
+    def test_peak_above_ceiling_is_flagged_everywhere(self):
+        status, r = call(api.predict, {**self.ROOM, "occupants": 1500})
+        self.assertEqual(status, 200, r)
+        self.assertFalse(r["withinValidatedRange"])
+        self.assertGreater(r["peakPpm"], api.v.VALIDATED_MAX_PPM)
+        self.assertTrue(all(p["rebreathedFraction"] <= 1.0 for p in r["curve"]))
+        text = " ".join(call(api.explain, {"kind": "predict",
+                                           "request": {**self.ROOM, "occupants": 1500}})[1]["sentences"])
+        self.assertIn("outside the range this model is validated for", text)
+        self.assertNotIn("breath in", text)   # no impossible number phrased
+        self.assertNotIn(f"{math.ceil(r['peakPpm']):,}", text)
+        # The ordinary class stays in range and keeps its numbers.
+        ok = call(api.predict, {**self.ROOM, "occupants": 60, "activity": "seated_quiet"})[1]
+        self.assertTrue(ok["withinValidatedRange"])
+        # A short session is judged on its peak, not on an asymptote it never nears.
+        short = call(api.predict, {**self.ROOM, "occupants": 1000, "minutes": 5})[1]
+        self.assertLess(short["peakPpm"], api.v.VALIDATED_MAX_PPM)
+        self.assertGreater(short["steadyStatePpm"], api.v.VALIDATED_MAX_PPM)
+        self.assertTrue(short["withinValidatedRange"])
+
+
 class HeadAndGzip(unittest.TestCase):
     def test_head_matches_get_without_body_and_gzip_round_trips(self):
         import gzip

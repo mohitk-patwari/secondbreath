@@ -1,5 +1,28 @@
 # HANDOFF
 
+## T1 → T2, T3 (29 Sep, 20:05 IST) — physical bounds on /predict. NOT DEPLOYED YET
+- **Shared file changed: ventilation.py** (needs all three to agree; T3 please
+  check). `rebreathed_fraction()` is now capped at 1.0. New constants:
+  `VALIDATED_MAX_PPM = 5000` and `MIN_INPUT_M3_PER_PERSON = 0.2`, with the reasoning
+  in comments. `Prediction` has a new field, `within_validated_range`, which is
+  judged on the **session peak**, not the steady state.
+  The audit is unaffected: the cap only applies above 38,420 ppm and the
+  highest real reading is 7,950. analysis/test_loaders.py passes.
+- **T2, form:** /predict now returns `withinValidatedRange` and
+  `validatedMaxPpm`. When it's `false`, show a warning such as "Outside the
+  range this model is validated for (CO2 would pass 5,000 ppm). Try fewer
+  people, a larger room or more ventilation." Show that instead of the peak,
+  the curve and "one breath in N". /explain already says this in its sentences.
+- **T2:** impossible densities (under 0.2 m³ per person, e.g. 2,000 people in
+  363 m³) now return 400 with an `error`. Show it as is, as with other 400s.
+  A `max` on the occupants input is optional; the server enforces the limit.
+- **T3/T4:** if the write-up mentions the forward model's limits: 5,000 ppm
+  is OSHA's 8-hour PEL and ACGIH's TLV (ACGIH short-term limit 30,000). It is
+  an exposure limit we use as our ceiling, not a validity result, and it is
+  above every room's p95 (highest 3,892). It is **not** above every reading:
+  5 of 40 rooms have raw peaks over it, up to 7,950. The 0.2 m³/person floor
+  is a judgment call with no source; list it with METHOD.md's others.
+
 ## T1 → T2 (29 Sep, 18:50 IST)
 - **`/judges` is routed** (GET /judges serves index.html, 200). The home page
   can link to `/judges` now instead of `#judges`. After CloudFront it will need
@@ -134,3 +157,25 @@
 - Resolved: WRITEUP.md now cites `evidence/bedrock-cli-errors.txt` for the Nova
   AccessDeniedException and says CloudTrail does not corroborate it.
 - Timezone text uses METHOD 7.6's numbers (the human confirmed them).
+
+## T2 → T1, T3 (29 Sep, 20:50 IST)
+- **web/.sync_audit.py now imports the root ventilation.py** to pre-render the
+  hero (`predict`, `max_occupancy`, `one_breath_in`, `VALIDATED_MAX_PPM`,
+  `Prediction.within_validated_range`). It depends on T1's uncommitted change;
+  if that change is reverted, the sync fails loudly rather than drifting.
+- T1: no backend change needed. The hero sends /predict with
+  `activity: "seated_quiet"` and reads the API's own `withinValidatedRange`
+  (peak-based) as is; the steady-state fallback is gone (30 Sep).
+- T3: the hero's Hall C tile quotes "measured 0.88/h, 259 decay fits" from
+  audit.json, with no METHOD 7.6 qualifier (neither does the finding table).
+  Say if you want the qualifier on the page.
+
+## T4 → T2 (30 Sep)
+- web/index.html:4710, hero text above 5,000 ppm says "beyond the range this
+  model is checked against". That frames VALIDATED_MAX_PPM as model validity;
+  ventilation.py, API.md and WRITEUP.md frame it as an exposure limit (OSHA
+  PEL / ACGIH TLV) used as a ceiling. Suggest e.g. "past 5,000 ppm, the
+  workplace exposure limit. Leave the room, or try fewer people or a shorter
+  session."
+  - **Done (T2, 30 Sep):** hero warning, Predict panel warning and hero
+    caption now say "the 8-hour workplace exposure limit" and "leave the room".

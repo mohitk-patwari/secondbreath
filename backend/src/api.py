@@ -248,6 +248,11 @@ def _predict(body):
     if start is not None:
         start = _number(body, "startPpm", outdoor, 10_000)
     activity = _activity(body, "seated_speaking")
+    if occupants and volume / occupants < v.MIN_INPUT_M3_PER_PERSON:
+        raise BadRequest(
+            f"{occupants:,} people cannot fit in {volume:g} m³: that is "
+            f"{volume / occupants:.2f} m³ each, and the physical minimum is "
+            f"{v.MIN_INPUT_M3_PER_PERSON:g} m³ per person")
 
     p = v.predict(volume, ach, occupants, minutes, activity, start, outdoor)
     return {
@@ -261,6 +266,11 @@ def _predict(body):
         "meanRebreathedFraction": p.mean_rebreathed_fraction,
         "minutesAbove1000": p.minutes_above_1000,
         "steadyStatePpm": p.steady_state_ppm,
+        # False: the session peak is above validatedMaxPpm. Show the warning,
+        # not peak/curve/fractions. steadyStatePpm is the asymptote, reported
+        # separately and not flagged.
+        "withinValidatedRange": p.within_validated_range,
+        "validatedMaxPpm": v.VALIDATED_MAX_PPM,
         "maxOccupancy": {
             str(limit): v.max_occupancy(volume, ach, minutes, limit, activity, outdoor)
             for limit in (1000, 1400)
@@ -333,7 +343,8 @@ def _explain_facts(body):
         p = _predict(req)
         return {"kind": kind, **p["input"],
                 **{k: p[k] for k in ("peakPpm", "peakRebreathedFraction", "peakOneBreathIn",
-                                     "minutesAbove1000", "steadyStatePpm", "maxOccupancy")}}
+                                     "minutesAbove1000", "steadyStatePpm", "maxOccupancy",
+                                     "withinValidatedRange", "validatedMaxPpm")}}
     if kind == "fit":
         r = body.get("result")
         if not isinstance(r, dict):
@@ -367,7 +378,15 @@ def _rate_sentence(name, fp):
 def _render(facts):
     """Template sentences. See the block comment above for swapping in a model."""
     s = []
-    if facts["kind"] == "predict":
+    if facts["kind"] == "predict" and not facts["withinValidatedRange"]:
+        # Say so instead of phrasing a number the model can't stand behind.
+        s.append(f"With {facts['occupants']:,} people in {int(facts['volumeM3']):,} m³ at "
+                 f"{_down(facts['ach']):.2f} air changes per hour, CO2 would pass "
+                 f"{int(facts['validatedMaxPpm']):,} ppm during the session, outside the range this model is "
+                 f"validated for, so no CO2 level or rebreathed fraction is given for this "
+                 f"session. Fewer people, a larger room or more ventilation brings it back "
+                 f"in range.")
+    elif facts["kind"] == "predict":
         s.append(f"With {facts['occupants']} people in {int(facts['volumeM3']):,} m³ at "
                  f"{_down(facts['ach']):.2f} air changes per hour, CO2 is predicted to reach "
                  f"{_ppm(facts['peakPpm'])} after {facts['minutes']:g} minutes.")

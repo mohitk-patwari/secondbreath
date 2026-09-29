@@ -128,6 +128,11 @@ Request:
 ```
 - Required: `volumeM3` (1 to 1e6), `ach` (0.01 to 50), `occupants` (0 to
   10,000, truncated to an integer) and `minutes` (1 to 1,440).
+- **Physical density limit:** `volumeM3 / occupants` must be at least
+  0.2 m³ per person (`MIN_INPUT_M3_PER_PERSON` in ventilation.py). That floor is a
+  sanity check we chose, not a sourced figure, and it is used only to reject
+  impossible input. Otherwise you get 400 with an `error` such as "2,000
+  people cannot fit in 363 m³ ...". Show it as is.
 - `activity` is optional and must be one of `seated_quiet`, `seated_speaking`
   (the default), `light_activity` or `moderate_activity`.
 - `startPpm` is optional, from `outdoorPpm` to 10,000, and defaults to
@@ -146,6 +151,8 @@ Response (real output for the request above, trimmed `curve`):
   "meanRebreathedFraction": 0.03369380423566409,
   "minutesAbove1000": 75.0,
   "steadyStatePpm": 3658.7759660486936,
+  "withinValidatedRange": true,
+  "validatedMaxPpm": 5000.0,
   "maxOccupancy": {"1000": 16, "1400": 27},
   "input": {"volumeM3": 363.0, "ach": 0.74, "occupants": 60, "minutes": 90.0,
             "activity": "seated_quiet", "outdoorPpm": 420.0}
@@ -156,6 +163,15 @@ Response (real output for the request above, trimmed `curve`):
 - `maxOccupancy` is the largest headcount whose peak stays at or under each
   ppm limit for this room, duration and activity. It is capped at 500, so
   `500` means "500 or more".
+- **`withinValidatedRange: false`** means the session's `peakPpm` is above
+  `validatedMaxPpm`. That is 5,000 ppm: OSHA's 8-hour PEL and ACGIH's TLV,
+  both exposure limits. We use it because above it the useful answer is
+  "leave the room", and it is above every room's p95 in our data. **Show a
+  warning instead of the peak, the curve and the fractions.** `/explain` does
+  the same. `steadyStatePpm` is the asymptote. It is not flagged: a short
+  session can have a high asymptote and still peak within range.
+- `rebreathedFraction` never exceeds 1.0, and `peakOneBreathIn` never drops
+  below 1: a breath can't be more than entirely exhaled air.
 
 ## POST /explain
 

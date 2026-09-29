@@ -69,14 +69,42 @@ GENERATION_M3H = {
     "moderate_activity": 0.038,
 }
 
+#: Predicted session peak (ppm) above which predict() flags its result.
+#: 5,000 ppm is an exposure limit, not a statement about model validity: it is
+#: OSHA's permissible exposure limit as an 8-hour time-weighted average, and
+#: ACGIH's threshold limit value (TWA), which also sets a 30,000 ppm short-term
+#: exposure limit. We use it as our ceiling for two reasons. Above it the
+#: useful answer is "leave the room", not a number. And it is above what our
+#: own data says is typical: every room's p95 during teaching hours is below
+#: it (highest 3,892 ppm, School 14), and so is the lecture halls' highest
+#: reading (4,957 ppm, Hall B). Five of the 40 rooms have single raw readings
+#: above it, up to 7,950 ppm, all from uncleaned school sensors
+#: (analysis/audit.json).
+VALIDATED_MAX_PPM = 5_000.0
+
+#: Least room volume per occupant (m^3) accepted as input. A judgment call:
+#: a sanity floor chosen by us, not taken from any source. It exists only to
+#: reject input that can't be real (10,000 people in 363 m^3) and is never
+#: used to estimate how many people a room holds. It is deliberately 10x looser
+#: than the audit's MIN_M3_PER_PERSON = 2.0 (analysis/METHOD.md 5.5), which
+#: bounds how densely a seated lecture hall can be packed. This one only turns
+#: away the physically impossible. Dense but possible sessions get through and
+#: are then judged by VALIDATED_MAX_PPM on their peak.
+MIN_INPUT_M3_PER_PERSON = 0.2
+
 
 # ---------------------------------------------------------------------------
 # 1. Rebreathed fraction
 # ---------------------------------------------------------------------------
 
 def rebreathed_fraction(co2_ppm: float, outdoor_ppm: float = OUTDOOR_PPM_DEFAULT) -> float:
-    """Share of inhaled air previously exhaled by another occupant (0..1)."""
-    return max(0.0, (co2_ppm - outdoor_ppm) / EXHALED_PPM)
+    """Share of inhaled air previously exhaled by another occupant (0..1).
+
+    Capped at 1.0: a breath cannot be more than entirely exhaled air, so any
+    concentration above C_out + EXHALED_PPM comes from a model pushed past its
+    physics, not from a real room.
+    """
+    return min(1.0, max(0.0, (co2_ppm - outdoor_ppm) / EXHALED_PPM))
 
 
 def one_breath_in(co2_ppm: float, outdoor_ppm: float = OUTDOOR_PPM_DEFAULT) -> float:
@@ -391,6 +419,10 @@ class Prediction(NamedTuple):
     mean_rebreathed_fraction: float
     minutes_above_1000: float
     steady_state_ppm: float
+    # False when peak_ppm > VALIDATED_MAX_PPM. On the peak, not the asymptote:
+    # the peak is the number a user sees, and a short session that never gets
+    # near its steady state shouldn't be flagged for it.
+    within_validated_range: bool
 
 
 def predict(
@@ -441,6 +473,7 @@ def predict(
         mean_rebreathed_fraction=mean_f,
         minutes_above_1000=min(above_1000, minutes),
         steady_state_ppm=c_ss,
+        within_validated_range=peak <= VALIDATED_MAX_PPM,
     )
 
 
@@ -504,6 +537,21 @@ def _self_test() -> None:
 
     # Rebreathed fraction sanity: 1400 ppm is roughly 1 breath in 39.
     assert 38 < one_breath_in(1400.0) < 40
+    # ...and never more than the whole breath, however high the input.
+    assert rebreathed_fraction(OUTDOOR_PPM_DEFAULT + EXHALED_PPM) == 1.0
+    assert rebreathed_fraction(1e6) == 1.0 and one_breath_in(1e6) == 1.0
+
+    # Forward model: the flag follows the session peak. An ordinary class is in
+    # range; a packed room over 90 minutes is not, and its fractions stay <= 1;
+    # the same crowd for 5 minutes peaks under the ceiling and is not flagged
+    # even though its steady state is far above it.
+    assert predict(363.0, 0.74, 60, 90, "seated_quiet").within_validated_range
+    huge = predict(363.0, 0.74, 1500, 90)
+    assert not huge.within_validated_range
+    assert all(s.rebreathed_fraction <= 1.0 for s in huge.curve)
+    brief = predict(363.0, 0.74, 1000, 5)
+    assert brief.peak_ppm <= VALIDATED_MAX_PPM < brief.steady_state_ppm
+    assert brief.within_validated_range
 
     # Forward model: steady state must match the closed form.
     p = predict(volume_m3=100.0, ach=1.0, occupants=5, minutes=600)
