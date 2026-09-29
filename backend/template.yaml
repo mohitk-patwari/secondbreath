@@ -109,6 +109,77 @@ Resources:
         Get:
           Type: HttpApi
           Properties: {ApiId: !Ref Api, Path: /, Method: GET}
+        # Same page; it opens the judges' tour when the path is /judges.
+        Judges:
+          Type: HttpApi
+          Properties: {ApiId: !Ref Api, Path: /judges, Method: GET}
+
+  # Templates over solver output while Bedrock is blocked. No policy: add
+  # bedrock:InvokeModel (and nothing else) only when a model is swapped in.
+  ExplainFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: secondbreath-explain
+      Handler: api.explain
+      MemorySize: 512  # a predict request re-runs max_occupancy's loop
+      Timeout: 10
+      Events:
+        Post:
+          Type: HttpApi
+          Properties: {ApiId: !Ref Api, Path: /explain, Method: POST}
+
+  # ---- Uptime: every 5 min, GET / and /health; 2 failures in 10 min emails ----
+  # A Synthetics canary would be ~8,600 runs/month against a 100-run free tier
+  # (~$15). This Lambda (~8,600 invocations), one alarm and SNS email sit
+  # inside the free tier.
+
+  UptimeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: secondbreath-uptime
+      Handler: uptime.handler
+      Timeout: 40  # two 15 s requests
+      Environment:
+        Variables:
+          SITE_URL: !If
+            - UseCloudFront
+            - !Sub https://${WebDistribution.DomainName}/
+            - !Sub https://${Api}.execute-api.${AWS::Region}.amazonaws.com/
+          HEALTH_URL: !Sub https://${Api}.execute-api.${AWS::Region}.amazonaws.com/health
+      # One failure should be one error, not three: no async retries.
+      EventInvokeConfig: {MaximumRetryAttempts: 0}
+      Events:
+        Every5Min:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
+            RetryPolicy: {MaximumRetryAttempts: 0}
+
+  UptimeTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      # Email subscriptions must be confirmed from the inbox before alerts arrive.
+      Subscription: [{Protocol: email, Endpoint: !Ref AlertEmail}]
+
+  UptimeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: secondbreath-down
+      AlarmDescription: >-
+        GET / or /health failed twice in 10 minutes. The reason is in log group
+        /aws/lambda/secondbreath-uptime.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions: [{Name: FunctionName, Value: !Ref UptimeFunction}]
+      Statistic: Sum
+      Period: 600  # two checks per period, so one slow cold start doesn't page
+      EvaluationPeriods: 1
+      Threshold: 2
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      # No datapoints means the checker itself stopped; that must alert too.
+      TreatMissingData: breaching
+      AlarmActions: [!Ref UptimeTopic]
+      OKActions: [!Ref UptimeTopic]
 
   SiteLogGroup:
     Type: AWS::Logs::LogGroup
@@ -122,6 +193,12 @@ Resources:
   PredictLogGroup:
     Type: AWS::Logs::LogGroup
     Properties: {LogGroupName: /aws/lambda/secondbreath-predict, RetentionInDays: 7}
+  ExplainLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: {LogGroupName: /aws/lambda/secondbreath-explain, RetentionInDays: 7}
+  UptimeLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: {LogGroupName: /aws/lambda/secondbreath-uptime, RetentionInDays: 7}
 
   # Account-wide $20/month. A Budget rather than a CloudWatch billing alarm:
   # EstimatedCharges only exists in us-east-1 and this stack stays in ap-south-1.

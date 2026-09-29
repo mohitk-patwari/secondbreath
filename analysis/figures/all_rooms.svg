@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 430" width="100%" role="img" aria-labelledby="t d">
+<title id="t">Air changes per hour in 40 rooms across three open datasets</title>
+<desc id="d">Lecture halls, Cyprus: 3 rooms, 2 with a confident decay rate, ranging 0.74 to 0.88 ACH; Primary classrooms, Castellon, Spain: 12 rooms, 8 with a confident decay rate, ranging 0.68 to 3.65 ACH; ENSENSIA schools, Patras, Greece: 25 rooms, 14 with a confident decay rate, ranging 0.24 to 1.75 ACH. Sources: Zenodo 18385830, 5062837, 18195710, all CC BY 4.0; analysis/audit.json.</desc>
+<style>
+  svg { --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --grid: #e4e3df; --trace: #8a8984;
+        --decay: #2a78d6; --build: #eb6834; --design: #b9b8b2;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  @media (prefers-color-scheme: dark) {
+    svg { --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --grid: #3a3a37; --trace: #8f8e88;
+          --decay: #3987e5; --build: #d95926; --design: #5e5d58; }
+  }
+  .t { fill: var(--ink); font-size: 15px; font-weight: 600; }
+  .s { fill: var(--ink-2); font-size: 12px; }
+  .a { fill: var(--ink-2); font-size: 11px; }
+  .g { stroke: var(--grid); stroke-width: 1; }
+  .trace { fill: none; stroke: var(--trace); stroke-width: 1.25; stroke-linejoin: round; }
+  .decay { fill: none; stroke: var(--decay); stroke-width: 3; stroke-linecap: round; }
+  .build { fill: none; stroke: var(--build); stroke-width: 3; stroke-linecap: round; }
+  .ref { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 4 4; }
+</style>
+<rect width="800" height="430" rx="8" fill="var(--surface)"/>
+<text class="t" x="56" y="24">Air changes per hour in 40 rooms, three open datasets</text>
+<text class="s" x="56" y="42">Teaching-hours median per room · filled = confident, hollow = not confident, not quoted · only the halls publish a design rate</text>
+<line class="g" x1="250.0" x2="250.0" y1="70" y2="396"/>
+<text class="a" x="250.0" y="412" text-anchor="middle">0.1</text>
+<line class="g" x1="318.0" x2="318.0" y1="70" y2="396"/>
+<text class="a" x="318.0" y="412" text-anchor="middle">0.2</text>
+<line class="g" x1="408.0" x2="408.0" y1="70" y2="396"/>
+<text class="a" x="408.0" y="412" text-anchor="middle">0.5</text>
+<line class="g" x1="476.0" x2="476.0" y1="70" y2="396"/>
+<text class="a" x="476.0" y="412" text-anchor="middle">1</text>
+<line class="g" x1="544.0" x2="544.0" y1="70" y2="396"/>
+<text class="a" x="544.0" y="412" text-anchor="middle">2</text>
+<line class="g" x1="633.9" x2="633.9" y1="70" y2="396"/>
+<text class="a" x="633.9" y="412" text-anchor="middle">5</text>
+<line class="g" x1="702.0" x2="702.0" y1="70" y2="396"/>
+<text class="a" x="702.0" y="412" text-anchor="middle">10</text>
+<line class="g" x1="770.0" x2="770.0" y1="70" y2="396"/>
+<text class="a" x="770.0" y="412" text-anchor="middle">20</text>
+<text class="a" x="770.0" y="426" text-anchor="end">ACH (log scale)</text>
+<text class="t" x="56" y="90">Lecture halls, Cyprus <tspan class="a">· 3 rooms</tspan></text>
+<text class="s" x="240" y="124" text-anchor="end">design</text>
+<circle cx="648.3" cy="120" r="5" fill="var(--design)"><title>Hall A design: 5.79 ACH</title></circle>
+<circle cx="652.0" cy="120" r="5" fill="var(--design)"><title>Hall B design: 6.01 ACH</title></circle>
+<circle cx="650.5" cy="120" r="5" fill="var(--design)"><title>Hall C design: 5.92 ACH</title></circle>
+<text class="s" x="240" y="154" text-anchor="end">decay (emptying)</text>
+<circle cx="446.4" cy="150" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>Hall A decay (emptying): 0.74 ACH</title></circle>
+<circle cx="485.3" cy="150" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>Hall B decay (emptying): 1.10 ACH (uncertain)</title></circle>
+<circle cx="463.4" cy="150" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>Hall C decay (emptying): 0.88 ACH</title></circle>
+<text class="s" x="240" y="184" text-anchor="end">buildup (occupied)</text>
+<circle cx="477.9" cy="180" r="5" fill="var(--build)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>Hall A buildup (occupied): 1.02 ACH</title></circle>
+<circle cx="468.9" cy="180" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>Hall B buildup (occupied): 0.93 ACH (uncertain)</title></circle>
+<circle cx="484.4" cy="180" r="5" fill="var(--build)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>Hall C buildup (occupied): 1.09 ACH</title></circle>
+<text class="t" x="56" y="210">Primary classrooms, Castellon, Spain <tspan class="a">· 12 rooms</tspan></text>
+<text class="s" x="240" y="244" text-anchor="end">decay (emptying)</text>
+<circle cx="592.9" cy="240" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>ValldAba CO2_01 decay (emptying): 3.29 ACH</title></circle>
+<circle cx="561.5" cy="240" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>ValldAba CO2_02 decay (emptying): 2.39 ACH</title></circle>
+<circle cx="580.8" cy="240" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>ValldAba CO2_03 decay (emptying): 2.91 ACH</title></circle>
+<circle cx="497.1" cy="240" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>ValldAba CO2_04 decay (emptying): 1.24 ACH (uncertain)</title></circle>
+<circle cx="603.1" cy="240" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>ValldAba CO2_05 decay (emptying): 3.65 ACH</title></circle>
+<circle cx="596.4" cy="240" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>ValldAba CO2_06 decay (emptying): 3.41 ACH (uncertain)</title></circle>
+<circle cx="546.9" cy="240" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>Vilafames CO2_01 decay (emptying): 2.06 ACH</title></circle>
+<circle cx="523.9" cy="240" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>Vilafames CO2_02 decay (emptying): 1.63 ACH (uncertain)</title></circle>
+<circle cx="404.0" cy="240" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>Vilafames CO2_03 decay (emptying): 0.48 ACH (uncertain)</title></circle>
+<circle cx="438.1" cy="240" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>Vilafames CO2_04 decay (emptying): 0.68 ACH</title></circle>
+<circle cx="555.6" cy="240" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>Vilafames CO2_05 decay (emptying): 2.25 ACH</title></circle>
+<circle cx="519.6" cy="240" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>Vilafames CO2_06 decay (emptying): 1.56 ACH</title></circle>
+<text class="s" x="240" y="274" text-anchor="end">buildup (occupied)</text>
+<circle cx="512.5" cy="270" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>ValldAba CO2_02 buildup (occupied): 1.45 ACH (uncertain)</title></circle>
+<circle cx="564.7" cy="270" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>ValldAba CO2_03 buildup (occupied): 2.47 ACH (uncertain)</title></circle>
+<circle cx="519.0" cy="270" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>ValldAba CO2_04 buildup (occupied): 1.55 ACH (uncertain)</title></circle>
+<text class="t" x="56" y="300">ENSENSIA schools, Patras, Greece <tspan class="a">· 25 rooms</tspan></text>
+<text class="s" x="240" y="334" text-anchor="end">decay (emptying)</text>
+<circle cx="519.0" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 1 decay (emptying): 1.55 ACH</title></circle>
+<circle cx="509.0" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 2 decay (emptying): 1.40 ACH</title></circle>
+<circle cx="515.1" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 3 decay (emptying): 1.49 ACH</title></circle>
+<circle cx="509.0" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 4 decay (emptying): 1.40 ACH</title></circle>
+<circle cx="335.9" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 5 decay (emptying): 0.24 ACH</title></circle>
+<circle cx="390.8" cy="330" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 6 decay (emptying): 0.42 ACH (uncertain)</title></circle>
+<circle cx="477.0" cy="330" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 7 decay (emptying): 1.01 ACH (uncertain)</title></circle>
+<circle cx="469.9" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 8 decay (emptying): 0.94 ACH</title></circle>
+<circle cx="489.7" cy="330" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 9 decay (emptying): 1.15 ACH (uncertain)</title></circle>
+<circle cx="395.4" cy="330" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 10 decay (emptying): 0.44 ACH (uncertain)</title></circle>
+<circle cx="515.1" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 11 decay (emptying): 1.49 ACH</title></circle>
+<circle cx="433.7" cy="330" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 12 decay (emptying): 0.65 ACH (uncertain)</title></circle>
+<circle cx="397.6" cy="330" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 13 decay (emptying): 0.45 ACH (uncertain)</title></circle>
+<circle cx="422.5" cy="330" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 14 decay (emptying): 0.58 ACH (uncertain)</title></circle>
+<circle cx="458.9" cy="330" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 15 decay (emptying): 0.84 ACH (uncertain)</title></circle>
+<circle cx="523.3" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 16 decay (emptying): 1.62 ACH</title></circle>
+<circle cx="529.8" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 17 decay (emptying): 1.73 ACH</title></circle>
+<circle cx="460.0" cy="330" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 19 decay (emptying): 0.85 ACH (uncertain)</title></circle>
+<circle cx="504.7" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 20 decay (emptying): 1.34 ACH</title></circle>
+<circle cx="530.9" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 21 decay (emptying): 1.75 ACH</title></circle>
+<circle cx="451.6" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 22 decay (emptying): 0.78 ACH</title></circle>
+<circle cx="456.5" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 23 decay (emptying): 0.82 ACH</title></circle>
+<circle cx="502.5" cy="330" r="5" fill="var(--decay)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 24 decay (emptying): 1.31 ACH</title></circle>
+<circle cx="432.2" cy="330" r="5" fill="var(--surface)" stroke="var(--decay)" stroke-width="1.5" fill-opacity="0.75"><title>School 25 decay (emptying): 0.64 ACH (uncertain)</title></circle>
+<text class="s" x="240" y="364" text-anchor="end">buildup (occupied)</text>
+<circle cx="449.1" cy="360" r="5" fill="var(--build)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 1 buildup (occupied): 0.76 ACH</title></circle>
+<circle cx="438.1" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 2 buildup (occupied): 0.68 ACH (uncertain)</title></circle>
+<circle cx="478.9" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 3 buildup (occupied): 1.03 ACH (uncertain)</title></circle>
+<circle cx="498.7" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 4 buildup (occupied): 1.26 ACH (uncertain)</title></circle>
+<circle cx="411.8" cy="360" r="5" fill="var(--build)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 6 buildup (occupied): 0.52 ACH</title></circle>
+<circle cx="443.7" cy="360" r="5" fill="var(--build)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 7 buildup (occupied): 0.72 ACH</title></circle>
+<circle cx="432.2" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 8 buildup (occupied): 0.64 ACH (uncertain)</title></circle>
+<circle cx="386.1" cy="360" r="5" fill="var(--build)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 9 buildup (occupied): 0.40 ACH</title></circle>
+<circle cx="386.1" cy="360" r="5" fill="var(--build)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 10 buildup (occupied): 0.40 ACH</title></circle>
+<circle cx="436.7" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 11 buildup (occupied): 0.67 ACH (uncertain)</title></circle>
+<circle cx="425.9" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 12 buildup (occupied): 0.60 ACH (uncertain)</title></circle>
+<circle cx="454.1" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 13 buildup (occupied): 0.80 ACH (uncertain)</title></circle>
+<circle cx="419.1" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 14 buildup (occupied): 0.56 ACH (uncertain)</title></circle>
+<circle cx="462.3" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 15 buildup (occupied): 0.87 ACH (uncertain)</title></circle>
+<circle cx="415.5" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 16 buildup (occupied): 0.54 ACH (uncertain)</title></circle>
+<circle cx="463.4" cy="360" r="5" fill="var(--build)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 17 buildup (occupied): 0.88 ACH</title></circle>
+<circle cx="476.0" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 19 buildup (occupied): 1.00 ACH (uncertain)</title></circle>
+<circle cx="480.8" cy="360" r="5" fill="var(--build)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 20 buildup (occupied): 1.05 ACH</title></circle>
+<circle cx="463.4" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 21 buildup (occupied): 0.88 ACH (uncertain)</title></circle>
+<circle cx="445.1" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 22 buildup (occupied): 0.73 ACH (uncertain)</title></circle>
+<circle cx="460.0" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 23 buildup (occupied): 0.85 ACH (uncertain)</title></circle>
+<circle cx="454.1" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 24 buildup (occupied): 0.80 ACH (uncertain)</title></circle>
+<circle cx="425.9" cy="360" r="5" fill="var(--surface)" stroke="var(--build)" stroke-width="1.5" fill-opacity="0.75"><title>School 25 buildup (occupied): 0.60 ACH (uncertain)</title></circle>
+</svg>

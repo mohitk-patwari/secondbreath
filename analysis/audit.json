@@ -1,6 +1,7 @@
 {
   "method": {
     "dataset": "Zenodo 18385830 (doi:10.5281/zenodo.18385830), CC BY 4.0",
+    "other_datasets": "Zenodo 5062837 and 18195710, CC BY 4.0: same fits, same parameters, UTC timestamps converted to local time before the teaching-hours split; any value repeated unchanged for >= 13 readings and >= 120 min is a dead sensor and dropped (count per room in readings_dropped_flatline); no volume, so no design comparison, no implied occupancy and no occupancy sanity bound",
     "outdoor_ppm": 420.0,
     "sensor_floor_ppm": 350.0,
     "teaching_hours": {
@@ -102,8 +103,11 @@
         "shortfall_factor": 5.7
       },
       "median_co2_teaching": 524,
+      "p95_co2_teaching": 1652,
       "peak_co2_teaching": 3171,
       "peak_one_breath_in": 14,
+      "median_rebreathed_pct_teaching": 0.27,
+      "peak_rebreathed_pct_teaching": 7.24,
       "pct_time_above_1000": 17.0,
       "pct_time_above_1400": 8.2,
       "pct_time_above_2000": 1.9
@@ -153,8 +157,11 @@
         "shortfall_factor": 6.4
       },
       "median_co2_teaching": 585,
+      "p95_co2_teaching": 1879,
       "peak_co2_teaching": 4957,
       "peak_one_breath_in": 8,
+      "median_rebreathed_pct_teaching": 0.43,
+      "peak_rebreathed_pct_teaching": 11.94,
       "pct_time_above_1000": 19.6,
       "pct_time_above_1400": 9.5,
       "pct_time_above_2000": 4.4
@@ -204,11 +211,1950 @@
         "shortfall_factor": 5.4
       },
       "median_co2_teaching": 510,
+      "p95_co2_teaching": 956,
       "peak_co2_teaching": 2241,
       "peak_one_breath_in": 21,
+      "median_rebreathed_pct_teaching": 0.24,
+      "peak_rebreathed_pct_teaching": 4.79,
       "pct_time_above_1000": 4.0,
       "pct_time_above_1400": 0.5,
       "pct_time_above_2000": 0.0
+    }
+  ],
+  "rooms_analysed": {
+    "total": 40,
+    "confident_decay": 24,
+    "confident_buildup": 9,
+    "with_design_figure": 3,
+    "by_dataset": {
+      "Zenodo 18385830 lecture halls": {
+        "rooms": 3,
+        "confident_decay": 2,
+        "confident_buildup": 2,
+        "with_design_figure": 3
+      },
+      "Primary classrooms, Castellon, Spain (2021)": {
+        "rooms": 12,
+        "confident_decay": 8,
+        "confident_buildup": 0,
+        "with_design_figure": 0
+      },
+      "ENSENSIA schools, Patras, Greece (2023-25)": {
+        "rooms": 25,
+        "confident_decay": 14,
+        "confident_buildup": 7,
+        "with_design_figure": 0
+      }
+    }
+  },
+  "other_datasets": [
+    {
+      "label": "Primary classrooms, Castellon, Spain (2021)",
+      "dataset": "Zenodo 5062837 (doi:10.5281/zenodo.5062837), CC BY 4.0",
+      "timezone": "Europe/Madrid",
+      "design_comparison": null,
+      "design_note": "No room volumes or design ventilation are published for this dataset, so no design comparison and no implied occupancy are possible. Reported: fitted air-change rates and rebreathed air only.",
+      "rooms_without_teaching_hours_data": [],
+      "rooms": [
+        {
+          "hall": "ValldAba CO2_01",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 6164,
+          "readings_dropped_below_floor": 0,
+          "readings_teaching_hours": 1840,
+          "span": [
+            "2021-06-01T02:00:06.799000",
+            "2021-06-24T01:55:05.889000"
+          ],
+          "decay": {
+            "ach_teaching": 3.29,
+            "ach_teaching_iqr": [
+              2.96,
+              4.23
+            ],
+            "fits_teaching": 6,
+            "confident": true,
+            "ach_offhours": null,
+            "fits_offhours": 0,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 1,
+            "identifiable": 0,
+            "discarded_unidentifiable": 1,
+            "discard_rate_pct": 100.0,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 0,
+            "ach": null,
+            "ach_iqr": null,
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 441,
+          "p95_co2_teaching": 826,
+          "peak_co2_teaching": 1277,
+          "peak_one_breath_in": 44,
+          "median_rebreathed_pct_teaching": 0.06,
+          "peak_rebreathed_pct_teaching": 2.26,
+          "pct_time_above_1000": 1.1,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "ValldAba CO2_02",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 6101,
+          "readings_dropped_below_floor": 0,
+          "readings_teaching_hours": 1876,
+          "span": [
+            "2021-06-01T02:00:06.568000",
+            "2021-06-24T01:55:04.886000"
+          ],
+          "decay": {
+            "ach_teaching": 2.39,
+            "ach_teaching_iqr": [
+              1.94,
+              3.35
+            ],
+            "fits_teaching": 16,
+            "confident": true,
+            "ach_offhours": null,
+            "fits_offhours": 0,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 3,
+            "identifiable": 3,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": 0.0,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 3,
+            "ach": 1.45,
+            "ach_iqr": [
+              0.62,
+              1.79
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 485,
+          "p95_co2_teaching": 1272,
+          "peak_co2_teaching": 1989,
+          "peak_one_breath_in": 24,
+          "median_rebreathed_pct_teaching": 0.17,
+          "peak_rebreathed_pct_teaching": 4.13,
+          "pct_time_above_1000": 11.4,
+          "pct_time_above_1400": 3.3,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "ValldAba CO2_03",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 6218,
+          "readings_dropped_below_floor": 0,
+          "readings_teaching_hours": 1874,
+          "span": [
+            "2021-06-01T02:00:06.499000",
+            "2021-06-24T01:55:04.762000"
+          ],
+          "decay": {
+            "ach_teaching": 2.91,
+            "ach_teaching_iqr": [
+              1.76,
+              3.71
+            ],
+            "fits_teaching": 12,
+            "confident": true,
+            "ach_offhours": null,
+            "fits_offhours": 0,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 1,
+            "identifiable": 1,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": 0.0,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 1,
+            "ach": 2.47,
+            "ach_iqr": [
+              2.47,
+              2.47
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 446,
+          "p95_co2_teaching": 1031,
+          "peak_co2_teaching": 1961,
+          "peak_one_breath_in": 25,
+          "median_rebreathed_pct_teaching": 0.07,
+          "peak_rebreathed_pct_teaching": 4.06,
+          "pct_time_above_1000": 5.7,
+          "pct_time_above_1400": 0.9,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "ValldAba CO2_04",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 4216,
+          "readings_dropped_below_floor": 0,
+          "readings_teaching_hours": 1262,
+          "span": [
+            "2021-06-01T02:00:12.344000",
+            "2021-06-23T01:30:07.439000"
+          ],
+          "decay": {
+            "ach_teaching": 1.24,
+            "ach_teaching_iqr": [
+              1.07,
+              2.14
+            ],
+            "fits_teaching": 17,
+            "confident": false,
+            "ach_offhours": null,
+            "fits_offhours": 0,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 4,
+            "identifiable": 2,
+            "discarded_unidentifiable": 2,
+            "discard_rate_pct": 50.0,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 2,
+            "ach": 1.55,
+            "ach_iqr": [
+              1.37,
+              1.74
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 495,
+          "p95_co2_teaching": 1243,
+          "peak_co2_teaching": 1723,
+          "peak_one_breath_in": 29,
+          "median_rebreathed_pct_teaching": 0.2,
+          "peak_rebreathed_pct_teaching": 3.43,
+          "pct_time_above_1000": 15.9,
+          "pct_time_above_1400": 2.7,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "ValldAba CO2_05",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 5582,
+          "readings_dropped_below_floor": 0,
+          "readings_teaching_hours": 1622,
+          "span": [
+            "2021-06-01T02:05:06.381000",
+            "2021-06-22T07:05:04.706000"
+          ],
+          "decay": {
+            "ach_teaching": 3.65,
+            "ach_teaching_iqr": [
+              3.4,
+              4.06
+            ],
+            "fits_teaching": 9,
+            "confident": true,
+            "ach_offhours": null,
+            "fits_offhours": 0,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 0,
+            "identifiable": 0,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": null,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 0,
+            "ach": null,
+            "ach_iqr": null,
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 440,
+          "p95_co2_teaching": 813,
+          "peak_co2_teaching": 1189,
+          "peak_one_breath_in": 49,
+          "median_rebreathed_pct_teaching": 0.05,
+          "peak_rebreathed_pct_teaching": 2.02,
+          "pct_time_above_1000": 0.7,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "ValldAba CO2_06",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 6119,
+          "readings_dropped_below_floor": 0,
+          "readings_teaching_hours": 1854,
+          "span": [
+            "2021-06-01T02:00:05.727000",
+            "2021-06-24T01:55:04.391000"
+          ],
+          "decay": {
+            "ach_teaching": 3.41,
+            "ach_teaching_iqr": [
+              3.23,
+              3.6
+            ],
+            "fits_teaching": 4,
+            "confident": false,
+            "ach_offhours": null,
+            "fits_offhours": 0,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 0,
+            "identifiable": 0,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": null,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 0,
+            "ach": null,
+            "ach_iqr": null,
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 445,
+          "p95_co2_teaching": 795,
+          "peak_co2_teaching": 1044,
+          "peak_one_breath_in": 61,
+          "median_rebreathed_pct_teaching": 0.07,
+          "peak_rebreathed_pct_teaching": 1.64,
+          "pct_time_above_1000": 0.1,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "Vilafames CO2_01",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 6587,
+          "readings_dropped_below_floor": 0,
+          "readings_teaching_hours": 1827,
+          "span": [
+            "2021-05-06T10:55:06.936000",
+            "2021-05-31T13:15:07.113000"
+          ],
+          "decay": {
+            "ach_teaching": 2.06,
+            "ach_teaching_iqr": [
+              1.55,
+              2.67
+            ],
+            "fits_teaching": 10,
+            "confident": true,
+            "ach_offhours": null,
+            "fits_offhours": 0,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 0,
+            "identifiable": 0,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": null,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 0,
+            "ach": null,
+            "ach_iqr": null,
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 507,
+          "p95_co2_teaching": 837,
+          "peak_co2_teaching": 1133,
+          "peak_one_breath_in": 53,
+          "median_rebreathed_pct_teaching": 0.23,
+          "peak_rebreathed_pct_teaching": 1.88,
+          "pct_time_above_1000": 0.9,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "Vilafames CO2_02",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 6847,
+          "readings_dropped_below_floor": 0,
+          "readings_teaching_hours": 1958,
+          "span": [
+            "2021-05-06T11:00:07.347000",
+            "2021-05-31T13:15:06.137000"
+          ],
+          "decay": {
+            "ach_teaching": 1.63,
+            "ach_teaching_iqr": [
+              0.52,
+              3.26
+            ],
+            "fits_teaching": 8,
+            "confident": false,
+            "ach_offhours": 0.34,
+            "fits_offhours": 2,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 0,
+            "identifiable": 0,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": null,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 0,
+            "ach": null,
+            "ach_iqr": null,
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 490,
+          "p95_co2_teaching": 722,
+          "peak_co2_teaching": 1213,
+          "peak_one_breath_in": 48,
+          "median_rebreathed_pct_teaching": 0.18,
+          "peak_rebreathed_pct_teaching": 2.09,
+          "pct_time_above_1000": 0.5,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "Vilafames CO2_03",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 4685,
+          "readings_dropped_below_floor": 0,
+          "readings_teaching_hours": 1870,
+          "span": [
+            "2021-05-06T11:00:06.676000",
+            "2021-05-31T13:15:06.994000"
+          ],
+          "decay": {
+            "ach_teaching": 0.48,
+            "ach_teaching_iqr": [
+              0.48,
+              0.48
+            ],
+            "fits_teaching": 1,
+            "confident": false,
+            "ach_offhours": null,
+            "fits_offhours": 0,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 0,
+            "identifiable": 0,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": null,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 0,
+            "ach": null,
+            "ach_iqr": null,
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 447,
+          "p95_co2_teaching": 595,
+          "peak_co2_teaching": 745,
+          "peak_one_breath_in": 117,
+          "median_rebreathed_pct_teaching": 0.07,
+          "peak_rebreathed_pct_teaching": 0.86,
+          "pct_time_above_1000": 0.0,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "Vilafames CO2_04",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 7474,
+          "readings_dropped_below_floor": 0,
+          "readings_teaching_hours": 2248,
+          "span": [
+            "2021-05-03T10:00:05.820000",
+            "2021-05-31T13:15:06.954000"
+          ],
+          "decay": {
+            "ach_teaching": 0.68,
+            "ach_teaching_iqr": [
+              0.53,
+              1.05
+            ],
+            "fits_teaching": 12,
+            "confident": true,
+            "ach_offhours": 0.58,
+            "fits_offhours": 1,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 0,
+            "identifiable": 0,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": null,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 0,
+            "ach": null,
+            "ach_iqr": null,
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 484,
+          "p95_co2_teaching": 698,
+          "peak_co2_teaching": 941,
+          "peak_one_breath_in": 73,
+          "median_rebreathed_pct_teaching": 0.17,
+          "peak_rebreathed_pct_teaching": 1.37,
+          "pct_time_above_1000": 0.0,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "Vilafames CO2_05",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 6095,
+          "readings_dropped_below_floor": 0,
+          "readings_teaching_hours": 1907,
+          "span": [
+            "2021-05-06T11:05:07.068000",
+            "2021-05-31T13:15:05.613000"
+          ],
+          "decay": {
+            "ach_teaching": 2.25,
+            "ach_teaching_iqr": [
+              1.67,
+              2.89
+            ],
+            "fits_teaching": 6,
+            "confident": true,
+            "ach_offhours": null,
+            "fits_offhours": 0,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 0,
+            "identifiable": 0,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": null,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 0,
+            "ach": null,
+            "ach_iqr": null,
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 478,
+          "p95_co2_teaching": 666,
+          "peak_co2_teaching": 998,
+          "peak_one_breath_in": 66,
+          "median_rebreathed_pct_teaching": 0.15,
+          "peak_rebreathed_pct_teaching": 1.52,
+          "pct_time_above_1000": 0.0,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "Vilafames CO2_06",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 6603,
+          "readings_dropped_below_floor": 186,
+          "readings_teaching_hours": 2203,
+          "span": [
+            "2021-05-03T09:20:05.162000",
+            "2021-05-31T13:15:06.026000"
+          ],
+          "decay": {
+            "ach_teaching": 1.56,
+            "ach_teaching_iqr": [
+              0.92,
+              1.94
+            ],
+            "fits_teaching": 5,
+            "confident": true,
+            "ach_offhours": null,
+            "fits_offhours": 0,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 0,
+            "identifiable": 0,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": null,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 0,
+            "ach": null,
+            "ach_iqr": null,
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 467,
+          "p95_co2_teaching": 646,
+          "peak_co2_teaching": 1135,
+          "peak_one_breath_in": 53,
+          "median_rebreathed_pct_teaching": 0.12,
+          "peak_rebreathed_pct_teaching": 1.88,
+          "pct_time_above_1000": 0.0,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        }
+      ]
+    },
+    {
+      "label": "ENSENSIA schools, Patras, Greece (2023-25)",
+      "dataset": "Zenodo 18195710 (doi:10.5281/zenodo.18195710), CC BY 4.0",
+      "timezone": "Europe/Athens",
+      "design_comparison": null,
+      "design_note": "No room volumes or design ventilation are published for this dataset, so no design comparison and no implied occupancy are possible. Reported: fitted air-change rates and rebreathed air only.",
+      "rooms_without_teaching_hours_data": [],
+      "rooms": [
+        {
+          "hall": "School 1",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 61969,
+          "readings_dropped_below_floor": 413,
+          "readings_teaching_hours": 19024,
+          "span": [
+            "2023-11-09T13:10:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 1.55,
+            "ach_teaching_iqr": [
+              1.31,
+              1.79
+            ],
+            "fits_teaching": 175,
+            "confident": true,
+            "ach_offhours": 1.59,
+            "fits_offhours": 4,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 6,
+            "identifiable": 5,
+            "discarded_unidentifiable": 1,
+            "discard_rate_pct": 16.7,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 5,
+            "ach": 0.76,
+            "ach_iqr": [
+              0.74,
+              1.18
+            ],
+            "confident": true,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 473,
+          "p95_co2_teaching": 748,
+          "peak_co2_teaching": 1208,
+          "peak_one_breath_in": 48,
+          "median_rebreathed_pct_teaching": 0.14,
+          "peak_rebreathed_pct_teaching": 2.07,
+          "pct_time_above_1000": 0.1,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 2",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 53173,
+          "readings_dropped_below_floor": 114,
+          "readings_teaching_hours": 16375,
+          "span": [
+            "2023-10-20T10:10:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 1.4,
+            "ach_teaching_iqr": [
+              1.22,
+              1.78
+            ],
+            "fits_teaching": 178,
+            "confident": true,
+            "ach_offhours": 0.66,
+            "fits_offhours": 26,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 2,
+            "identifiable": 2,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": 0.0,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 2,
+            "ach": 0.68,
+            "ach_iqr": [
+              0.56,
+              0.8
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 475,
+          "p95_co2_teaching": 877,
+          "peak_co2_teaching": 3136,
+          "peak_one_breath_in": 14,
+          "median_rebreathed_pct_teaching": 0.14,
+          "peak_rebreathed_pct_teaching": 7.15,
+          "pct_time_above_1000": 1.3,
+          "pct_time_above_1400": 0.4,
+          "pct_time_above_2000": 0.1,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 3",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 60176,
+          "readings_dropped_below_floor": 175,
+          "readings_teaching_hours": 18407,
+          "span": [
+            "2023-11-10T11:30:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 1.49,
+            "ach_teaching_iqr": [
+              1.2,
+              1.77
+            ],
+            "fits_teaching": 114,
+            "confident": true,
+            "ach_offhours": 1.37,
+            "fits_offhours": 1,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 3,
+            "identifiable": 2,
+            "discarded_unidentifiable": 1,
+            "discard_rate_pct": 33.3,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 2,
+            "ach": 1.03,
+            "ach_iqr": [
+              0.05,
+              2.01
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 465,
+          "p95_co2_teaching": 736,
+          "peak_co2_teaching": 1505,
+          "peak_one_breath_in": 35,
+          "median_rebreathed_pct_teaching": 0.12,
+          "peak_rebreathed_pct_teaching": 2.86,
+          "pct_time_above_1000": 0.2,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 4",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 42116,
+          "readings_dropped_below_floor": 569,
+          "readings_teaching_hours": 13012,
+          "span": [
+            "2023-10-19T11:40:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 1.4,
+            "ach_teaching_iqr": [
+              1.16,
+              1.61
+            ],
+            "fits_teaching": 72,
+            "confident": true,
+            "ach_offhours": 1.08,
+            "fits_offhours": 3,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 6,
+            "identifiable": 4,
+            "discarded_unidentifiable": 2,
+            "discard_rate_pct": 33.3,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 4,
+            "ach": 1.26,
+            "ach_iqr": [
+              0.05,
+              2.47
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 492,
+          "p95_co2_teaching": 754,
+          "peak_co2_teaching": 1506,
+          "peak_one_breath_in": 35,
+          "median_rebreathed_pct_teaching": 0.19,
+          "peak_rebreathed_pct_teaching": 2.86,
+          "pct_time_above_1000": 0.5,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 5",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 5295,
+          "readings_dropped_below_floor": 1116,
+          "readings_teaching_hours": 1716,
+          "span": [
+            "2023-07-28T11:50:00",
+            "2024-03-01T14:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 0.24,
+            "ach_teaching_iqr": [
+              0.17,
+              0.29
+            ],
+            "fits_teaching": 6,
+            "confident": true,
+            "ach_offhours": 0.66,
+            "fits_offhours": 2,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 0,
+            "identifiable": 0,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": null,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 0,
+            "ach": null,
+            "ach_iqr": null,
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 639,
+          "p95_co2_teaching": 1043,
+          "peak_co2_teaching": 1674,
+          "peak_one_breath_in": 30,
+          "median_rebreathed_pct_teaching": 0.58,
+          "peak_rebreathed_pct_teaching": 3.3,
+          "pct_time_above_1000": 7.3,
+          "pct_time_above_1400": 0.6,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 6",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 8471,
+          "readings_dropped_below_floor": 299,
+          "readings_teaching_hours": 2602,
+          "span": [
+            "2023-10-20T10:20:00",
+            "2025-03-17T13:20:00"
+          ],
+          "decay": {
+            "ach_teaching": 0.42,
+            "ach_teaching_iqr": [
+              0.35,
+              1.03
+            ],
+            "fits_teaching": 15,
+            "confident": false,
+            "ach_offhours": 0.17,
+            "fits_offhours": 24,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 12,
+            "identifiable": 9,
+            "discarded_unidentifiable": 3,
+            "discard_rate_pct": 25.0,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 9,
+            "ach": 0.52,
+            "ach_iqr": [
+              0.25,
+              0.6
+            ],
+            "confident": true,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 662,
+          "p95_co2_teaching": 1945,
+          "peak_co2_teaching": 3339,
+          "peak_one_breath_in": 13,
+          "median_rebreathed_pct_teaching": 0.64,
+          "peak_rebreathed_pct_teaching": 7.68,
+          "pct_time_above_1000": 24.3,
+          "pct_time_above_1400": 13.8,
+          "pct_time_above_2000": 4.3,
+          "readings_dropped_flatline": 2088
+        },
+        {
+          "hall": "School 7",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 46788,
+          "readings_dropped_below_floor": 925,
+          "readings_teaching_hours": 14288,
+          "span": [
+            "2023-10-19T12:00:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 1.01,
+            "ach_teaching_iqr": [
+              0.59,
+              1.54
+            ],
+            "fits_teaching": 167,
+            "confident": false,
+            "ach_offhours": 0.82,
+            "fits_offhours": 57,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 20,
+            "identifiable": 15,
+            "discarded_unidentifiable": 5,
+            "discard_rate_pct": 25.0,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 15,
+            "ach": 0.72,
+            "ach_iqr": [
+              0.47,
+              1.02
+            ],
+            "confident": true,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 497,
+          "p95_co2_teaching": 1319,
+          "peak_co2_teaching": 2909,
+          "peak_one_breath_in": 15,
+          "median_rebreathed_pct_teaching": 0.2,
+          "peak_rebreathed_pct_teaching": 6.55,
+          "pct_time_above_1000": 12.8,
+          "pct_time_above_1400": 4.0,
+          "pct_time_above_2000": 0.8,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 8",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 46574,
+          "readings_dropped_below_floor": 1,
+          "readings_teaching_hours": 14257,
+          "span": [
+            "2023-09-14T13:30:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 0.94,
+            "ach_teaching_iqr": [
+              0.56,
+              1.16
+            ],
+            "fits_teaching": 167,
+            "confident": true,
+            "ach_offhours": 0.46,
+            "fits_offhours": 33,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 13,
+            "identifiable": 10,
+            "discarded_unidentifiable": 3,
+            "discard_rate_pct": 23.1,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 10,
+            "ach": 0.64,
+            "ach_iqr": [
+              0.05,
+              0.88
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 585,
+          "p95_co2_teaching": 1737,
+          "peak_co2_teaching": 3825,
+          "peak_one_breath_in": 11,
+          "median_rebreathed_pct_teaching": 0.43,
+          "peak_rebreathed_pct_teaching": 8.96,
+          "pct_time_above_1000": 16.9,
+          "pct_time_above_1400": 8.9,
+          "pct_time_above_2000": 3.4,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 9",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 45640,
+          "readings_dropped_below_floor": 603,
+          "readings_teaching_hours": 14097,
+          "span": [
+            "2023-10-19T11:20:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 1.15,
+            "ach_teaching_iqr": [
+              0.49,
+              2.22
+            ],
+            "fits_teaching": 142,
+            "confident": false,
+            "ach_offhours": 0.16,
+            "fits_offhours": 124,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 19,
+            "identifiable": 16,
+            "discarded_unidentifiable": 3,
+            "discard_rate_pct": 15.8,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 16,
+            "ach": 0.4,
+            "ach_iqr": [
+              0.25,
+              0.55
+            ],
+            "confident": true,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 507,
+          "p95_co2_teaching": 2403,
+          "peak_co2_teaching": 3952,
+          "peak_one_breath_in": 11,
+          "median_rebreathed_pct_teaching": 0.23,
+          "peak_rebreathed_pct_teaching": 9.29,
+          "pct_time_above_1000": 25.2,
+          "pct_time_above_1400": 18.9,
+          "pct_time_above_2000": 10.0,
+          "readings_dropped_flatline": 1156
+        },
+        {
+          "hall": "School 10",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 47681,
+          "readings_dropped_below_floor": 280,
+          "readings_teaching_hours": 14654,
+          "span": [
+            "2023-10-20T10:00:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 0.44,
+            "ach_teaching_iqr": [
+              0.28,
+              0.92
+            ],
+            "fits_teaching": 147,
+            "confident": false,
+            "ach_offhours": 0.23,
+            "fits_offhours": 159,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 10,
+            "identifiable": 5,
+            "discarded_unidentifiable": 5,
+            "discard_rate_pct": 50.0,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 5,
+            "ach": 0.4,
+            "ach_iqr": [
+              0.3,
+              0.47
+            ],
+            "confident": true,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 485,
+          "p95_co2_teaching": 2613,
+          "peak_co2_teaching": 4470,
+          "peak_one_breath_in": 9,
+          "median_rebreathed_pct_teaching": 0.17,
+          "peak_rebreathed_pct_teaching": 10.66,
+          "pct_time_above_1000": 25.6,
+          "pct_time_above_1400": 20.3,
+          "pct_time_above_2000": 12.6,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 11",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 57485,
+          "readings_dropped_below_floor": 460,
+          "readings_teaching_hours": 17637,
+          "span": [
+            "2023-10-18T13:40:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 1.49,
+            "ach_teaching_iqr": [
+              1.06,
+              1.93
+            ],
+            "fits_teaching": 233,
+            "confident": true,
+            "ach_offhours": 1.34,
+            "fits_offhours": 13,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 56,
+            "identifiable": 43,
+            "discarded_unidentifiable": 13,
+            "discard_rate_pct": 23.2,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 43,
+            "ach": 0.67,
+            "ach_iqr": [
+              0.46,
+              1.79
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 650,
+          "p95_co2_teaching": 1513,
+          "peak_co2_teaching": 3216,
+          "peak_one_breath_in": 14,
+          "median_rebreathed_pct_teaching": 0.61,
+          "peak_rebreathed_pct_teaching": 7.36,
+          "pct_time_above_1000": 22.7,
+          "pct_time_above_1400": 7.3,
+          "pct_time_above_2000": 0.7,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 12",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 52097,
+          "readings_dropped_below_floor": 366,
+          "readings_teaching_hours": 15958,
+          "span": [
+            "2023-08-03T10:40:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 0.65,
+            "ach_teaching_iqr": [
+              0.41,
+              1.01
+            ],
+            "fits_teaching": 427,
+            "confident": false,
+            "ach_offhours": 0.3,
+            "fits_offhours": 17,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 102,
+            "identifiable": 80,
+            "discarded_unidentifiable": 22,
+            "discard_rate_pct": 21.6,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 80,
+            "ach": 0.6,
+            "ach_iqr": [
+              0.38,
+              1.05
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 863,
+          "p95_co2_teaching": 1764,
+          "peak_co2_teaching": 2748,
+          "peak_one_breath_in": 16,
+          "median_rebreathed_pct_teaching": 1.17,
+          "peak_rebreathed_pct_teaching": 6.13,
+          "pct_time_above_1000": 37.8,
+          "pct_time_above_1400": 15.7,
+          "pct_time_above_2000": 1.7,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 13",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 59333,
+          "readings_dropped_below_floor": 1764,
+          "readings_teaching_hours": 18754,
+          "span": [
+            "2023-08-31T11:00:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 0.45,
+            "ach_teaching_iqr": [
+              0.29,
+              0.71
+            ],
+            "fits_teaching": 356,
+            "confident": false,
+            "ach_offhours": 0.14,
+            "fits_offhours": 162,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 71,
+            "identifiable": 57,
+            "discarded_unidentifiable": 14,
+            "discard_rate_pct": 19.7,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 57,
+            "ach": 0.8,
+            "ach_iqr": [
+              0.56,
+              1.33
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 1091,
+          "p95_co2_teaching": 3529,
+          "peak_co2_teaching": 7337,
+          "peak_one_breath_in": 5,
+          "median_rebreathed_pct_teaching": 1.77,
+          "peak_rebreathed_pct_teaching": 18.2,
+          "pct_time_above_1000": 52.2,
+          "pct_time_above_1400": 43.7,
+          "pct_time_above_2000": 30.4,
+          "readings_dropped_flatline": 137
+        },
+        {
+          "hall": "School 14",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 56336,
+          "readings_dropped_below_floor": 31,
+          "readings_teaching_hours": 17271,
+          "span": [
+            "2023-09-19T13:10:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 0.58,
+            "ach_teaching_iqr": [
+              0.33,
+              1.11
+            ],
+            "fits_teaching": 388,
+            "confident": false,
+            "ach_offhours": 0.2,
+            "fits_offhours": 157,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 72,
+            "identifiable": 58,
+            "discarded_unidentifiable": 14,
+            "discard_rate_pct": 19.4,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 58,
+            "ach": 0.56,
+            "ach_iqr": [
+              0.32,
+              0.88
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 1062,
+          "p95_co2_teaching": 3892,
+          "peak_co2_teaching": 7950,
+          "peak_one_breath_in": 5,
+          "median_rebreathed_pct_teaching": 1.69,
+          "peak_rebreathed_pct_teaching": 19.82,
+          "pct_time_above_1000": 52.9,
+          "pct_time_above_1400": 38.0,
+          "pct_time_above_2000": 25.3,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 15",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 55058,
+          "readings_dropped_below_floor": 47,
+          "readings_teaching_hours": 16888,
+          "span": [
+            "2023-11-09T13:10:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 0.84,
+            "ach_teaching_iqr": [
+              0.57,
+              1.32
+            ],
+            "fits_teaching": 376,
+            "confident": false,
+            "ach_offhours": 0.27,
+            "fits_offhours": 31,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 52,
+            "identifiable": 44,
+            "discarded_unidentifiable": 8,
+            "discard_rate_pct": 15.4,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 44,
+            "ach": 0.87,
+            "ach_iqr": [
+              0.47,
+              1.5
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 821,
+          "p95_co2_teaching": 1774,
+          "peak_co2_teaching": 4221,
+          "peak_one_breath_in": 10,
+          "median_rebreathed_pct_teaching": 1.06,
+          "peak_rebreathed_pct_teaching": 10.0,
+          "pct_time_above_1000": 35.1,
+          "pct_time_above_1400": 13.1,
+          "pct_time_above_2000": 2.9,
+          "readings_dropped_flatline": 1131
+        },
+        {
+          "hall": "School 16",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 48098,
+          "readings_dropped_below_floor": 53,
+          "readings_teaching_hours": 14589,
+          "span": [
+            "2024-01-11T13:10:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 1.62,
+            "ach_teaching_iqr": [
+              1.34,
+              2.08
+            ],
+            "fits_teaching": 121,
+            "confident": true,
+            "ach_offhours": 0.12,
+            "fits_offhours": 1,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 25,
+            "identifiable": 10,
+            "discarded_unidentifiable": 15,
+            "discard_rate_pct": 60.0,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 10,
+            "ach": 0.54,
+            "ach_iqr": [
+              0.45,
+              0.88
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 494,
+          "p95_co2_teaching": 995,
+          "peak_co2_teaching": 2635,
+          "peak_one_breath_in": 17,
+          "median_rebreathed_pct_teaching": 0.19,
+          "peak_rebreathed_pct_teaching": 5.83,
+          "pct_time_above_1000": 4.9,
+          "pct_time_above_1400": 1.2,
+          "pct_time_above_2000": 0.1,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 17",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 53909,
+          "readings_dropped_below_floor": 510,
+          "readings_teaching_hours": 16556,
+          "span": [
+            "2023-11-09T13:40:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 1.73,
+            "ach_teaching_iqr": [
+              1.26,
+              2.07
+            ],
+            "fits_teaching": 119,
+            "confident": true,
+            "ach_offhours": 0.31,
+            "fits_offhours": 5,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 18,
+            "identifiable": 12,
+            "discarded_unidentifiable": 6,
+            "discard_rate_pct": 33.3,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 12,
+            "ach": 0.88,
+            "ach_iqr": [
+              0.67,
+              1.18
+            ],
+            "confident": true,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 500,
+          "p95_co2_teaching": 1045,
+          "peak_co2_teaching": 3088,
+          "peak_one_breath_in": 14,
+          "median_rebreathed_pct_teaching": 0.21,
+          "peak_rebreathed_pct_teaching": 7.02,
+          "pct_time_above_1000": 6.1,
+          "pct_time_above_1400": 1.2,
+          "pct_time_above_2000": 0.2,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 18",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 4951,
+          "readings_dropped_below_floor": 30,
+          "readings_teaching_hours": 1441,
+          "span": [
+            "2023-11-09T13:10:00",
+            "2023-12-14T11:30:00"
+          ],
+          "decay": {
+            "ach_teaching": null,
+            "ach_teaching_iqr": null,
+            "fits_teaching": 0,
+            "confident": false,
+            "ach_offhours": null,
+            "fits_offhours": 0,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 0,
+            "identifiable": 0,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": null,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 0,
+            "ach": null,
+            "ach_iqr": null,
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 484,
+          "p95_co2_teaching": 664,
+          "peak_co2_teaching": 795,
+          "peak_one_breath_in": 101,
+          "median_rebreathed_pct_teaching": 0.17,
+          "peak_rebreathed_pct_teaching": 0.99,
+          "pct_time_above_1000": 0.0,
+          "pct_time_above_1400": 0.0,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 46826
+        },
+        {
+          "hall": "School 19",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 9082,
+          "readings_dropped_below_floor": 10198,
+          "readings_teaching_hours": 3052,
+          "span": [
+            "2023-09-25T12:40:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 0.85,
+            "ach_teaching_iqr": [
+              0.53,
+              1.35
+            ],
+            "fits_teaching": 16,
+            "confident": false,
+            "ach_offhours": 0.5,
+            "fits_offhours": 12,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 4,
+            "identifiable": 4,
+            "discarded_unidentifiable": 0,
+            "discard_rate_pct": 0.0,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 4,
+            "ach": 1.0,
+            "ach_iqr": [
+              0.58,
+              1.41
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 535,
+          "p95_co2_teaching": 1000,
+          "peak_co2_teaching": 2097,
+          "peak_one_breath_in": 23,
+          "median_rebreathed_pct_teaching": 0.3,
+          "peak_rebreathed_pct_teaching": 4.41,
+          "pct_time_above_1000": 5.0,
+          "pct_time_above_1400": 0.5,
+          "pct_time_above_2000": 0.0,
+          "readings_dropped_flatline": 25445
+        },
+        {
+          "hall": "School 20",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 48934,
+          "readings_dropped_below_floor": 7,
+          "readings_teaching_hours": 14899,
+          "span": [
+            "2023-08-02T15:20:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 1.34,
+            "ach_teaching_iqr": [
+              0.98,
+              1.76
+            ],
+            "fits_teaching": 142,
+            "confident": true,
+            "ach_offhours": 0.37,
+            "fits_offhours": 5,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 37,
+            "identifiable": 25,
+            "discarded_unidentifiable": 12,
+            "discard_rate_pct": 32.4,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 25,
+            "ach": 1.05,
+            "ach_iqr": [
+              0.76,
+              1.45
+            ],
+            "confident": true,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 674,
+          "p95_co2_teaching": 1358,
+          "peak_co2_teaching": 5337,
+          "peak_one_breath_in": 8,
+          "median_rebreathed_pct_teaching": 0.67,
+          "peak_rebreathed_pct_teaching": 12.94,
+          "pct_time_above_1000": 16.5,
+          "pct_time_above_1400": 4.3,
+          "pct_time_above_2000": 0.7,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 21",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 23120,
+          "readings_dropped_below_floor": 174,
+          "readings_teaching_hours": 7060,
+          "span": [
+            "2023-11-09T13:10:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 1.75,
+            "ach_teaching_iqr": [
+              1.15,
+              2.42
+            ],
+            "fits_teaching": 117,
+            "confident": true,
+            "ach_offhours": 0.47,
+            "fits_offhours": 7,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 16,
+            "identifiable": 11,
+            "discarded_unidentifiable": 5,
+            "discard_rate_pct": 31.2,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 11,
+            "ach": 0.88,
+            "ach_iqr": [
+              0.65,
+              1.68
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 537,
+          "p95_co2_teaching": 2222,
+          "peak_co2_teaching": 5065,
+          "peak_one_breath_in": 8,
+          "median_rebreathed_pct_teaching": 0.31,
+          "peak_rebreathed_pct_teaching": 12.22,
+          "pct_time_above_1000": 26.1,
+          "pct_time_above_1400": 14.2,
+          "pct_time_above_2000": 6.5,
+          "readings_dropped_flatline": 22927
+        },
+        {
+          "hall": "School 22",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 60458,
+          "readings_dropped_below_floor": 378,
+          "readings_teaching_hours": 18416,
+          "span": [
+            "2023-08-02T15:20:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 0.78,
+            "ach_teaching_iqr": [
+              0.58,
+              1.06
+            ],
+            "fits_teaching": 299,
+            "confident": true,
+            "ach_offhours": 0.34,
+            "fits_offhours": 89,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 48,
+            "identifiable": 36,
+            "discarded_unidentifiable": 12,
+            "discard_rate_pct": 25.0,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 36,
+            "ach": 0.73,
+            "ach_iqr": [
+              0.47,
+              1.11
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 905,
+          "p95_co2_teaching": 3502,
+          "peak_co2_teaching": 7447,
+          "peak_one_breath_in": 5,
+          "median_rebreathed_pct_teaching": 1.28,
+          "peak_rebreathed_pct_teaching": 18.49,
+          "pct_time_above_1000": 48.1,
+          "pct_time_above_1400": 41.2,
+          "pct_time_above_2000": 30.4,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 23",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 39215,
+          "readings_dropped_below_floor": 21,
+          "readings_teaching_hours": 11940,
+          "span": [
+            "2023-08-03T10:10:00",
+            "2025-06-04T09:30:00"
+          ],
+          "decay": {
+            "ach_teaching": 0.82,
+            "ach_teaching_iqr": [
+              0.59,
+              1.21
+            ],
+            "fits_teaching": 127,
+            "confident": true,
+            "ach_offhours": 0.18,
+            "fits_offhours": 76,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 38,
+            "identifiable": 27,
+            "discarded_unidentifiable": 11,
+            "discard_rate_pct": 28.9,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 27,
+            "ach": 0.85,
+            "ach_iqr": [
+              0.41,
+              1.22
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 738,
+          "p95_co2_teaching": 2131,
+          "peak_co2_teaching": 3402,
+          "peak_one_breath_in": 13,
+          "median_rebreathed_pct_teaching": 0.84,
+          "peak_rebreathed_pct_teaching": 7.85,
+          "pct_time_above_1000": 37.9,
+          "pct_time_above_1400": 24.0,
+          "pct_time_above_2000": 7.3,
+          "readings_dropped_flatline": 53
+        },
+        {
+          "hall": "School 24",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 59209,
+          "readings_dropped_below_floor": 534,
+          "readings_teaching_hours": 18087,
+          "span": [
+            "2023-09-19T14:10:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 1.31,
+            "ach_teaching_iqr": [
+              0.99,
+              1.72
+            ],
+            "fits_teaching": 370,
+            "confident": true,
+            "ach_offhours": 0.46,
+            "fits_offhours": 26,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 107,
+            "identifiable": 93,
+            "discarded_unidentifiable": 14,
+            "discard_rate_pct": 13.1,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 93,
+            "ach": 0.8,
+            "ach_iqr": [
+              0.53,
+              1.33
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 578,
+          "p95_co2_teaching": 1902,
+          "peak_co2_teaching": 3470,
+          "peak_one_breath_in": 12,
+          "median_rebreathed_pct_teaching": 0.42,
+          "peak_rebreathed_pct_teaching": 8.03,
+          "pct_time_above_1000": 32.3,
+          "pct_time_above_1400": 14.8,
+          "pct_time_above_2000": 4.0,
+          "readings_dropped_flatline": 0
+        },
+        {
+          "hall": "School 25",
+          "volume_m3": null,
+          "design_airflow_m3h": null,
+          "design_ach": null,
+          "readings_total": 41703,
+          "readings_dropped_below_floor": 626,
+          "readings_teaching_hours": 12819,
+          "span": [
+            "2023-10-20T09:40:00",
+            "2025-12-02T10:10:00"
+          ],
+          "decay": {
+            "ach_teaching": 0.64,
+            "ach_teaching_iqr": [
+              0.42,
+              0.98
+            ],
+            "fits_teaching": 182,
+            "confident": false,
+            "ach_offhours": 0.31,
+            "fits_offhours": 166,
+            "shortfall_factor": null
+          },
+          "buildup": {
+            "fits_passing_r2": 30,
+            "identifiable": 21,
+            "discarded_unidentifiable": 9,
+            "discard_rate_pct": 30.0,
+            "occupancy_bounds": null,
+            "flagged_absurd_occupancy": [],
+            "kept": 21,
+            "ach": 0.6,
+            "ach_iqr": [
+              0.36,
+              0.88
+            ],
+            "confident": false,
+            "implied_occupants_median": null,
+            "shortfall_factor": null
+          },
+          "median_co2_teaching": 644,
+          "p95_co2_teaching": 2698,
+          "peak_co2_teaching": 4746,
+          "peak_one_breath_in": 9,
+          "median_rebreathed_pct_teaching": 0.59,
+          "peak_rebreathed_pct_teaching": 11.38,
+          "pct_time_above_1000": 41.2,
+          "pct_time_above_1400": 32.7,
+          "pct_time_above_2000": 17.0,
+          "readings_dropped_flatline": 0
+        }
+      ]
     }
   ]
 }

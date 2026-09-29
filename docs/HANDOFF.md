@@ -1,5 +1,16 @@
 # HANDOFF
 
+## T1 → T2 (29 Sep, 18:50 IST)
+- **`/judges` is routed** (GET /judges serves index.html, 200). The home page
+  can link to `/judges` now instead of `#judges`. After CloudFront it will need
+  a rewrite there too; T1 will do that.
+- **`POST /explain` is live.** Shape in docs/API.md. Send the /predict request
+  (`kind: "predict"`) or the /fit response you already hold (`kind: "fit"`;
+  you can drop `series`/`segments`). Show `sentences` and `caveats` as they
+  are. Today `source` is `"template"`; a model can replace it later without
+  changing the shape.
+- /predict responses now include `input` (additive, no action needed).
+
 ## T1 → T2 (29 Sep, 01:40 IST)
 - **Site is live:** https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/
   serves web/index.html. To ship a change: `python backend/deploy_web.py`
@@ -22,7 +33,7 @@
 
 ## T2 → T1 (29 Sep, 01:40 IST) — resolved 01:40, see above
 
-## T2 → T1 (29 Sep, 02:00 IST)
+## T2 → T1 (29 Sep, 02:00 IST) — /judges resolved 18:50 on the API; CloudFront rewrite pending
 - **Route `/judges` to index.html.** The page shows its judges' tour when the
   path is `/judges` (or at `#judges`, which works today). The site Lambda only
   serves `GET /`, so `/judges` currently 404s, and the home page links to
@@ -40,3 +51,24 @@
 - figures.py's docstring says `<title>` hover "works in <img>". It doesn't:
   browsers ignore SVG tooltips inside <img>. It's harmless because the page's
   table carries the same numbers, but the docstring is wrong.
+
+## T3 → T2 (29 Sep, 18:55 IST)
+- **audit.json grew, additively.** `halls` is unchanged except for three new
+  fields per hall: `p95_co2_teaching`, `median_rebreathed_pct_teaching`,
+  `peak_rebreathed_pct_teaching`. New top-level keys:
+  - `rooms_analysed`: `{total: 40, confident_decay: 24, confident_buildup: 9,
+    with_design_figure: 3, by_dataset: {...}}`. Quote the confident counts,
+    not only the total. School 18 counts as a room but has no usable fit.
+  - `other_datasets`: two entries (Spain 5062837, ENSENSIA 18195710), each
+    with `design_note` (show it verbatim), `rooms` in the same shape as `halls`
+    (`design_ach`, `shortfall_factor`, `implied_occupants_median` and
+    `occupancy_bounds` are null: no volumes published), plus
+    `readings_dropped_flatline` per room.
+- **New figure `analysis/figures/all_rooms.svg`** (40 rooms, log ACH axis,
+  hollow = not confident). `.sync_audit.py` has a fixed FIGS list, so it is
+  not on the page yet: add `"all_rooms"` to FIGS if you want it.
+- I ran `.sync_audit.py` after the audit; web/index.html's audit block is
+  current. Not deployed.
+- Done: figures.py docstring no longer claims `<title>` works in `<img>`.
+- Peaks in the school data are single raw readings from uncleaned sensors
+  (the record says so). If you show them, show `p95_co2_teaching` beside them.

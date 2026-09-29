@@ -17,6 +17,11 @@ Serves `web/index.html` (`text/html; charset=utf-8`, `max-age=60`). This is
 the public site until CloudFront is enabled; see docs/STATUS.md. Ship changes
 with `python backend/deploy_web.py`.
 
+## GET /judges
+
+The same `index.html` as `GET /`. The page opens its judges' tour when the path
+is `/judges`.
+
 ## GET /health
 
 ```json
@@ -139,10 +144,57 @@ Response (real output for the request above, trimmed `curve`):
   "meanRebreathedFraction": 0.03369380423566409,
   "minutesAbove1000": 75.0,
   "steadyStatePpm": 3658.7759660486936,
-  "maxOccupancy": {"1000": 16, "1400": 27}
+  "maxOccupancy": {"1000": 16, "1400": 27},
+  "input": {"volumeM3": 363.0, "ach": 0.74, "occupants": 60, "minutes": 90.0,
+            "activity": "seated_quiet", "outdoorPpm": 420.0}
 }
 ```
+- `input` echoes the validated request with defaults filled in (added 29 Sep, additive).
 - `curve` has one point per minute, `minutes + 1` points in total.
 - `maxOccupancy` is the largest headcount whose peak stays at or under each
   ppm limit for this room, duration and activity. It is capped at 500, so
   `500` means "500 or more".
+
+## POST /explain
+
+Plain-language sentences about solver output. Today they come from
+deterministic templates (`"source": "template"`). A model can replace the
+templates later behind this same endpoint and response shape, and `source`
+will then name it. Every number in `sentences` is one of the numbers in `facts`.
+
+Request, one of:
+```json
+{"kind": "predict", "request": {<a /predict request body>}}
+{"kind": "fit", "result": {<a /fit response, as received>}}
+```
+- `predict` re-runs the solver on `request`, with the same validation and 400s
+  as /predict.
+- `fit` reads only `outdoorPpm`, `peakPpm`, `readingsDroppedBelowOutdoor`,
+  `decay.fingerprint`, `buildup.fingerprint` and `buildup.discarded` from a
+  /fit response the client already has. `series` and `segments` can be left
+  out. The peak fraction is recomputed from `peakPpm`.
+
+Response (real output, fit kind, with Hall B's audit numbers):
+```json
+{
+  "source": "template",
+  "sentences": [
+    "The highest reading was 4,957 ppm: 12.0% of inhaled air had already been exhaled by someone else, one breath in 8.",
+    "The decay fit is uncertain: 323 fits scatter from 0.47 to 1.70 air changes per hour (interquartile range), so its median of 1.10 should not be quoted as the room's rate.",
+    "Only the decay method produced a result. It measures the room while it empties, so on its own it could be the building's leak rate rather than the ventilation people breathe."
+  ],
+  "caveats": ["Rebreathed fraction is an exposure measure, not an infection probability, and this is not medical advice.",
+              "A single sensor assumes well-mixed air; close to a person it can be higher."],
+  "facts": {"kind": "fit", "outdoorPpm": 420.0, "peakPpm": 4957.0, "peakRebreathedFraction": 0.1194,
+            "peakOneBreathIn": 8.3756, "readingsDroppedBelowOutdoor": 0,
+            "decay": {"achMedian": 1.1, "achP25": 0.47, "achP75": 1.7, "nFits": 323, "confident": false},
+            "buildup": null, "buildupDiscarded": 0}
+}
+```
+- Rounding never flatters the room. ACH and "one breath in N" round down; ppm
+  and percentages round up.
+- A fingerprint with `confident: false` is described as uncertain, with its
+  interquartile range, and is never stated as the room's rate.
+- When both methods are confident, one sentence says whether the buildup
+  median falls inside the decay fits' interquartile range (agree or disagree).
+- Show `sentences` and `caveats` as they are. `facts` is there for tracing.

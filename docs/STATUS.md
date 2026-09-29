@@ -1,21 +1,26 @@
-# STATUS — 29 Sep 2026, 18:35 IST (T3 block; T2 02:00, T1 01:40)
+# STATUS — 29 Sep 2026, 18:55 IST (T3 block; T1 18:50)
 
 ## Phase
-2 — T1 hosting + API additions; T3 data and evidence; T2 finding + judges tour
+3 — T3 data: more rooms; T1 /judges, /explain (templates), uptime alarm
 
 ## Done since last update
-- T1: **site live** at https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/ (GET / on the API, served from a private S3 bucket; direct S3 returns 403)
-- T1: `python backend/deploy_web.py` syncs web/ to the bucket (and invalidates CloudFront once it exists). T2 ships with it
-- T1: **API change, additive**: /fit returns `decay.segments` and `buildup.segments` as `[[startIso, endIso, ach], ...]` (buildup: identifiable only), plus optional `teachingHoursOnly`, which reproduces audit.json Hall A exactly (0.744 from 252 fits, 1.019 from 27). docs/API.md updated
-- T1: $20/month AWS Budget (actual + forecast), email alert; address kept out of git as a stack parameter
-- T1: **fixed /health 500s.** Cause: boto3 cold start took more than 5 s at 128 MB, so the Lambda timed out; deploys weren't the cause. Now 512 MB / 10 s with 2 s SSM timeouts; cold start ~0.9 s, 5 of 5 parallel cold hits returned 200
-- T2: web/index.html now has The finding (the table rendered from the embedded audit.json, the 4 SVG figures, the two-methods explanation; B uncertain on both methods, C buildup thin), fitted-segment highlighting, a teaching-hours checkbox, an "upload ≠ audit" note, the judges tour at #judges, and the CLAUDE.md caveats verbatim. Tested locally, not deployed yet
-- T2: verified the tour's reproduce step: the page's own upload path on the full Hall A CSV (8.2 MB trimmed to 2.3 MB) gives live decay 0.7438 (252) and buildup 1.0195 (27, 6 discarded)
-- T3: audit writes SSM lastAuditRun; CloudTrail export (evidence/); SVG figures in analysis/figures/
-- T3: **AWS MCP connection proven**: evidence/mcp-connection-verified.txt has 8 tools + server-declared read-only/destructive hints, ARN user/secondbreath-dev, real list_regions/search_documentation/run_script calls, 24 skills. CloudTrail independently shows the run_script calls (invokedBy aws-mcp.amazonaws.com) plus an AwsMcpEvent whose userAgent names claude-code/2.1.284
-- T3: CloudTrail re-exported through 29 Sep 12:53Z (939 events), now covering both users; export_cloudtrail.py labels `aws-mcp` / `mcp-proxy` callers
+- T3: **audit now covers 40 rooms in 3 open datasets**: 3 halls, 12 Spanish primary classrooms (Zenodo 5062837), 25 ENSENSIA schools (Zenodo 18195710, one sensor per school, device coordinates in Patras, Greece). `audit.json.rooms_analysed`: 24 confident decay, 9 confident buildup, 3 with a design figure
+- T3: the school datasets publish no volumes or design airflow. **No design comparison is possible for them**, and no implied occupancy; audit.json says so in each `design_note`. Buildup rates are still valid without volume (volume only scales occupancy; checked in ventilation.py)
+- T3: format handling lives in the loader only (analysis/audit_lecture_halls.py); **ventilation.py untouched**. UTC → local (Madrid, Athens) before the same 8–18 weekday split; Sant Miquel's quoted-line CSV handled
+- T3: **ENSENSIA fill value found and dropped**: devices emit exactly 658 ppm for days while temp/humidity move (School 18: 46,826 readings in a row, 90% of its data). Rule: one value unchanged for ≥13 readings and ≥2 h = dead sensor; counts per room in `readings_dropped_flatline`. The halls have none, so their numbers are identical to before
+- T3: new analysis/figures/all_rooms.svg; other figures regenerated; web/.sync_audit.py run (page audit block current, not deployed); analysis/test_loaders.py passes
+- T1 (18:50): GET /judges live; POST /explain live (templates, `source: "template"`); uptime Lambda + `secondbreath-down` alarm; backend tests 10/10
 
-## Audit table (analysis/audit.json, single source of truth)
+## What the new rooms say (confident fits only, teaching hours)
+| Dataset | Rooms | Decay ACH, confident | Buildup ACH, confident | Median CO2 / rebreathed |
+|---|---|---|---|---|
+| Halls, Cyprus (design ~6) | 3 | 0.74, 0.88 (A, C) | 1.02, 1.09 (A, C) | see audit table |
+| Spain 2021, Covid measures in force | 12 | 8 rooms, 0.68–3.65, median 2.32 | none | 440–507 ppm / 0.05–0.23% |
+| ENSENSIA 2023–25 | 25 | 14 rooms, 0.24–1.75, median 1.40 | 7 rooms, 0.40–1.05, median 0.72 | 465–1,091 ppm / 0.12–1.77% |
+- No design figure for Spain or ENSENSIA, so none of these is a shortfall. The honest use is context: the halls' 0.74 and 0.88 ACH (A, C) sit inside the ordinary-school range, far below their own 6 ACH design
+- ENSENSIA single-reading peaks reach 7,950 ppm (School 14, p95 3,892). They are raw readings from uncleaned sensors, so quote p95 beside any peak
+
+## Audit table (halls, unchanged)
 | Hall | Design | Decay ACH (n) | Buildup ACH (kept) | Shortfall dec/bld |
 |---|---|---|---|---|
 | A | 5.8 | 0.74 (252) | 1.02 (27) | 7.8x / 5.7x |
@@ -23,26 +28,20 @@
 | C | 5.9 | 0.88 (259) | 1.09 (8, thin) | 6.8x / 5.4x |
 
 ## Live state
-- Site: https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/ — 200, 01:37 IST
-- /health: …/health — 200, lastAuditRun present, auditStale false, 01:37 IST
+- Site / and /judges — 200 (T1, 18:45 IST). /health lastAuditRun now 2026-09-29T13:16:23Z (this run)
 - Deployed stack: secondbreath, ap-south-1, UPDATE_COMPLETE
 
 ## Broken or blocked
-- **CloudFront blocked:** "Your account must be verified before you can add new CloudFront resources" (403, same verification as Bedrock). The template has the S3+OAC+CloudFront setup behind `EnableCloudFront` (default false). Human: open an AWS Support case covering CloudFront and Bedrock, then T1 deploys with `--parameter-overrides EnableCloudFront=true`. The site URL then changes to *.cloudfront.net; the API URL stays the same
-- **T1's backend/ work since Phase 0 is uncommitted** (api.py, build.py, deploy_web.py, tests); the live stack runs code that isn't in git
-- CloudTrail export is a snapshot; rerun `python analysis/export_cloudtrail.py` at the end
-- Bedrock blocked; /explain not started
-- /judges path 404s until T1 routes it (HANDOFF); the home page links to #judges, which works
+- Human: confirm the SNS subscription email (uptime alerts go nowhere until then)
+- CloudFront + Bedrock still blocked on account verification
+- Uncommitted: T3's analysis/ + docs/ + web/index.html sync; T1's backend/ (uptime.py is new)
 
 ## Next 3 actions
-1. Human: commit backend/ and T3's evidence/ + analysis/export_cloudtrail.py; open the Support case (CloudFront + Bedrock)
-2. T1: enable CloudFront once verified; /explain or template sentences after the evening of 30 Sep
-3. T2: deploy web/ with backend/deploy_web.py once reviewed; T3: Zenodo 5062837 / 18195710, README attribution
+1. T2: add `all_rooms` to .sync_audit.py FIGS, show `rooms_analysed` + `design_note` (HANDOFF), deploy
+2. T3: README attribution for 5062837 and 18195710 (CC BY 4.0 obligation; the app footer needs them too, T2)
+3. Human: commit; confirm SNS
 
 ## Decisions taken
-- T2: audit + figures are inlined by web/.sync_audit.py (figures as <img> data URIs, so SVG styles can't leak); upload results round down, so Hall A buildup shows 1.01 live vs the audit's 1.02, and the tour says so
-- Fallback hosting via API Gateway + Lambda: HTTPS today, bucket stays private, no new services
-- Budget, not a CloudWatch billing alarm: EstimatedCharges exists only in us-east-1
-- teachingHoursOnly mirrors the audit's split (decay by start time, buildup on the filtered series), so live and audit numbers match
-- T3: CloudTrail split by userAgent; IP and access key masked in the raw export
-- T3: MCP runs as a separate IAM user (secondbreath-dev), so agent-via-MCP calls separate by principal, not just userAgent
+- Flatline filter in the school loaders only — halls verified to have zero flatline readings; the fill value is an ENSENSIA device artefact
+- Same fit parameters for every dataset, not tuned per dataset — tuning to 10-min sampling would be fitting to the answer
+- A room counts as analysed once it has teaching-hours data; confident counts reported beside the total so 40 is never quoted alone

@@ -4,8 +4,9 @@ Plain-SVG figures for the audit. No chart library: each figure is a string.
 Written to analysis/figures/ by audit_lecture_halls.py. Colours follow the
 dataviz reference palette (categorical slots 1 and 2, validated as a pair in
 light and dark); text and axes use currentColor-style ink tokens so the files
-sit on either theme. Hover text is native <title>, which works in <img> and
-inline embeds alike.
+sit on either theme. Hover text is native <title>, which works when an SVG is
+opened directly or inlined; browsers ignore it inside <img>, so every number a
+tooltip shows must also be in the figure's <desc> or the page's own table.
 """
 
 from __future__ import annotations
@@ -200,5 +201,70 @@ def summary_svg(results: list[dict], path: Path) -> None:
             f"{'' if r['buildup']['confident'] else ' (uncertain)'}"
             for r in results
         ) + ". Source: Zenodo 18385830, CC BY 4.0; analysis/audit.json.",
+        h=h,
+    ), encoding="utf-8")
+
+
+def rooms_svg(halls: list[dict], others: list[dict], path: Path) -> None:
+    """Every room's median ACH, one dot per room, on a log axis (rates span
+    two orders of magnitude). Hollow = not confident, so it is not quoted."""
+    import math
+    groups = [("Lecture halls, Cyprus", halls)] + [(ds["label"].split(" (")[0], ds["rooms"]) for ds in others]
+    lo, hi = 0.1, 20.0
+    x0, pw = 250, W - 250 - 30
+    has_design = lambda rs: any(r["design_ach"] is not None for r in rs)  # noqa: E731
+    row = 30
+    h = 90 + sum(30 + row * (3 if has_design(rs) else 2) for _, rs in groups) + 40
+
+    def x(v: float) -> float:
+        v = min(max(v, lo), hi)
+        return x0 + pw * math.log(v / lo) / math.log(hi / lo)
+
+    total = sum(len(rs) for _, rs in groups)
+    body = [
+        f'<text class="t" x="{L}" y="24">Air changes per hour in {total} rooms, three open datasets</text>',
+        f'<text class="s" x="{L}" y="42">Teaching-hours median per room · filled = confident, '
+        f'hollow = not confident, not quoted · only the halls publish a design rate</text>',
+    ]
+    for v in (0.1, 0.2, 0.5, 1, 2, 5, 10, 20):
+        body.append(f'<line class="g" x1="{x(v):.1f}" x2="{x(v):.1f}" y1="70" y2="{h - 34}"/>')
+        body.append(f'<text class="a" x="{x(v):.1f}" y="{h - 18}" text-anchor="middle">{v:g}</text>')
+    body.append(f'<text class="a" x="{x(hi):.1f}" y="{h - 4}" text-anchor="end">ACH (log scale)</text>')
+
+    y = 90
+    for label, rs in groups:
+        body.append(f'<text class="t" x="{L}" y="{y}">{escape(label)} '
+                    f'<tspan class="a">· {len(rs)} rooms</tspan></text>')
+        y += 30
+        if has_design(rs):
+            body.append(f'<text class="s" x="{x0 - 10}" y="{y + 4}" text-anchor="end">design</text>')
+            for r in rs:
+                body.append(f'<circle cx="{x(r["design_ach"]):.1f}" cy="{y}" r="5" fill="var(--design)">'
+                            f'<title>{escape(r["hall"])} design: {r["design_ach"]:.2f} ACH</title></circle>')
+            y += row
+        for cls, key, ach_key, name in (("decay", "decay", "ach_teaching", "decay (emptying)"),
+                                        ("build", "buildup", "ach", "buildup (occupied)")):
+            body.append(f'<text class="s" x="{x0 - 10}" y="{y + 4}" text-anchor="end">{name}</text>')
+            for r in rs:
+                v = r[key][ach_key]
+                if v is None:
+                    continue
+                sure = r[key]["confident"]
+                fill = f"var(--{cls})" if sure else "var(--surface)"
+                body.append(
+                    f'<circle cx="{x(v):.1f}" cy="{y}" r="5" fill="{fill}" stroke="var(--{cls})" '
+                    f'stroke-width="1.5" fill-opacity="0.75"><title>{escape(r["hall"])} {name}: '
+                    f'{v:.2f} ACH{"" if sure else " (uncertain)"}</title></circle>')
+            y += row
+
+    def line(label: str, rs: list[dict]) -> str:
+        dec = sorted(r["decay"]["ach_teaching"] for r in rs if r["decay"]["confident"])
+        return (f"{label}: {len(rs)} rooms, {len(dec)} with a confident decay rate"
+                + (f", ranging {dec[0]:.2f} to {dec[-1]:.2f} ACH" if dec else ""))
+
+    path.write_text(_svg(
+        body, f"Air changes per hour in {total} rooms across three open datasets",
+        "; ".join(line(lb, rs) for lb, rs in groups)
+        + ". Sources: Zenodo 18385830, 5062837, 18195710, all CC BY 4.0; analysis/audit.json.",
         h=h,
     ), encoding="utf-8")

@@ -226,7 +226,10 @@ def fit(event):
 
 @_handle
 def predict(event):
-    body = _body(event)
+    return _predict(_body(event))
+
+
+def _predict(body):
     volume = _number(body, "volumeM3", 1, 1_000_000)
     ach = _number(body, "ach", 0.01, 50)
     occupants = int(_number(body, "occupants", 0, 10_000))
@@ -253,7 +256,166 @@ def predict(event):
             str(limit): v.max_occupancy(volume, ach, minutes, limit, activity, outdoor)
             for limit in (1000, 1400)
         },
+        # Echoed so /explain can phrase its inputs without re-validating them.
+        "input": {"volumeM3": volume, "ach": ach, "occupants": occupants, "minutes": minutes,
+                  "activity": activity, "outdoorPpm": outdoor},
     }
+
+
+# ---------------------------------------------------------------------------
+# /explain: plain-language sentences over solver output
+# ---------------------------------------------------------------------------
+#
+# Two steps. _explain_facts() gets every number from the solver: it re-runs
+# predict() on the request, or reads the numbers out of a /fit response the
+# client already has, since re-sending a 6 MB CSV to re-fit would be wasteful.
+# _render() only turns those facts into words. It is the one swap point: to use
+# Bedrock later, have _render send `facts` to the Converse API and ask the model
+# only to phrase them, fall back to the templates on any error, and set
+# "source" to the model ID. The model never produces a number; each number in a
+# sentence is one of `facts`, which the response returns alongside.
+#
+# Rounding never flatters the room: ACH and "one breath in N" round down, ppm
+# and rebreathed percentages round up.
+
+def _down(x, dp=2):
+    return math.floor(x * 10**dp) / 10**dp
+
+
+def _up(x, dp=0):
+    return math.ceil(x * 10**dp) / 10**dp
+
+
+def _ppm(x):
+    return f"{int(_up(x)):,} ppm"
+
+
+def _pct(fraction):
+    return f"{_up(fraction * 100, 1):.1f}%"
+
+
+def _one_in(n):
+    return f"one breath in {math.floor(n)}"
+
+
+def _fingerprint_in(result, method):
+    part = result.get(method)
+    if not isinstance(part, dict):
+        raise BadRequest(f"result.{method} must be an object")
+    fp = part.get("fingerprint")
+    if fp is None:
+        return None
+    if not isinstance(fp, dict):
+        raise BadRequest(f"result.{method}.fingerprint must be an object or null")
+    out = {k: _number(fp, k, 0, 1e6) for k in ("achMedian", "achP25", "achP75", "nFits")}
+    out["nFits"] = int(out["nFits"])
+    if not isinstance(fp.get("confident"), bool):
+        raise BadRequest(f"result.{method}.fingerprint.confident must be true or false")
+    out["confident"] = fp["confident"]
+    return out
+
+
+def _explain_facts(body):
+    kind = body.get("kind")
+    if kind == "predict":
+        req = body.get("request")
+        if not isinstance(req, dict):
+            raise BadRequest("request must be the /predict request object")
+        p = _predict(req)
+        return {"kind": kind, **p["input"],
+                **{k: p[k] for k in ("peakPpm", "peakRebreathedFraction", "peakOneBreathIn",
+                                     "minutesAbove1000", "steadyStatePpm", "maxOccupancy")}}
+    if kind == "fit":
+        r = body.get("result")
+        if not isinstance(r, dict):
+            raise BadRequest("result must be the /fit response object")
+        outdoor = _number(r, "outdoorPpm", 300, 600)
+        peak = _number(r, "peakPpm", outdoor, 100_000)
+        buildup = r.get("buildup") if isinstance(r.get("buildup"), dict) else {}
+        # Recomputed from peak, not read, so the fraction can't disagree with it.
+        return {
+            "kind": kind, "outdoorPpm": outdoor, "peakPpm": peak,
+            "peakRebreathedFraction": v.rebreathed_fraction(peak, outdoor),
+            "peakOneBreathIn": _finite(v.one_breath_in(peak, outdoor)),
+            "readingsDroppedBelowOutdoor": int(_number(r, "readingsDroppedBelowOutdoor", 0, 1e9, 0)),
+            "decay": _fingerprint_in(r, "decay"),
+            "buildup": _fingerprint_in(r, "buildup"),
+            "buildupDiscarded": int(_number(buildup, "discarded", 0, 1e9, 0)),
+        }
+    raise BadRequest('kind must be "predict" or "fit"')
+
+
+def _rate_sentence(name, fp):
+    ach = f"{_down(fp['achMedian']):.2f}"
+    fits = f"{fp['nFits']} fit{'s' if fp['nFits'] != 1 else ''}"
+    if fp["confident"]:
+        return f"The {name} fit gives {ach} air changes per hour (median of {fits})."
+    return (f"The {name} fit is uncertain: {fits} scatter from {_down(fp['achP25']):.2f} "
+            f"to {_down(fp['achP75']):.2f} air changes per hour (interquartile range), "
+            f"so its median of {ach} should not be quoted as the room's rate.")
+
+
+def _render(facts):
+    """Template sentences. See the block comment above for swapping in a model."""
+    s = []
+    if facts["kind"] == "predict":
+        s.append(f"With {facts['occupants']} people in {int(facts['volumeM3']):,} m³ at "
+                 f"{_down(facts['ach']):.2f} air changes per hour, CO2 is predicted to reach "
+                 f"{_ppm(facts['peakPpm'])} after {facts['minutes']:g} minutes.")
+        if facts["peakOneBreathIn"] is not None:
+            s.append(f"At that point {_pct(facts['peakRebreathedFraction'])} of the air "
+                     f"breathed in has already been exhaled by someone in the room: "
+                     f"{_one_in(facts['peakOneBreathIn'])}.")
+        if facts["minutesAbove1000"] > 0:
+            s.append(f"CO2 is above 1,000 ppm for {facts['minutesAbove1000']:g} of the "
+                     f"{facts['minutes']:g} minutes.")
+        # max_occupancy() stops counting at 500.
+        occ = {k: "500 or more" if n >= 500 else f"at most {n}"
+               for k, n in facts["maxOccupancy"].items()}
+        s.append(f"To stay at or under 1,000 ppm for the whole session, this room holds "
+                 f"{occ['1000']} people; to stay at or under 1,400 ppm, {occ['1400']}.")
+    else:
+        if facts["peakOneBreathIn"] is not None:
+            s.append(f"The highest reading was {_ppm(facts['peakPpm'])}: "
+                     f"{_pct(facts['peakRebreathedFraction'])} of inhaled air had already "
+                     f"been exhaled by someone else, {_one_in(facts['peakOneBreathIn'])}.")
+        d, b = facts["decay"], facts["buildup"]
+        if d:
+            s.append(_rate_sentence("decay", d))
+        if b:
+            s.append(_rate_sentence("buildup (occupied)", b))
+        if facts["buildupDiscarded"]:
+            s.append(f"{facts['buildupDiscarded']} buildup segment(s) could not pin the rate "
+                     f"down and were discarded, not quoted.")
+        if d and b and d["confident"] and b["confident"]:
+            agree = d["achP25"] <= b["achMedian"] <= d["achP75"]
+            s.append("The occupied-room estimate falls inside the spread of the decay fits, "
+                     "so the two methods agree." if agree else
+                     "The occupied-room estimate falls outside the spread of the decay fits, "
+                     "so the two methods disagree; report both.")
+        elif d and not b:
+            s.append("Only the decay method produced a result. It measures the room while "
+                     "it empties, so on its own it could be the building's leak rate rather "
+                     "than the ventilation people breathe.")
+        if not d and not b:
+            s.append("Neither method found a segment clean enough to fit, so no "
+                     "ventilation rate is reported.")
+        if facts["readingsDroppedBelowOutdoor"]:
+            s.append(f"{facts['readingsDroppedBelowOutdoor']:,} readings below outdoor level "
+                     f"were dropped as sensor drift.")
+    return s
+
+
+CAVEATS = [
+    "Rebreathed fraction is an exposure measure, not an infection probability, and this is not medical advice.",
+    "A single sensor assumes well-mixed air; close to a person it can be higher.",
+]
+
+
+@_handle
+def explain(event):
+    facts = _explain_facts(_body(event))
+    return {"source": "template", "sentences": _render(facts), "caveats": CAVEATS, "facts": facts}
 
 
 _clients = {}

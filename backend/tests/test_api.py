@@ -95,5 +95,37 @@ class Predict(unittest.TestCase):
             self.assertEqual(call(api.predict, body)[0], 400, body)
 
 
+class Explain(unittest.TestCase):
+    def test_predict_sentences_carry_solver_numbers_rounded_unflatteringly(self):
+        req = {"volumeM3": 363, "ach": 0.74, "occupants": 60, "minutes": 90, "activity": "seated_quiet"}
+        status, r = call(api.explain, {"kind": "predict", "request": req})
+        self.assertEqual(status, 200, r)
+        p = call(api.predict, req)[1]
+        text = " ".join(r["sentences"])
+        self.assertEqual(r["facts"]["peakPpm"], p["peakPpm"])
+        self.assertIn(f"{math.ceil(p['peakPpm']):,} ppm", text)            # ppm rounds up
+        self.assertIn(f"one breath in {math.floor(p['peakOneBreathIn'])}", text)  # N rounds down
+        self.assertIn(f"at most {p['maxOccupancy']['1000']} people", text)
+
+    def test_fit_uncertain_is_said_and_unconfident_rates_never_headline(self):
+        fp = lambda med, p25, p75, n, ok: {"achMedian": med, "achP25": p25, "achP75": p75,
+                                           "nFits": n, "confident": ok}
+        result = {"outdoorPpm": 420, "peakPpm": 4957, "readingsDroppedBelowOutdoor": 3,
+                  "decay": {"fingerprint": fp(1.10, 0.47, 1.70, 323, False)},
+                  "buildup": {"fingerprint": None, "discarded": 2}}
+        status, r = call(api.explain, {"kind": "fit", "result": result})
+        self.assertEqual(status, 200, r)
+        text = " ".join(r["sentences"])
+        self.assertIn("uncertain", text)
+        self.assertIn("0.47 to 1.70", text)
+        self.assertIn("one breath in 8", text)   # CLAUDE.md: Hall B peak
+        self.assertIn("discarded", text)
+        self.assertIn("leak rate", text)         # decay alone is flagged
+
+    def test_rejects_unknown_kind_and_bad_numbers(self):
+        self.assertEqual(call(api.explain, {"kind": "x"})[0], 400)
+        self.assertEqual(call(api.explain, {"kind": "fit", "result": {"outdoorPpm": 420, "peakPpm": "big"}})[0], 400)
+
+
 if __name__ == "__main__":
     unittest.main()
