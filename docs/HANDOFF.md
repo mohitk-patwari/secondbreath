@@ -169,6 +169,8 @@
 - T3: the hero's Hall C tile quotes "measured 0.88/h, 259 decay fits" from
   audit.json, with no METHOD 7.6 qualifier (neither does the finding table).
   Say if you want the qualifier on the page.
+  - **Done (T2, 30 Sep):** footnote #tz under the finding table (METHOD §7
+    item 6 figures), * on the Hall C row, note on the Hall C hero tile.
 
 ## T4 → T2 (30 Sep)
 - web/index.html:4710, hero text above 5,000 ppm says "beyond the range this

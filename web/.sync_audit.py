@@ -27,6 +27,10 @@ import ventilation as v  # noqa: E402  the shared core, same file the Lambdas co
 PAGE = ROOT / "web" / "index.html"
 FIGS = ["design_vs_measured", "hall_a", "hall_b", "hall_c"]
 THIN = 10  # ponytail: editorial label only, no number depends on it
+# Halls whose confident fits hold only if the timestamps are local time: analysis/METHOD.md
+# section 7, item 6 (a one-off UTC check, not in audit.json). Marked here, footnoted at #tz.
+TZ_DEPENDENT = {"Hall C"}
+TZ_MARK = '<sup><a href="#tz" aria-label="timestamp caveat">*</a></sup>'
 
 
 def block(name: str, body: str, page: str) -> str:
@@ -79,7 +83,7 @@ def finding(halls) -> tuple[str, str, str]:
         d_lines = f"{d['fits_teaching']} fits · band " + "–".join(map(n, d["ach_teaching_iqr"]))
         b_lines = f"{b['kept']} fits, {b['discarded_unidentifiable']} discarded · band " + "–".join(map(n, b["ach_iqr"]))
         rows.append(
-            f'<tr><th scope="row">{h["hall"]}</th>\n'
+            f'<tr><th scope="row">{h["hall"]}{TZ_MARK if h["hall"] in TZ_DEPENDENT else ""}</th>\n'
             f'    <td><b>{n(h["design_ach"])}</b><br><span class="small muted">{loc(h["design_airflow_m3h"])} m³/h, {loc(h["volume_m3"])} m³</span></td>\n'
             f'    {cell(d["ach_teaching"], d["confident"], d_lines)}\n'
             f'    {cell(b["ach"], b["confident"], b_lines, 0 < b["kept"] < THIN)}\n'
@@ -150,6 +154,7 @@ def presets(audit) -> list[dict]:
         {"name": "Lecture hall A", "sub": f'{loc(a["volume_m3"])} m³, measured {rate(a)}',
          "vol": a["volume_m3"], "ach": a["decay"]["ach_teaching"]},
         {"name": "Lecture hall C", "sub": f'{loc(c["volume_m3"])} m³, measured {rate(c)}',
+         "tz": "* Only if timestamps are local time; see the finding's note",
          "vol": c["volume_m3"], "ach": c["decay"]["ach_teaching"]},
         {"name": "Hall A as designed", "sub": f'{loc(a["volume_m3"])} m³ at its specified {n(a["design_ach"])}/h',
          "vol": a["volume_m3"], "ach": a["design_ach"]},
@@ -202,7 +207,8 @@ def hero(audit) -> str:
     t = hero_text(p, res, PEOPLE, MINUTES, MINUTES)
     buttons = "".join(
         f'    <button type="button" class="preset" aria-pressed="{"true" if i == 0 else "false"}" data-vol="{n(q["vol"])}" data-ach="{n(q["ach"])}">'
-        f'<b>{q["name"]}</b><span>{q["sub"]}</span></button>\n' for i, q in enumerate(ps))
+        f'<b>{q["name"]}</b><span>{q["sub"]}</span>'
+        + (f'<span class="tz">{q["tz"]}</span>' if "tz" in q else "") + '</button>\n' for i, q in enumerate(ps))
     dots = "".join(f'<circle cx="{25 + (i % 6) * 30}" cy="{24 + (i // 6) * 28}" r="8"{"" if i < PEOPLE else " hidden"}/>' for i in range(DOTS))
     more = f"+{PEOPLE - DOTS}" if PEOPLE > DOTS else ""
     grid = "".join('<i class="r"></i>' if i < t["red"] else "<i></i>" for i in range(100))

@@ -4,6 +4,7 @@
 4 complete, plus a T1 fix: physical bounds on the forward model (deployed)
 
 ## Done since last update
+- T2 (30 Sep): **timezone caveat on the page, deployed** (live md5 = local 1226399a…). Footnote #tz under the finding table with METHOD §7 item 6's figures (UTC: A 0.75/181 and 0.85/10, still confident; C 0.87/244 and 0.50/10, uncertain; all halls ≤1.17 vs ~6 either way); Hall C row marked *, Hall C hero tile notes it. All static HTML, visible with JS off
 - T2 (30 Sep): **out-of-range handling on the API's own flag, deployed** (live md5 = local 48cfa31c…). Hero and Predict panel read `withinValidatedRange` (peak-based); steady-state fallback removed. Past 5,000 ppm both say "the 8-hour workplace exposure limit … leave the room" instead of a number (T4's framing); Predict keeps max occupancy, hides peak/chart. A 400 (impossible density) shows the API's message with no stale result. Pre-render re-synced to current ventilation.py: live no-JS state = JS state; 19/20 cases identical to live /predict, the 20th differs by 1 ulp in one ppm value (exp() on Windows vs Lambda), never visible after rounding
 - T2 (20:50): **new hero, deployed** (live md5 = local 90e6363a…). "Where are you sitting right now?": 4 room presets from audit.json, people + duration sliders, room-from-above (fill green/amber/red at 1,000/1,400 ppm), "Your next 100 breaths" grid, headline, capacity line, clock with scrubber (12 modelled min/s; reduced motion shows the finished session). Default Hall A, 60 people, 90 min: "1 breath in 17", 6 of 100 red. Pre-rendered at sync time from ventilation.predict (matches live /predict in 16/16 cases); JS off shows the same text as JS end state
 - T2: page reordered: hero → explainer (ppm slider, big thumb, "drag me") → 40 rooms/finding → rooms → Predict → Fingerprint (folded) → caveats → footer. Word-diff vs the previous live page: no finding, rooms, predict, caveat or footer text removed. Judges tour opens with the hero
@@ -38,7 +39,6 @@
 ## Next 3 actions
 1. Human: commit ventilation.py + backend/ + docs
 2. T4: apply the WRITEUP.md line 128/131 numbers from HANDOFF; keep the Hall C qualifier
-3. T2: decide whether the Hall C tile/table carry the METHOD 7.6 qualifier (T3 asked in HANDOFF)
 
 ## Decisions taken
 - T2: "Spain's best classroom" preset = Hall A's real 363 m³ at ValldAba CO2_05's measured 3.65/h, labelled — Spain publishes no volumes, so that room can't be simulated as itself without inventing one
