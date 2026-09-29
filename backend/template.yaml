@@ -2,6 +2,36 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: SecondBreath backend
 
+# Build with `python build.py`, not bare `sam build`: it copies the root
+# ventilation.py into src/ first.
+
+Globals:
+  Function:
+    CodeUri: src/
+    Runtime: python3.13
+    Architectures: [arm64]
+    MemorySize: 128
+    Timeout: 5
+
+Parameters:
+  # CloudFront create is refused until AWS verifies this new account. Until then
+  # the page is served by SiteFunction at GET / on the API. Flip to "true" once
+  # verification clears (deploy with --parameter-overrides EnableCloudFront=true).
+  EnableCloudFront:
+    Type: String
+    AllowedValues: ["true", "false"]
+    Default: "false"
+
+  # Kept out of git. Pass once with --parameter-overrides AlertEmail=...; later
+  # deploys reuse the stack's previous value. No default on purpose: a missing
+  # value fails the deploy instead of silently dropping the alert.
+  AlertEmail:
+    Type: String
+    NoEcho: true
+
+Conditions:
+  UseCloudFront: !Equals [!Ref EnableCloudFront, "true"]
+
 Resources:
   Api:
     Type: AWS::Serverless::HttpApi
@@ -11,32 +41,175 @@ Resources:
         AllowMethods: [GET, POST, OPTIONS]
         AllowHeaders: [content-type]
 
+  # Explicit FunctionNames so each pre-created log group below is the one
+  # Lambda writes to; Lambda's auto-created groups never expire.
+
   HealthFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src/
-      Handler: health.handler
-      Runtime: python3.13
-      Architectures: [arm64]
-      MemorySize: 128
-      Timeout: 5
-      # Explicit name so the log group below is the one Lambda writes to.
       FunctionName: secondbreath-health
+      Handler: api.health
+      # boto3 cold start took >5 s at 128 MB and returned 500s. Health must never 500.
+      MemorySize: 512
+      Timeout: 10
+      Environment:
+        Variables:
+          AUDIT_PARAM: /secondbreath/lastAuditRun
+      # Read-only, one parameter. Health is the only function with any policy.
+      Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: secondbreath/lastAuditRun
       Events:
-        Health:
+        Get:
           Type: HttpApi
-          Properties:
-            ApiId: !Ref Api
-            Path: /health
-            Method: GET
+          Properties: {ApiId: !Ref Api, Path: /health, Method: GET}
 
-  # Pre-created so retention applies; Lambda's auto-created group never expires.
+  FitFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: secondbreath-fit
+      Handler: api.fit
+      # A full year of one hall fits in ~2.5 s locally; more memory = more CPU.
+      # 29 s is just under the HTTP API's 30 s integration ceiling.
+      MemorySize: 1024
+      Timeout: 29
+      Events:
+        Post:
+          Type: HttpApi
+          Properties: {ApiId: !Ref Api, Path: /fit, Method: POST}
+
+  PredictFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: secondbreath-predict
+      Handler: api.predict
+      MemorySize: 512
+      Timeout: 10
+      Events:
+        Post:
+          Type: HttpApi
+          Properties: {ApiId: !Ref Api, Path: /predict, Method: POST}
+
+  SiteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: secondbreath-site
+      Handler: api.site
+      MemorySize: 512  # boto3 cold start; see HealthFunction
+      Timeout: 10
+      Environment:
+        Variables:
+          WEB_BUCKET: !Ref WebBucket
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action: s3:GetObject
+              Resource: !Sub ${WebBucket.Arn}/index.html
+      Events:
+        Get:
+          Type: HttpApi
+          Properties: {ApiId: !Ref Api, Path: /, Method: GET}
+
+  SiteLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: {LogGroupName: /aws/lambda/secondbreath-site, RetentionInDays: 7}
   HealthLogGroup:
     Type: AWS::Logs::LogGroup
+    Properties: {LogGroupName: /aws/lambda/secondbreath-health, RetentionInDays: 7}
+  FitLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: {LogGroupName: /aws/lambda/secondbreath-fit, RetentionInDays: 7}
+  PredictLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: {LogGroupName: /aws/lambda/secondbreath-predict, RetentionInDays: 7}
+
+  # Account-wide $20/month. A Budget rather than a CloudWatch billing alarm:
+  # EstimatedCharges only exists in us-east-1 and this stack stays in ap-south-1.
+  BillingBudget:
+    Type: AWS::Budgets::Budget
     Properties:
-      LogGroupName: /aws/lambda/secondbreath-health
-      RetentionInDays: 7
+      Budget:
+        BudgetName: secondbreath-20usd
+        BudgetType: COST
+        TimeUnit: MONTHLY
+        BudgetLimit: {Amount: 20, Unit: USD}
+      NotificationsWithSubscribers:
+        - Notification: {NotificationType: ACTUAL, ComparisonOperator: GREATER_THAN, Threshold: 100, ThresholdType: PERCENTAGE}
+          Subscribers: [{SubscriptionType: EMAIL, Address: !Ref AlertEmail}]
+        # Early warning: AWS projects the month will pass $20.
+        - Notification: {NotificationType: FORECASTED, ComparisonOperator: GREATER_THAN, Threshold: 100, ThresholdType: PERCENTAGE}
+          Subscribers: [{SubscriptionType: EMAIL, Address: !Ref AlertEmail}]
+
+  # ---- Static site: private S3 bucket, read only by CloudFront via OAC ----
+  # Upload with `python deploy_web.py` (syncs web/ and invalidates the cache).
+
+  WebBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  WebOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Condition: UseCloudFront
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub ${AWS::StackName}-web
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  WebDistribution:
+    Type: AWS::CloudFront::Distribution
+    Condition: UseCloudFront
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        DefaultRootObject: index.html
+        HttpVersion: http2and3
+        PriceClass: PriceClass_200  # cheapest class that includes India edges
+        Origins:
+          - Id: web
+            DomainName: !GetAtt WebBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt WebOAC.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ""  # empty = use OAC, not legacy OAI
+        DefaultCacheBehavior:
+          TargetOriginId: web
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD]
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6          # Managed-CachingOptimized
+          ResponseHeadersPolicyId: 67f7725c-6f97-4210-82d7-5512b31e9d03  # Managed-SecurityHeadersPolicy
+
+  WebBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Condition: UseCloudFront
+    Properties:
+      Bucket: !Ref WebBucket
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal: {Service: cloudfront.amazonaws.com}
+            Action: s3:GetObject
+            Resource: !Sub ${WebBucket.Arn}/*
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub arn:aws:cloudfront::${AWS::AccountId}:distribution/${WebDistribution}
 
 Outputs:
   ApiUrl:
     Value: !Sub https://${Api}.execute-api.${AWS::Region}.amazonaws.com
+  SiteUrl:
+    Value: !If
+      - UseCloudFront
+      - !Sub https://${WebDistribution.DomainName}
+      - !Sub https://${Api}.execute-api.${AWS::Region}.amazonaws.com/
+  WebBucketName:
+    Value: !Ref WebBucket
+  DistributionId:
+    Condition: UseCloudFront
+    Value: !Ref WebDistribution

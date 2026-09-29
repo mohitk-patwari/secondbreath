@@ -1,1 +1,3 @@
 .aws-sam/
+# Copied from the root by build.py; the root file is the only one anybody edits.
+src/ventilation.py

@@ -24,17 +24,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "evidence"
 
-USERNAME = "MohitkPatwari@2005"
+# The human/terminal user, and the scoped user the AWS MCP server signs as.
+USERNAMES = ["MohitkPatwari@2005", "secondbreath-dev"]
 # ap-south-1 holds the stack; us-east-1 is where global services (IAM, STS,
 # billing alarms) record their events.
 REGIONS = ["ap-south-1", "us-east-1"]
 
 
-def lookup(region: str, since: str) -> list[dict]:
+def lookup(region: str, since: str, username: str) -> list[dict]:
     # The CLI paginates for us; each event's CloudTrailEvent is a JSON string.
     cmd = ["aws", "cloudtrail", "lookup-events", "--region", region, "--output", "json",
            "--start-time", since,
-           "--lookup-attributes", f"AttributeKey=Username,AttributeValue={USERNAME}"]
+           "--lookup-attributes", f"AttributeKey=Username,AttributeValue={username}"]
     raw = json.loads(subprocess.run(cmd, check=True, capture_output=True, text=True).stdout)
     return [json.loads(e["CloudTrailEvent"]) for e in raw.get("Events", [])]
 
@@ -55,6 +56,14 @@ def caller(ev: dict) -> str:
     ua = ev.get("userAgent", "")
     if ev.get("sessionCredentialFromConsole") == "true" or "console" in ua or ua.startswith("Mozilla"):
         return "console"
+    # The AWS MCP server calls AWS on the agent's behalf and stamps itself as
+    # invokedBy, like a service would; it is the agent, not AWS, driving it.
+    if ev.get("userIdentity", {}).get("invokedBy") == "aws-mcp.amazonaws.com":
+        return "aws-mcp"
+    # The MCP session itself (tools/call, session/destroy), sent by the local
+    # proxy; its userAgent names the client, e.g. claude-code/2.1.284.
+    if "mcp-proxy-for-aws" in ua:
+        return "mcp-proxy"
     if ev.get("userIdentity", {}).get("invokedBy"):
         return "service:" + ev["userIdentity"]["invokedBy"].split(".")[0]
     if "sam-cli" in ua.lower():
@@ -71,7 +80,8 @@ def main() -> None:
 
     events = []
     for region in REGIONS:
-        events += lookup(region, args.since)
+        for username in USERNAMES:
+            events += lookup(region, args.since, username)
     # lookup-events is regional, but a global event can surface in both.
     events = [redact(e) for e in {e["eventID"]: e for e in events}.values()]
     events.sort(key=lambda e: e["eventTime"])
@@ -89,7 +99,7 @@ def main() -> None:
         "# CloudTrail timeline",
         "",
         f"Exported {exported} by `analysis/export_cloudtrail.py` from CloudTrail Event history "
-        f"({', '.join(REGIONS)}), filtered to `Username = {USERNAME}`, from {args.since}.",
+        f"({', '.join(REGIONS)}), filtered to `Username` in {', '.join(f'`{u}`' for u in USERNAMES)}, from {args.since}.",
         "",
         f"- Principal(s): {', '.join(f'`{a}`' for a in arns) or 'none'}",
         f"- Events: {len(events)} ({errors} returned an error)",
@@ -99,10 +109,13 @@ def main() -> None:
         "",
         "Scope: management events only (Event history does not hold data events such as "
         "Lambda Invoke or S3 object reads). Calls made by the deployed Lambdas' own roles are "
-        "excluded by the principal filter. The coding agent and the human share this IAM user, "
-        "so the **Caller** column (from userAgent) is the only split: `aws-cli` / `sam-cli` "
+        "excluded by the principal filter. The terminal agents and the human share the build user "
+        "(`MohitkPatwari@2005`), so for its rows the **Caller** column (from userAgent) is the only split: `aws-cli` / `sam-cli` "
         "are terminal calls (agent sessions, or the human typing in the same terminal), "
-        "`console` is the human in a browser, and `service:*` is AWS acting for the user "
+        "`console` is the human in a browser, `aws-mcp` is the agent calling through the AWS MCP "
+        "server (user `secondbreath-dev`, `invokedBy` and `userAgent` = `aws-mcp.amazonaws.com`), "
+        "`mcp-proxy` is the MCP session itself as seen by the MCP service (`AwsMcpEvent`), "
+        "and `service:*` is AWS acting for the user "
         "(e.g. CloudFormation creating resources).",
         "",
         "## Calls per service",

@@ -1,0 +1,159 @@
+AWS MCP server: connection verified from a live Claude Code session
+=====================================================================
+
+Captured: 2026-09-29T12:53:51Z (UTC), Claude Code 2.1.284, by the T3 session.
+Everything below was copied from real tool output in that session, not typed
+from memory. Long outputs are trimmed where marked; nothing else is edited.
+
+
+1. Server
+---------
+
+Name in Claude Code:  aws-mcp  (stdio)
+Launch command:       uvx mcp-proxy-for-aws@latest https://aws-mcp.us-east-1.api.aws/mcp
+Endpoint:             https://aws-mcp.us-east-1.api.aws/mcp
+Proxy serverInfo:     {"name": "MCP Proxy for AWS", "version": "1.7.0"}
+Environment:          AWS_PROFILE=agent, AWS_REGION=ap-south-1
+
+The proxy signs each request with SigV4 using the `agent` profile. The
+endpoint sits in us-east-1, but AWS API calls made through it target the
+region we pass (ap-south-1 for everything in this project).
+
+
+2. Identity
+-----------
+
+$ aws sts get-caller-identity --profile agent
+{
+    "UserId": "AIDATMGJV6KSN55YTIUQL",
+    "Account": "232351199908",
+    "Arn": "arn:aws:iam::232351199908:user/secondbreath-dev"
+}
+
+This is a separate IAM user from the human's (`MohitkPatwari@2005`), so
+calls the agent makes through MCP are attributable by principal in
+CloudTrail, not only by user agent.
+
+
+3. Tools (8), with the annotations the server itself declares
+--------------------------------------------------------------
+
+Taken from a raw MCP `tools/list` request sent to the same proxy command,
+not inferred from tool names.
+
+Tool                              readOnly  destructive  openWorld
+aws___get_presigned_url           false     false        false
+aws___get_tasks                   true      false        false
+aws___run_script                  false     TRUE         false
+aws___get_regional_availability   true      false        false
+aws___list_regions                true      false        false
+aws___read_documentation          true      false        false
+aws___retrieve_skill              true      false        false
+aws___search_documentation        true      false        false
+
+Six are read-only. `get_presigned_url` can mint an upload URL, so it is not
+read-only but is not destructive. `run_script` executes arbitrary boto3
+calls and is the only tool marked destructive; what it can actually do is
+bounded by the IAM permissions of `secondbreath-dev`.
+
+
+4. Real calls made through the MCP tools
+----------------------------------------
+
+4a. aws___list_regions  (no arguments)
+
+Result: 37 regions. Trimmed to the two this project touches:
+  {"region_id":"ap-south-1","region_long_name":"Asia Pacific (Mumbai)"}
+  {"region_id":"us-east-1","region_long_name":"US East (N. Virginia)"}
+Full list of region_ids returned:
+  af-south-1 ap-east-1 ap-east-2 ap-northeast-1 ap-northeast-2
+  ap-northeast-3 ap-south-1 ap-south-2 ap-southeast-1 ap-southeast-2
+  ap-southeast-3 ap-southeast-4 ap-southeast-5 ap-southeast-6
+  ap-southeast-7 ca-central-1 ca-west-1 eu-central-1 eu-central-2
+  eu-north-1 eu-south-1 eu-south-2 eu-west-1 eu-west-2 eu-west-3
+  eusc-de-east-1 il-central-1 me-central-1 me-south-1 mx-central-1
+  sa-east-1 us-east-1 us-east-2 us-gov-east-1 us-gov-west-1 us-west-1
+  us-west-2
+
+4b. aws___search_documentation
+Arguments:
+  {"search_phrase": "Lambda function CodeUri SAM build without Docker Python",
+   "topics": ["cloudformation"], "limit": 2}
+Result (context text trimmed):
+  rank 1  "Extension development for CloudFormation CloudFormation Command
+           Line Interface (CLI) User Guide"
+           https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/full.md
+  rank 2  "Updating Lambda runtimes for resource types and hooks"
+           https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/runtime-update.md
+
+4c. aws___run_script  (read-only use of the one destructive-marked tool)
+Code:
+  ident  = await call_boto3(service_name="sts", operation_name="GetCallerIdentity",
+                            region_name="ap-south-1")
+  stacks = await call_boto3(service_name="cloudformation",
+                            operation_name="DescribeStacks", region_name="ap-south-1",
+                            params={"StackName": "secondbreath"})
+Result:
+  {"status": "success",
+   "return_value": {"arn": "arn:aws:iam::232351199908:user/secondbreath-dev",
+                    "stack": "secondbreath", "status": "UPDATE_COMPLETE",
+                    "lastUpdated": "2026-09-28T19:53:46.656000+00:00"},
+   "api_calls": [{"service": "sts", "operation": "GetCallerIdentity", "status": "success"},
+                 {"service": "cloudformation", "operation": "DescribeStacks",
+                  "status": "success", "n_items": {"Stacks": 1}}]}
+
+4a and 4b are read-only tools served by the MCP endpoint itself. They touch
+nothing in our account and leave no CloudTrail record. 4c does call our
+account, and CloudTrail recorded it independently (from cloudtrail-raw.json,
+exported 2026-09-29 after the calls above):
+
+  2026-09-29T12:52:46Z  ap-south-1  sts             GetCallerIdentity
+  2026-09-29T12:52:47Z  ap-south-1  cloudformation  DescribeStacks  (stackName: secondbreath)
+      userIdentity.arn        arn:aws:iam::232351199908:user/secondbreath-dev
+      userIdentity.invokedBy  aws-mcp.amazonaws.com
+      userAgent               aws-mcp.amazonaws.com
+      sourceIPAddress         aws-mcp.amazonaws.com
+
+  2026-09-29T12:52:47Z  us-east-1   aws-mcp         CallReadWriteTool
+      eventType               AwsMcpEvent
+      requestParameters       {"method": "tools/call", "params": {"name": "aws___run_script", ...}}
+      userAgent               python-httpx/0.28.1 mcp-proxy-for-aws/1.7.0 claude-code/2.1.284
+
+The last user agent names Claude Code as the MCP client, so the record links
+the agent to the account call without relying on anything written here. Two
+`DestroySession` events at 12:53:05Z and 12:53:17Z, user agent ending
+`evidence/1`, are the `tools/list` requests that produced the table in
+section 3.
+
+
+5. AWS Agent Toolkit skills installed at ~/.claude/skills (24)
+--------------------------------------------------------------
+
+The other half of the toolkit: skill folders Claude Code loads on demand.
+Listed with `ls ~/.claude/skills` (the `synced/` folder is Claude Code's own
+cache, not a skill, and is excluded).
+
+   1 amazon-bedrock
+   2 aws-ai-ml
+   3 aws-auth
+   4 aws-billing-and-cost-management
+   5 aws-blocks
+   6 aws-cdk
+   7 aws-cloudformation
+   8 aws-compute
+   9 aws-containers
+  10 aws-database
+  11 aws-deployment
+  12 aws-iam
+  13 aws-messaging-and-streaming
+  14 aws-networking
+  15 aws-observability
+  16 aws-sdk-js-v3-usage
+  17 aws-sdk-python-usage
+  18 aws-sdk-swift-usage
+  19 aws-security
+  20 aws-serverless
+  21 aws-storage
+  22 launch-with-aws
+  23 setting-up-cloudwatch-observability
+  24 signing-in-to-aws
