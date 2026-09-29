@@ -1,10 +1,10 @@
 # CloudTrail timeline
 
-Exported 2026-09-29T12:56:34+00:00 by `analysis/export_cloudtrail.py` from CloudTrail Event history (ap-south-1, us-east-1), filtered to `Username` in `MohitkPatwari@2005`, `secondbreath-dev`, from 2026-09-28T00:00:00Z.
+Exported 2026-09-29T13:35:46+00:00 by `analysis/export_cloudtrail.py` from CloudTrail Event history (ap-south-1, us-east-1), filtered to `Username` in `MohitkPatwari@2005`, `secondbreath-dev`, from 2026-09-28T00:00:00Z.
 
 - Principal(s): `arn:aws:iam::232351199908:user/MohitkPatwari@2005`, `arn:aws:iam::232351199908:user/secondbreath-dev`
-- Events: 939 (103 returned an error)
-- First: 2026-09-28T18:45:22Z · Last: 2026-09-29T12:53:44Z
+- Events: 1516 (130 returned an error)
+- First: 2026-09-28T18:45:22Z · Last: 2026-09-29T13:33:35Z
 - Raw events: `cloudtrail-raw.json` (the full CloudTrail record for each call; `sourceIPAddress` and `userIdentity.accessKeyId` masked as REDACTED, nothing else changed)
 
 Scope: management events only (Event history does not hold data events such as Lambda Invoke or S3 object reads). Calls made by the deployed Lambdas' own roles are excluded by the principal filter. The terminal agents and the human share the build user (`MohitkPatwari@2005`), so for its rows the **Caller** column (from userAgent) is the only split: `aws-cli` / `sam-cli` are terminal calls (agent sessions, or the human typing in the same terminal), `console` is the human in a browser, `aws-mcp` is the agent calling through the AWS MCP server (user `secondbreath-dev`, `invokedBy` and `userAgent` = `aws-mcp.amazonaws.com`), `mcp-proxy` is the MCP session itself as seen by the MCP service (`AwsMcpEvent`), and `service:*` is AWS acting for the user (e.g. CloudFormation creating resources).
@@ -13,35 +13,38 @@ Scope: management events only (Event history does not hold data events such as L
 
 | Service | Calls |
 |---|---|
-| s3 | 253 |
-| lambda | 178 |
-| cloudformation | 175 |
-| iam | 144 |
-| kms | 53 |
-| logs | 52 |
-| cloudtrail | 37 |
-| apigateway | 10 |
-| ssm | 8 |
+| lambda | 348 |
+| s3 | 313 |
+| iam | 233 |
+| cloudformation | 220 |
+| cloudtrail | 126 |
+| kms | 96 |
+| logs | 70 |
+| apigateway | 16 |
+| events | 16 |
+| aws-mcp | 15 |
+| ssm | 14 |
+| sns | 11 |
+| monitoring | 9 |
 | cloudfront | 7 |
 | sts | 6 |
+| signin | 6 |
 | bedrock | 5 |
 | budgets | 3 |
-| signin | 3 |
-| aws-mcp | 3 |
 | account | 2 |
 
 ## Calls per caller
 
 | Caller | Calls |
 |---|---|
-| service:cloudformation | 617 |
-| sam-cli | 149 |
-| aws-cli | 96 |
-| service:lambda | 53 |
-| Boto3 | 16 |
-| mcp-proxy | 3 |
+| service:cloudformation | 983 |
+| aws-cli | 194 |
+| sam-cli | 163 |
+| service:lambda | 96 |
+| aws-mcp | 41 |
+| Boto3 | 21 |
+| mcp-proxy | 15 |
 | console | 2 |
-| aws-mcp | 2 |
 | service:apigateway | 1 |
 
 ## Timeline (UTC)
@@ -987,3 +990,580 @@ Scope: management events only (Event history does not hold data events such as L
 | 2026-09-29T12:53:41Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
 | 2026-09-29T12:53:42Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
 | 2026-09-29T12:53:44Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:27Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:35Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:35Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:36Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:36Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:36Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:36Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:36Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:36Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:36Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:37Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:37Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:37Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:37Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:37Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:38Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:38Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:40Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:42Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:43Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:43Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:44Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:54:46Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:05Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:05Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:06Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:06Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:06Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:06Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:06Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:06Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:06Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:06Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:07Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:07Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:07Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:07Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:07Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:07Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:09Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:12Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:12Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:13Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:13Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:16Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:35Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:36Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:37Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:38Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:38Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:38Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:39Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:39Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:39Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:39Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:39Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:40Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:40Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:40Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:40Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:40Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:42Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:45Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:45Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:46Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:46Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:55:49Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:23Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:23Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:23Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:23Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:23Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:23Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:23Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:23Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:24Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:24Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:24Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:24Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:24Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:24Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:24Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:24Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:26Z | ap-south-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:29Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:29Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:30Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:30Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T12:56:33Z | us-east-1 | cloudtrail | LookupEvents | aws-cli |  |
+| 2026-09-29T13:04:42Z | ap-south-1 | signin | CreateOAuth2Token | Boto3 |  |
+| 2026-09-29T13:05:39Z | ap-south-1 | cloudformation | DescribeStacks | aws-cli |  |
+| 2026-09-29T13:09:37Z | ap-south-1 | cloudformation | DescribeStacks | Boto3 |  |
+| 2026-09-29T13:09:39Z | ap-south-1 | cloudformation | DescribeStacks | sam-cli |  |
+| 2026-09-29T13:09:39Z | ap-south-1 | cloudformation | GetTemplateSummary | sam-cli |  |
+| 2026-09-29T13:09:40Z | ap-south-1 | cloudformation | CreateChangeSet | sam-cli |  |
+| 2026-09-29T13:09:40Z | ap-south-1 | cloudformation | DescribeChangeSet | sam-cli |  |
+| 2026-09-29T13:09:44Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:09:45Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:09:45Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:09:45Z | us-east-1 | iam | GetRolePolicy | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation | ResourceNotFoundException |
+| 2026-09-29T13:09:47Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | logs | DescribeLogGroups | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketWebsite | service:cloudformation | NoSuchWebsiteConfiguration |
+| 2026-09-29T13:09:47Z | ap-south-1 | lambda | GetAccountSettings20160819 | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketVersioning | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | monitoring | DescribeAlarms | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketInventoryConfiguration | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketOwnershipControls | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketReplication | service:cloudformation | ReplicationConfigurationNotFoundError |
+| 2026-09-29T13:09:47Z | ap-south-1 | cloudformation | DescribeChangeSet | sam-cli |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketIntelligentTieringConfiguration | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketPublicAccessBlock | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | ListTagsForResource | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketMetadataTableConfiguration | service:cloudformation | V1APIsNotAllowed |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketAnalyticsConfiguration | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation | ResourceNotFoundException |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketNotification | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketMetricsConfiguration | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketObjectLockConfiguration | service:cloudformation | ObjectLockConfigurationNotFoundError |
+| 2026-09-29T13:09:47Z | ap-south-1 | logs | DescribeLogGroups | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketLifecycle | service:cloudformation | NoSuchLifecycleConfiguration |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetAccelerateConfiguration | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketEncryption | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketMetadataConfiguration | service:cloudformation | MetadataConfigurationNotFound |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketLogging | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketCors | service:cloudformation | NoSuchCORSConfiguration |
+| 2026-09-29T13:09:47Z | ap-south-1 | s3 | GetBucketAbac | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | GetAccountSummary | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:09:47Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:09:48Z | us-east-1 | iam | GetRolePolicy | service:cloudformation |  |
+| 2026-09-29T13:09:48Z | us-east-1 | iam | GetRolePolicy | service:cloudformation |  |
+| 2026-09-29T13:09:52Z | ap-south-1 | cloudformation | DescribeChangeSet | sam-cli |  |
+| 2026-09-29T13:09:53Z | ap-south-1 | cloudformation | DescribeChangeSet | sam-cli |  |
+| 2026-09-29T13:10:15Z | ap-south-1 | cloudformation | ExecuteChangeSet | aws-mcp |  |
+| 2026-09-29T13:10:17Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:10:17Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:10:17Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | ap-south-1 | sns | CreateTopic | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | ap-south-1 | logs | DescribeLogGroups | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | ap-south-1 | sns | GetTopicAttributes | service:cloudformation | NotFoundException |
+| 2026-09-29T13:10:18Z | ap-south-1 | logs | DescribeLogGroups | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | CreateRole | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | CreateRole | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | GetRolePolicy | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | AttachRolePolicy | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | AttachRolePolicy | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:18Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | logs | CreateLogGroup | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | logs | CreateLogGroup | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:10:19Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:19Z | us-east-1 | iam | GetRolePolicy | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | logs | PutRetentionPolicy | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | UpdateFunctionCode20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | UpdateFunctionCode20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | UpdateFunctionCode20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | UpdateFunctionCode20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | logs | PutRetentionPolicy | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:20Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:10:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:21Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:10:21Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:10:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:21Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:10:21Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:21Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:10:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:21Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:10:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | logs | DescribeIndexPolicies | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | logs | ListTagsForResource | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | logs | DescribeIndexPolicies | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | logs | DescribeLogGroups | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | logs | DescribeLogGroups | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | logs | ListTagsForResource | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | logs | DescribeResourcePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | logs | DescribeResourcePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:10:22Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:24Z | ap-south-1 | sns | Subscribe | service:cloudformation |  |
+| 2026-09-29T13:10:24Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:10:34Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:10:35Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:10:35Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:10:35Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:35Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:35Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:35Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:35Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:35Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:10:35Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:36Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation | ResourceNotFoundException |
+| 2026-09-29T13:10:38Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:38Z | ap-south-1 | lambda | CreateFunction20150331 | service:cloudformation |  |
+| 2026-09-29T13:10:39Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:10:39Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:39Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:39Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:10:39Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:10:43Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:10:43Z | ap-south-1 | apigateway | GetApi | service:cloudformation |  |
+| 2026-09-29T13:10:45Z | ap-south-1 | apigateway | GetApi | service:cloudformation |  |
+| 2026-09-29T13:10:45Z | ap-south-1 | apigateway | ReimportApi | service:cloudformation |  |
+| 2026-09-29T13:10:45Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:10:45Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:46Z | ap-south-1 | lambda | GetPolicy20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:46Z | ap-south-1 | lambda | AddPermission20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:46Z | ap-south-1 | lambda | GetPolicy20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:46Z | ap-south-1 | lambda | AddPermission20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:46Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:10:47Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation | ResourceNotFoundException |
+| 2026-09-29T13:10:48Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:48Z | ap-south-1 | kms | DescribeKey | service:lambda |  |
+| 2026-09-29T13:10:48Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:48Z | ap-south-1 | kms | Encrypt | service:lambda |  |
+| 2026-09-29T13:10:48Z | ap-south-1 | lambda | CreateFunction20150331 | service:cloudformation |  |
+| 2026-09-29T13:10:48Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:49Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:49Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:50Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:10:50Z | ap-south-1 | monitoring | DescribeAlarms | service:cloudformation |  |
+| 2026-09-29T13:10:50Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:10:50Z | ap-south-1 | lambda | PutFunctionEventInvokeConfig | service:cloudformation |  |
+| 2026-09-29T13:10:50Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:10:50Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:10:50Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:10:51Z | ap-south-1 | lambda | GetFunctionEventInvokeConfig | service:cloudformation |  |
+| 2026-09-29T13:10:52Z | ap-south-1 | monitoring | ListTagsForResource | service:cloudformation |  |
+| 2026-09-29T13:10:52Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:10:52Z | ap-south-1 | monitoring | PutMetricAlarm | service:cloudformation |  |
+| 2026-09-29T13:10:52Z | ap-south-1 | monitoring | DescribeAlarms | service:cloudformation |  |
+| 2026-09-29T13:10:53Z | ap-south-1 | events | PutRule | service:cloudformation |  |
+| 2026-09-29T13:10:53Z | ap-south-1 | events | DescribeRule | service:cloudformation |  |
+| 2026-09-29T13:10:53Z | ap-south-1 | events | DescribeRule | service:cloudformation | UnknownError |
+| 2026-09-29T13:10:54Z | ap-south-1 | sns | ListSubscriptionsByTopic | service:cloudformation |  |
+| 2026-09-29T13:10:54Z | ap-south-1 | sns | ListTagsForResource | service:cloudformation |  |
+| 2026-09-29T13:10:54Z | ap-south-1 | sns | GetTopicAttributes | service:cloudformation |  |
+| 2026-09-29T13:10:54Z | ap-south-1 | sns | GetDataProtectionPolicy | service:cloudformation |  |
+| 2026-09-29T13:11:01Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:11:10Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:11:19Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:11:24Z | ap-south-1 | events | PutTargets | service:cloudformation |  |
+| 2026-09-29T13:11:28Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:11:37Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:11:42Z | us-east-1 | aws-mcp | CallReadWriteTool | mcp-proxy |  |
+| 2026-09-29T13:11:46Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:11:55Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:11:56Z | ap-south-1 | events | TagResource | service:cloudformation |  |
+| 2026-09-29T13:11:57Z | ap-south-1 | events | DescribeRule | service:cloudformation |  |
+| 2026-09-29T13:11:57Z | ap-south-1 | events | ListTargetsByRule | service:cloudformation |  |
+| 2026-09-29T13:11:57Z | ap-south-1 | events | ListTagsForResource | service:cloudformation |  |
+| 2026-09-29T13:11:57Z | ap-south-1 | events | ListTargetsByRule | service:cloudformation |  |
+| 2026-09-29T13:11:57Z | ap-south-1 | events | ListTagsForResource | service:cloudformation |  |
+| 2026-09-29T13:11:57Z | ap-south-1 | events | DescribeRule | service:cloudformation |  |
+| 2026-09-29T13:11:57Z | us-east-1 | aws-mcp | CallReadWriteTool | mcp-proxy |  |
+| 2026-09-29T13:11:58Z | ap-south-1 | lambda | AddPermission20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:11:59Z | ap-south-1 | lambda | GetPolicy20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:12:04Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:12:05Z | ap-south-1 | cloudformation | DescribeStackEvents | aws-mcp |  |
+| 2026-09-29T13:12:26Z | us-east-1 | aws-mcp | CallReadWriteTool | mcp-proxy |  |
+| 2026-09-29T13:12:42Z | ap-south-1 | ssm | PutParameter | aws-cli |  |
+| 2026-09-29T13:13:01Z | ap-south-1 | monitoring | DescribeAlarms | aws-mcp |  |
+| 2026-09-29T13:13:03Z | ap-south-1 | sns | ListSubscriptions | aws-mcp |  |
+| 2026-09-29T13:13:04Z | ap-south-1 | logs | FilterLogEvents | aws-mcp |  |
+| 2026-09-29T13:13:04Z | us-east-1 | aws-mcp | CallReadWriteTool | mcp-proxy |  |
+| 2026-09-29T13:13:24Z | ap-south-1 | cloudformation | DescribeStackResources | aws-mcp |  |
+| 2026-09-29T13:13:25Z | ap-south-1 | sns | ListSubscriptionsByTopic | aws-mcp |  |
+| 2026-09-29T13:13:26Z | ap-south-1 | events | DescribeRule | aws-mcp |  |
+| 2026-09-29T13:13:27Z | us-east-1 | aws-mcp | CallReadWriteTool | mcp-proxy |  |
+| 2026-09-29T13:14:05Z | ap-south-1 | monitoring | DescribeAlarms | aws-mcp |  |
+| 2026-09-29T13:14:06Z | ap-south-1 | ssm | PutParameter | aws-cli |  |
+| 2026-09-29T13:14:06Z | ap-south-1 | logs | FilterLogEvents | aws-mcp |  |
+| 2026-09-29T13:14:06Z | us-east-1 | aws-mcp | CallReadWriteTool | mcp-proxy |  |
+| 2026-09-29T13:14:18Z | us-east-1 | aws-mcp | CallReadWriteTool | mcp-proxy |  |
+| 2026-09-29T13:14:28Z | ap-south-1 | cloudformation | DescribeStackEvents | aws-mcp |  |
+| 2026-09-29T13:14:30Z | ap-south-1 | events | ListTargetsByRule | aws-mcp |  |
+| 2026-09-29T13:14:31Z | ap-south-1 | lambda | GetPolicy20150331v2 | aws-mcp |  |
+| 2026-09-29T13:14:32Z | us-east-1 | aws-mcp | CallReadWriteTool | mcp-proxy |  |
+| 2026-09-29T13:14:55Z | ap-south-1 | ssm | PutParameter | aws-cli |  |
+| 2026-09-29T13:15:24Z | ap-south-1 | signin | CreateOAuth2Token | Boto3 |  |
+| 2026-09-29T13:15:28Z | ap-south-1 | monitoring | DescribeAlarms | aws-mcp |  |
+| 2026-09-29T13:15:28Z | us-east-1 | aws-mcp | CallReadWriteTool | mcp-proxy |  |
+| 2026-09-29T13:16:24Z | ap-south-1 | ssm | PutParameter | aws-cli |  |
+| 2026-09-29T13:25:58Z | ap-south-1 | signin | CreateOAuth2Token | Boto3 |  |
+| 2026-09-29T13:26:45Z | ap-south-1 | cloudformation | DescribeStacks | Boto3 |  |
+| 2026-09-29T13:26:47Z | ap-south-1 | cloudformation | DescribeStacks | sam-cli |  |
+| 2026-09-29T13:26:48Z | ap-south-1 | cloudformation | GetTemplateSummary | sam-cli |  |
+| 2026-09-29T13:26:49Z | ap-south-1 | cloudformation | CreateChangeSet | sam-cli |  |
+| 2026-09-29T13:26:49Z | ap-south-1 | cloudformation | DescribeChangeSet | sam-cli |  |
+| 2026-09-29T13:26:53Z | ap-south-1 | s3 | GetAccelerateConfiguration | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketInventoryConfiguration | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketCors | service:cloudformation | NoSuchCORSConfiguration |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketLogging | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketOwnershipControls | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketObjectLockConfiguration | service:cloudformation | ObjectLockConfigurationNotFoundError |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketMetricsConfiguration | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | cloudformation | DescribeChangeSet | sam-cli |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketLifecycle | service:cloudformation | NoSuchLifecycleConfiguration |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketReplication | service:cloudformation | ReplicationConfigurationNotFoundError |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketAbac | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketVersioning | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketMetadataConfiguration | service:cloudformation | MetadataConfigurationNotFound |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketWebsite | service:cloudformation | NoSuchWebsiteConfiguration |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | ListTagsForResource | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketAnalyticsConfiguration | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketEncryption | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketPublicAccessBlock | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketNotification | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketIntelligentTieringConfiguration | service:cloudformation |  |
+| 2026-09-29T13:26:54Z | ap-south-1 | s3 | GetBucketMetadataTableConfiguration | service:cloudformation | V1APIsNotAllowed |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketLifecycle | service:cloudformation | NoSuchLifecycleConfiguration |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketOwnershipControls | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketAnalyticsConfiguration | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketReplication | service:cloudformation | ReplicationConfigurationNotFoundError |
+| 2026-09-29T13:26:57Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketCors | service:cloudformation | NoSuchCORSConfiguration |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketMetricsConfiguration | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketPublicAccessBlock | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketMetadataConfiguration | service:cloudformation | MetadataConfigurationNotFound |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketIntelligentTieringConfiguration | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketVersioning | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketEncryption | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketNotification | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketWebsite | service:cloudformation | NoSuchWebsiteConfiguration |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | ListTagsForResource | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketLogging | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketMetadataTableConfiguration | service:cloudformation | V1APIsNotAllowed |
+| 2026-09-29T13:26:57Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketInventoryConfiguration | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetAccelerateConfiguration | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketObjectLockConfiguration | service:cloudformation | ObjectLockConfigurationNotFoundError |
+| 2026-09-29T13:26:57Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | ap-south-1 | s3 | GetBucketAbac | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | GetRolePolicy | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | GetRolePolicy | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:26:57Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:26:58Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:26:59Z | ap-south-1 | cloudformation | DescribeChangeSet | sam-cli |  |
+| 2026-09-29T13:26:59Z | ap-south-1 | cloudformation | DescribeChangeSet | sam-cli |  |
+| 2026-09-29T13:27:14Z | ap-south-1 | cloudformation | ExecuteChangeSet | aws-mcp |  |
+| 2026-09-29T13:27:17Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:27:17Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:27:17Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:27:17Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:27:17Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:27:17Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:27:17Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:27:17Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:27:17Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:27:17Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:27:18Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:27:18Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:27:18Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:27:18Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:27:18Z | us-east-1 | iam | GetRolePolicy | service:cloudformation |  |
+| 2026-09-29T13:27:18Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:27:18Z | us-east-1 | iam | GetRolePolicy | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | UpdateFunctionCode20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | UpdateFunctionCode20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | UpdateFunctionCode20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | UpdateFunctionCode20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:19Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:20Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:20Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:20Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:21Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:22Z | ap-south-1 | lambda | UpdateFunctionCode20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:22Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:22Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:22Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:22Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:22Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:23Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:23Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:23Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:27:23Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:27:23Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:23Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:23Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:27:23Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:23Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:24Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:24Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:27:24Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:27:24Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:27:24Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:27:24Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:33Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:27:42Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:27:49Z | ap-south-1 | apigateway | GetApi | service:cloudformation |  |
+| 2026-09-29T13:27:51Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:27:51Z | ap-south-1 | apigateway | ReimportApi | service:cloudformation |  |
+| 2026-09-29T13:27:52Z | ap-south-1 | apigateway | GetApi | service:cloudformation |  |
+| 2026-09-29T13:27:52Z | us-east-1 | iam | GetRole | service:cloudformation |  |
+| 2026-09-29T13:27:52Z | us-east-1 | iam | ListRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:27:52Z | us-east-1 | iam | ListAttachedRolePolicies | service:cloudformation |  |
+| 2026-09-29T13:27:53Z | ap-south-1 | lambda | AddPermission20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:53Z | ap-south-1 | lambda | GetPolicy20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:53Z | ap-south-1 | lambda | GetPolicy20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:53Z | ap-south-1 | lambda | AddPermission20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:53Z | ap-south-1 | lambda | AddPermission20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:53Z | ap-south-1 | lambda | GetPolicy20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:54Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:54Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:27:54Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:27:54Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:54Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:54Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:54Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:54Z | ap-south-1 | lambda | UpdateFunctionCode20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:54Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:54Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:54Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:27:56Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:56Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:57Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:57Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:58Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:58Z | ap-south-1 | lambda | GetFunctionRecursionConfig | service:cloudformation |  |
+| 2026-09-29T13:27:58Z | ap-south-1 | lambda | GetRuntimeManagementConfig | service:cloudformation |  |
+| 2026-09-29T13:27:58Z | ap-south-1 | lambda | GetFunctionCodeSigningConfig | service:cloudformation |  |
+| 2026-09-29T13:27:58Z | ap-south-1 | lambda | GetFunction20150331v2 | service:cloudformation |  |
+| 2026-09-29T13:27:58Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:27:58Z | ap-south-1 | kms | Decrypt | service:lambda |  |
+| 2026-09-29T13:28:00Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:28:09Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:28:18Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:28:25Z | ap-south-1 | events | ListTargetsByRule | service:cloudformation |  |
+| 2026-09-29T13:28:25Z | ap-south-1 | events | DescribeRule | service:cloudformation |  |
+| 2026-09-29T13:28:25Z | ap-south-1 | events | ListTagsForResource | service:cloudformation |  |
+| 2026-09-29T13:28:27Z | ap-south-1 | cloudformation | DescribeStacks | aws-mcp |  |
+| 2026-09-29T13:28:28Z | ap-south-1 | cloudformation | DescribeStackEvents | aws-mcp |  |
+| 2026-09-29T13:28:29Z | us-east-1 | aws-mcp | CallReadWriteTool | mcp-proxy |  |
+| 2026-09-29T13:29:03Z | ap-south-1 | monitoring | DescribeAlarms | aws-mcp |  |
+| 2026-09-29T13:29:03Z | ap-south-1 | sns | ListSubscriptions | aws-mcp |  |
+| 2026-09-29T13:29:03Z | us-east-1 | aws-mcp | CallReadWriteTool | mcp-proxy |  |
+| 2026-09-29T13:29:12Z | ap-south-1 | sns | ListSubscriptionsByTopic | aws-mcp |  |
+| 2026-09-29T13:29:12Z | us-east-1 | aws-mcp | CallReadWriteTool | mcp-proxy |  |
+| 2026-09-29T13:30:18Z | ap-south-1 | cloudformation | DescribeStacks | aws-cli |  |
+| 2026-09-29T13:30:51Z | ap-south-1 | cloudformation | DescribeStacks | aws-cli |  |
+| 2026-09-29T13:32:52Z | ap-south-1 | ssm | PutParameter | aws-cli |  |
+| 2026-09-29T13:33:35Z | ap-south-1 | ssm | PutParameter | aws-cli |  |

@@ -3,6 +3,7 @@ only parses input, calls the solver and shapes JSON."""
 
 import base64
 import csv
+import gzip
 import io
 import json
 import math
@@ -34,12 +35,20 @@ def _response(status, body):
     }
 
 
+def _head_only(event, response):
+    # HEAD gets GET's status and headers with an empty body (RFC 9110).
+    if event.get("requestContext", {}).get("http", {}).get("method") == "HEAD":
+        response["body"] = ""
+        response["isBase64Encoded"] = False
+    return response
+
+
 def _handle(fn):
     def wrapper(event, context):
         try:
-            return _response(200, fn(event))
+            return _head_only(event, _response(200, fn(event)))
         except BadRequest as e:
-            return _response(e.status, {"error": str(e)})
+            return _head_only(event, _response(e.status, {"error": str(e)}))
     return wrapper
 
 
@@ -437,18 +446,27 @@ def site(event, context):
     """Serve web/index.html from the private bucket. Stand-in for CloudFront
     until the account is verified; see EnableCloudFront in template.yaml."""
     obj = _client("s3").get_object(Bucket=os.environ["WEB_BUCKET"], Key="index.html")
-    return {
-        "statusCode": 200,
-        "headers": {
-            "content-type": "text/html; charset=utf-8",
-            # Short, so a deploy_web.py push is visible within a minute.
-            "cache-control": "public, max-age=60",
-            "strict-transport-security": "max-age=31536000",
-            "x-content-type-options": "nosniff",
-            "referrer-policy": "strict-origin-when-cross-origin",
-        },
-        "body": obj["Body"].read().decode("utf-8"),
+    body = obj["Body"].read()
+    # HTTP APIs can't compress responses (REST APIs can), so gzip here: 252 KB
+    # of HTML shrinks several-fold. Clients that don't ask get plain text.
+    gz = "gzip" in (event.get("headers") or {}).get("accept-encoding", "")
+    headers = {
+        "content-type": "text/html; charset=utf-8",
+        # Short, so a deploy_web.py push is visible within a minute.
+        "cache-control": "public, max-age=60",
+        "strict-transport-security": "max-age=31536000",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "vary": "accept-encoding",
     }
+    if gz:
+        headers["content-encoding"] = "gzip"
+    return _head_only(event, {
+        "statusCode": 200,
+        "headers": headers,
+        "isBase64Encoded": gz,
+        "body": base64.b64encode(gzip.compress(body)).decode() if gz else body.decode("utf-8"),
+    })
 
 
 @_handle

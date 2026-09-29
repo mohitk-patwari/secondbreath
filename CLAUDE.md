@@ -58,8 +58,8 @@ Three university lecture halls, each specified at 100% fresh air and roughly
 
 | Hall | Design | Decay fit | Buildup fit (occupied) |
 | --- | --- | --- | --- |
-| A | 5.8 | 0.74 (252 fits) | 0.72 |
-| B | 6.0 | 1.10 — wide spread, see below | 0.78 |
+| A | 5.8 | 0.74 (252 fits) | 1.02 |
+| B | 6.0 | 1.10 — wide spread, see below | 0.93 |
 | C | 5.9 | 0.88 (259 fits) | 1.09 |
 
 **How to state this correctly, everywhere:**

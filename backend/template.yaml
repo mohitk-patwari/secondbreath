@@ -63,6 +63,10 @@ Resources:
         Get:
           Type: HttpApi
           Properties: {ApiId: !Ref Api, Path: /health, Method: GET}
+        # HEAD is a separate route on an HTTP API; without it HEAD 404s.
+        Head:
+          Type: HttpApi
+          Properties: {ApiId: !Ref Api, Path: /health, Method: HEAD}
 
   FitFunction:
     Type: AWS::Serverless::Function
@@ -113,6 +117,12 @@ Resources:
         Judges:
           Type: HttpApi
           Properties: {ApiId: !Ref Api, Path: /judges, Method: GET}
+        Head:
+          Type: HttpApi
+          Properties: {ApiId: !Ref Api, Path: /, Method: HEAD}
+        JudgesHead:
+          Type: HttpApi
+          Properties: {ApiId: !Ref Api, Path: /judges, Method: HEAD}
 
   # Templates over solver output while Bedrock is blocked. No policy: add
   # bedrock:InvokeModel (and nothing else) only when a model is swapped in.

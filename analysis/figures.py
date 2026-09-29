@@ -140,7 +140,7 @@ def hall_svg(r: dict, series, decay, build, path: Path) -> None:
         f"CO2 readings Monday to Friday. {len(wd)} decay fits (blue) and {len(wb)} "
         f"identifiable buildup fits (orange) are highlighted. Source: Zenodo 18385830, "
         f"CC BY 4.0; fits from ventilation.py via analysis/audit_lecture_halls.py.",
-    ), encoding="utf-8")
+    ), encoding="utf-8", newline="\n")  # LF on every OS: outputs are checked by hash
 
 
 def summary_svg(results: list[dict], path: Path) -> None:
@@ -202,7 +202,7 @@ def summary_svg(results: list[dict], path: Path) -> None:
             for r in results
         ) + ". Source: Zenodo 18385830, CC BY 4.0; analysis/audit.json.",
         h=h,
-    ), encoding="utf-8")
+    ), encoding="utf-8", newline="\n")  # LF on every OS: outputs are checked by hash
 
 
 def rooms_svg(halls: list[dict], others: list[dict], path: Path) -> None:
@@ -267,4 +267,4 @@ def rooms_svg(halls: list[dict], others: list[dict], path: Path) -> None:
         "; ".join(line(lb, rs) for lb, rs in groups)
         + ". Sources: Zenodo 18385830, 5062837, 18195710, all CC BY 4.0; analysis/audit.json.",
         h=h,
-    ), encoding="utf-8")
+    ), encoding="utf-8", newline="\n")  # LF on every OS: outputs are checked by hash

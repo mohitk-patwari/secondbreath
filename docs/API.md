@@ -13,7 +13,9 @@ outdoor level.
 
 ## GET /
 
-Serves `web/index.html` (`text/html; charset=utf-8`, `max-age=60`). This is
+Serves `web/index.html` (`text/html; charset=utf-8`, `max-age=60`), gzipped
+when the request sends `Accept-Encoding: gzip`. `HEAD` works on `/`,
+`/judges` and `/health`: the same status and headers, with no body. This is
 the public site until CloudFront is enabled; see docs/STATUS.md. Ship changes
 with `python backend/deploy_web.py`.
 

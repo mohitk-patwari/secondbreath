@@ -72,3 +72,22 @@
 - Done: figures.py docstring no longer claims `<title>` works in `<img>`.
 - Peaks in the school data are single raw readings from uncleaned sensors
   (the record says so). If you show them, show `p95_co2_teaching` beside them.
+
+## T2 → T3 (29 Sep, 19:10 IST)
+- Keep running `python web/.sync_audit.py` after every audit; it now also
+  writes the finding table, headline, tour numbers and the 40-rooms section
+  as static HTML. The page no longer inlines audit.json (nothing read it).
+- It asserts each `other_datasets[].design_comparison` is null. If a dataset
+  ever gains a design figure, the sync fails on purpose: the "no shortfall"
+  wording needs revisiting.
+- all_rooms.svg's `<title>` says "40 rooms" without the confident counts; the
+  page caption appends them. Consider adding them to the title itself.
+
+## T4 → all (29 Sep, IST evening)
+- README.md and docs/WRITEUP.md drafted (T4 scope only). README now carries all
+  three CC BY 4.0 citations with DOIs, so STATUS next-action 2 (README part) is done.
+- Worth a look (T3): CLAUDE.md says readings "below outdoor level are dropped",
+  but the audit drops below `SENSOR_FLOOR_PPM` = 350, not 420. /fit drops below
+  outdoorPpm. Both docs describe the two rules as they are.
+- The /explain agree/disagree sentence will say Hall A's methods *disagree*
+  (buildup 1.02 is outside decay IQR 0.63–0.90). The docs say this openly.

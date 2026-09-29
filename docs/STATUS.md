@@ -1,26 +1,21 @@
-# STATUS — 29 Sep 2026, 18:55 IST (T3 block; T1 18:50)
+# STATUS — 29 Sep 2026, 19:15 IST (T3 block; T2 19:10, T1 19:00)
 
 ## Phase
-3 — T3 data: more rooms; T1 /judges, /explain (templates), uptime alarm
+4 — T3 reproducibility + method; T2 frontend: static finding, 40 rooms, attribution; T1 backend complete
 
 ## Done since last update
-- T3: **audit now covers 40 rooms in 3 open datasets**: 3 halls, 12 Spanish primary classrooms (Zenodo 5062837), 25 ENSENSIA schools (Zenodo 18195710, one sensor per school, device coordinates in Patras, Greece). `audit.json.rooms_analysed`: 24 confident decay, 9 confident buildup, 3 with a design figure
-- T3: the school datasets publish no volumes or design airflow. **No design comparison is possible for them**, and no implied occupancy; audit.json says so in each `design_note`. Buildup rates are still valid without volume (volume only scales occupancy; checked in ventilation.py)
-- T3: format handling lives in the loader only (analysis/audit_lecture_halls.py); **ventilation.py untouched**. UTC → local (Madrid, Athens) before the same 8–18 weekday split; Sant Miquel's quoted-line CSV handled
-- T3: **ENSENSIA fill value found and dropped**: devices emit exactly 658 ppm for days while temp/humidity move (School 18: 46,826 readings in a row, 90% of its data). Rule: one value unchanged for ≥13 readings and ≥2 h = dead sensor; counts per room in `readings_dropped_flatline`. The halls have none, so their numbers are identical to before
-- T3: new analysis/figures/all_rooms.svg; other figures regenerated; web/.sync_audit.py run (page audit block current, not deployed); analysis/test_loaders.py passes
-- T1 (18:50): GET /judges live; POST /explain live (templates, `source: "template"`); uptime Lambda + `secondbreath-down` alarm; backend tests 10/10
+- T2: **the finding is plain HTML now.** `web/.sync_audit.py` writes the headline, hall table (design, decay + fit count, buildup + kept/discarded, shortfall, peak), the two-methods paragraph and the judges' tour numbers at sync time. JS builders deleted, not duplicated. Word-for-word identical to the old JS output (diffed); curl with scripts stripped shows every number
+- T2: dropped the inlined audit.json blob (67 KB, nothing read it any more): page 339 KB → 271 KB, 73 KB gzipped
+- T2: new section "Are the halls unusual?": 40 rooms / 3 datasets **with 24 confident decay, 9 confident buildup, 3 design figures in the same sentence**, a per-dataset table, each dataset's `design_note` verbatim with "No shortfall is claimed", and the all_rooms figure (its caption carries the confident counts too)
+- T2: footer cites all three datasets with authors, year, title, DOI and CC BY 4.0 (titles/creators from the Zenodo API), plus "no shortfall claimed" for Spain/ENSENSIA
+- T2: **deployed**; live checksum = local web/index.html; demo still fits on load (4,254 readings, decay 34 fits); no JS errors
+- T1 (19:00): HEAD returns 200 on /, /judges, /health; / and /judges gzipped; backend tests 11/11
+- T3: **reproducibility verified.** A fresh clone of 8960f6b with no data/ downloaded all 30 CSVs from Zenodo (~6 min) and reproduced audit.json + all 5 SVGs with identical content; the inputs matched the dev copies byte for byte. Outputs are now written with LF on every OS, and a rerun matches the committed files byte for byte (audit.json sha256 4e5689cc…). Hashes of outputs and inputs are in METHOD.md
+- T3: **analysis/METHOD.md**: every filter and threshold, where it lives, why, and what it discarded. Floor <350: halls 0, Spain 186, ENSENSIA 19,694. Flatline: 99,763 ENSENSIA readings in 8 schools. Unidentifiable buildup: halls 16/82, Spain 3/9, ENSENSIA 178/767. Judgment calls are labelled as such
+- T3: outdoor-CO2 sensitivity (METHOD 4.4): ±20 ppm moves hall decay rates 0.71–0.78 (A) and 0.81–0.95 (C); buildup does not move at all
+- T3: CloudTrail re-exported: 1,516 events through 29 Sep 13:33Z (130 errors, all benign: 105 are CFN/SAM probing unset S3 bucket configs, 12 are GetFunction before a function existed)
 
-## What the new rooms say (confident fits only, teaching hours)
-| Dataset | Rooms | Decay ACH, confident | Buildup ACH, confident | Median CO2 / rebreathed |
-|---|---|---|---|---|
-| Halls, Cyprus (design ~6) | 3 | 0.74, 0.88 (A, C) | 1.02, 1.09 (A, C) | see audit table |
-| Spain 2021, Covid measures in force | 12 | 8 rooms, 0.68–3.65, median 2.32 | none | 440–507 ppm / 0.05–0.23% |
-| ENSENSIA 2023–25 | 25 | 14 rooms, 0.24–1.75, median 1.40 | 7 rooms, 0.40–1.05, median 0.72 | 465–1,091 ppm / 0.12–1.77% |
-- No design figure for Spain or ENSENSIA, so none of these is a shortfall. The honest use is context: the halls' 0.74 and 0.88 ACH (A, C) sit inside the ordinary-school range, far below their own 6 ACH design
-- ENSENSIA single-reading peaks reach 7,950 ppm (School 14, p95 3,892). They are raw readings from uncleaned sensors, so quote p95 beside any peak
-
-## Audit table (halls, unchanged)
+## Audit table (halls, unchanged; analysis/audit.json is the source)
 | Hall | Design | Decay ACH (n) | Buildup ACH (kept) | Shortfall dec/bld |
 |---|---|---|---|---|
 | A | 5.8 | 0.74 (252) | 1.02 (27) | 7.8x / 5.7x |
@@ -28,20 +23,25 @@
 | C | 5.9 | 0.88 (259) | 1.09 (8, thin) | 6.8x / 5.4x |
 
 ## Live state
-- Site / and /judges — 200 (T1, 18:45 IST). /health lastAuditRun now 2026-09-29T13:16:23Z (this run)
-- Deployed stack: secondbreath, ap-south-1, UPDATE_COMPLETE
+- Site: https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/ — 200 (GET and HEAD), 271,572 B / 72,611 B gzip, 19:10 IST
+- /judges 200 (19:10 IST); /health 200, lastAuditRun 2026-09-29T13:35:13Z, auditStale false (19:09 IST)
+- Uptime alarm `secondbreath-down` OK; SNS confirmed. Stack secondbreath, ap-south-1
 
 ## Broken or blocked
-- Human: confirm the SNS subscription email (uptime alerts go nowhere until then)
 - CloudFront + Bedrock still blocked on account verification
-- Uncommitted: T3's analysis/ + docs/ + web/index.html sync; T1's backend/ (uptime.py is new)
+- **Uncommitted:** web/ (this block, deployed), T1 backend/ (deployed), T3 analysis/ + docs/, CLAUDE.md. The live site runs code that is not in git
+- ENSENSIA peaks are raw single readings; the page shows no school peaks, so nothing to fix yet
+- **Open question, recorded in METHOD 7.6:** the halls' `recorded` column has no timezone. Readings above 1,000 ppm run 06:00–18:59, which fits local time or UTC. If it is UTC, the teaching window is 2–3 h off. Decay fits are unaffected (they're labelled, not filtered). Not changed; data work is closed
+- **CLAUDE.md wording vs code:** it says readings "below outdoor level" are dropped, but the code drops below 350 and keeps 350–420 (11% of school readings). METHOD 4.1 explains why. Human: fix the CLAUDE.md sentence, or ask for the code to change
 
 ## Next 3 actions
-1. T2: add `all_rooms` to .sync_audit.py FIGS, show `rooms_analysed` + `design_note` (HANDOFF), deploy
-2. T3: README attribution for 5062837 and 18195710 (CC BY 4.0 obligation; the app footer needs them too, T2)
-3. Human: commit; confirm SNS
+1. Human: commit everything that is deployed
+2. T3: README attribution for 5062837 and 18195710 (README.md exists, untracked; check it cites all three DOIs)
+3. T2: phone-width pass over the new rooms table; judges tour step for the 40 rooms if wanted
 
 ## Decisions taken
-- Flatline filter in the school loaders only — halls verified to have zero flatline readings; the fill value is an ENSENSIA device artefact
-- Same fit parameters for every dataset, not tuned per dataset — tuning to 10-min sampling would be fitting to the answer
-- A room counts as analysed once it has teaching-hours data; confident counts reported beside the total so 40 is never quoted alone
+- Finding rendered at sync time, not in the browser — scorers without JS must see the numbers; one renderer, not two
+- Removed the audit.json blob from the page — dead after the above; the repo file stays the source of truth
+- Same fit parameters for every dataset — tuning per dataset would be fitting to the answer
+- 40 is never printed without 24 / 9 beside it, including the figure caption (the SVG title alone didn't)
+- T3: outputs written with LF, not the platform default — a reproducibility claim should be checkable by sha256 on any OS

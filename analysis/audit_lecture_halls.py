@@ -461,7 +461,9 @@ def main() -> None:
 
     if args.json:
         out = {"method": method(), "halls": results, "rooms_analysed": rooms, "other_datasets": others}
-        (ROOT / "analysis" / "audit.json").write_text(json.dumps(out, indent=2) + "\n")
+        # LF on every OS, so a rerun can be checked against the commit by hash.
+        (ROOT / "analysis" / "audit.json").write_text(json.dumps(out, indent=2) + "\n",
+                                                      encoding="utf-8", newline="\n")
 
     print()
     print(f"{'Hall':<8}{'Design':>6}  {'Decay ACH (n)':<22}{'Buildup ACH (kept/ident)':<28}"

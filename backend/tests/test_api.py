@@ -127,5 +127,24 @@ class Explain(unittest.TestCase):
         self.assertEqual(call(api.explain, {"kind": "fit", "result": {"outdoorPpm": 420, "peakPpm": "big"}})[0], 400)
 
 
+class HeadAndGzip(unittest.TestCase):
+    def test_head_matches_get_without_body_and_gzip_round_trips(self):
+        import gzip
+        from unittest import mock
+        page = "<html>" + "x" * 5000 + "</html>"
+        body = mock.Mock(); body.read.side_effect = lambda: page.encode()
+        s3 = mock.Mock(); s3.get_object.return_value = {"Body": body}
+        ev = lambda m, enc="": {"requestContext": {"http": {"method": m}}, "headers": {"accept-encoding": enc}}
+        with mock.patch.object(api, "_client", return_value=s3),              mock.patch.dict("os.environ", {"WEB_BUCKET": "b"}):
+            get, head = api.site(ev("GET", "gzip, br"), None), api.site(ev("HEAD", "gzip, br"), None)
+            plain = api.site(ev("GET"), None)
+        self.assertEqual(gzip.decompress(api.base64.b64decode(get["body"])).decode(), page)
+        self.assertEqual((head["statusCode"], head["headers"], head["body"]), (200, get["headers"], ""))
+        self.assertEqual((plain["body"], plain["isBase64Encoded"]), (page, False))
+        self.assertNotIn("content-encoding", plain["headers"])
+        r = api.predict({"body": "{}", "requestContext": {"http": {"method": "HEAD"}}}, None)
+        self.assertEqual((r["statusCode"], r["body"]), (400, ""))
+
+
 if __name__ == "__main__":
     unittest.main()
