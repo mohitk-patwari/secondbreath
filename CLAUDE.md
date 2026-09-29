@@ -245,8 +245,16 @@ State these plainly in the UI and the write-up:
 - Occupancy is not recorded in these datasets. The buildup fit *infers* an
   implied occupancy from the fitted source strength; that is an output of the
   model, not a measurement, and must be labelled as such.
-- Low-cost sensors drift. Readings below outdoor level are dropped, not
-  clamped, and the drop count is reported.
+- Low-cost sensors drift. Implausibly low readings are dropped, not clamped,
+  and the drop count is reported. The audit drops readings below 350 ppm
+  (`SENSOR_FLOOR_PPM`) and keeps 350–420 ppm, because 420 is an assumed
+  outdoor level, not a measured one; `analysis/METHOD.md` section 4.1 gives
+  the reasons and counts. The live `/fit` endpoint drops readings below the
+  request's `outdoorPpm` instead, a stricter rule. Decay fits can't be
+  affected, because a decay segment ends at outdoor + 60 ppm. A buildup
+  segment can start below 420, so results could differ in principle; for
+  Hall A they were verified identical (0.744 from 252 decay fits, 1.02 from
+  27 buildup fits). The reported drop counts do differ.
 - Evidence that elevated CO2 directly impairs cognition is contested: Harvard's
   COGfx study found large effects at 1,400 ppm, a Danish study found none at
   5,000 ppm. Lead with rebreathed air, mention cognition as debated.

@@ -297,16 +297,48 @@ from physics.
 5. **Covid-era Spain.** Those classrooms were measured under 2021 Covid
    ventilation measures, so their high rates (confident median 2.32 ACH) are
    not a picture of normal practice. They are reported as measured.
-6. **Halls time zone, an open question.** The `recorded` column carries no
-   offset, and the pipeline treats it as local time. Weekday readings above
-   1,000 ppm run from 06:00 to 18:59 in that column. That fits local time
-   with early classes, or UTC (09:00–21:59 in Cyprus summer time). If it is
-   UTC, the 08:00–18:00 window is shifted by 2–3 hours. As it stands, 6.1%
-   of weekday readings above 1,000 ppm (274 of 4,477 in Hall A) fall before
-   08:00 and outside the window. The decay fits are unaffected, because they
-   are fitted on the whole series and only labelled by start time. What would
-   change is which fits count as "teaching hours", and the buildup input.
-   Not resolved; stated so it can be checked.
+6. **Halls time zone: an open question, and it matters for Hall C.**
+
+   *What we do:* the halls' `recorded` column carries no time zone. The
+   audit treats it as Cyprus local time and applies the 08:00–18:00 weekday
+   window to it as written.
+
+   *What we don't know:* whether it really is local time. The dataset record
+   does not say.
+
+   *Evidence either way:*
+   - Weekday readings above 1,000 ppm run from 06:00 to 18:59 in this column.
+     That fits local time with early classes, or UTC (which is 09:00–21:59 in
+     Cyprus summer time). Taken as local, 6.1% of them (274 of 4,477 in
+     Hall A) fall before 08:00, outside the window.
+   - The timestamps run straight through both clock changes (29 Oct 2023 and
+     31 Mar 2024). All three halls have 144 readings between 00:00 and 06:00
+     on each day, with no step longer than 5 minutes. A clock following Cyprus
+     summer time would have repeated an hour in October and skipped one in
+     March. **So the column is not local time with daylight saving.** It is UTC
+     or a fixed offset, and the data cannot tell which.
+
+   *What changes if it is UTC* (same code and parameters, times shifted to
+   Asia/Nicosia before the window is applied; one-off check):
+
+   | Hall | Decay, as reported | Decay if UTC | Buildup, as reported | Buildup if UTC |
+   |---|---|---|---|---|
+   | A | 0.74 (252), confident | 0.75 (181), confident | 1.02 (27), confident | 0.85 (10), confident |
+   | B | 1.10 (323), uncertain | 1.17 (322), uncertain | 0.93 (31), uncertain | 0.96 (20), uncertain |
+   | C | 0.88 (259), confident | 0.87 (244), **uncertain** | 1.09 (8), confident | 0.50 (10), **uncertain** |
+
+   *What does not change:* every hall stays at or below 1.17 air changes per
+   hour against a design of about 6, on both methods and under both readings.
+   The shortfall stands.
+
+   *What does change:* Hall A is robust. **Hall C's confidence is not.** Under
+   the UTC reading, its decay spread is (1.30 − 0.58) / 0.87 = 0.83, just
+   over the 0.8 cut, and its buildup falls to 0.50 on 10 fits. So the line
+   "Halls A and C fit cleanly" holds for A under both readings, and for C
+   only under the local-time reading the audit uses.
+
+   Not resolved; left open on purpose, and the audit is unchanged. The
+   dataset's authors could settle it.
 7. **Clock changes.** Converting to naive local time repeats one hour at the
    autumn change. That hour is 02:00–03:00, outside every teaching window.
 8. **Single-reading peaks.** Peaks in the school data are raw readings from
