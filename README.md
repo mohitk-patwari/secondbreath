@@ -114,6 +114,10 @@ All three datasets are licensed under [CC BY 4.0](https://creativecommons.org/li
 - Trilles, S. (2021). *Co2 concentration, temperature and humidity in primary classrooms during the Covid-19 Safety Measures in Spain*. Zenodo record 5062837. [doi:10.5281/zenodo.5062837](https://doi.org/10.5281/zenodo.5062837). CC BY 4.0.
 - Apostolopoulos, J., Fouskas, G. and Pandis, S. (2026). *Indoor Air Pollutants (Raw)* (ENSENSIA). Zenodo record 18195710. [doi:10.5281/zenodo.18195710](https://doi.org/10.5281/zenodo.18195710). CC BY 4.0.
 
+## Licence
+
+This repository's code is under the [MIT License](LICENSE). MIT covers the code only; the three Zenodo datasets above keep their own CC BY 4.0 terms.
+
 The rebreathed-fraction formula `(C_indoor − C_outdoor) / 38,000 ppm` comes from Rudnick, S. N. and Milton, D. K. (2003), *Risk of indoor airborne infection transmission estimated from carbon dioxide concentration*, Indoor Air 13(3).
 
 Built for the AWS Builder Center "Zero to Shipped" hackathon (`#social-good`, `#community`).
