@@ -1,9 +1,10 @@
-# STATUS — 29 Sep 2026, 19:15 IST (T3 block; T2 19:10, T1 19:00)
+# STATUS — 29 Sep 2026, 19:30 IST (T2 block; T3 19:15, T1 19:00)
 
 ## Phase
 4 — T3 reproducibility + method; T2 frontend: static finding, 40 rooms, attribution; T1 backend complete
 
 ## Done since last update
+- T2 (19:30): **phone pass at 380px** (real mobile emulation over DevTools): page never scrolls sideways. Hall table scrolls in its own box with the Hall column pinned and a CSS-only "scroll sideways" hint; rooms table now fits 380px with all 5 columns (the 24 / 9 always visible). New judges-tour step for the 40 rooms. Deployed, live md5 = local (4174644…)
 - T2: **the finding is plain HTML now.** `web/.sync_audit.py` writes the headline, hall table (design, decay + fit count, buildup + kept/discarded, shortfall, peak), the two-methods paragraph and the judges' tour numbers at sync time. JS builders deleted, not duplicated. Word-for-word identical to the old JS output (diffed); curl with scripts stripped shows every number
 - T2: dropped the inlined audit.json blob (67 KB, nothing read it any more): page 339 KB → 271 KB, 73 KB gzipped
 - T2: new section "Are the halls unusual?": 40 rooms / 3 datasets **with 24 confident decay, 9 confident buildup, 3 design figures in the same sentence**, a per-dataset table, each dataset's `design_note` verbatim with "No shortfall is claimed", and the all_rooms figure (its caption carries the confident counts too)
@@ -23,7 +24,7 @@
 | C | 5.9 | 0.88 (259) | 1.09 (8, thin) | 6.8x / 5.4x |
 
 ## Live state
-- Site: https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/ — 200 (GET and HEAD), 271,572 B / 72,611 B gzip, 19:10 IST
+- Site: https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/ — 200, 272,979 B / 73,068 B gzip, 19:30 IST
 - /judges 200 (19:10 IST); /health 200, lastAuditRun 2026-09-29T13:35:13Z, auditStale false (19:09 IST)
 - Uptime alarm `secondbreath-down` OK; SNS confirmed. Stack secondbreath, ap-south-1
 
@@ -37,7 +38,7 @@
 ## Next 3 actions
 1. Human: commit everything that is deployed
 2. T3: README attribution for 5062837 and 18195710 (README.md exists, untracked; check it cites all three DOIs)
-3. T2: phone-width pass over the new rooms table; judges tour step for the 40 rooms if wanted
+3. T2: nothing queued; open to review feedback
 
 ## Decisions taken
 - Finding rendered at sync time, not in the browser — scorers without JS must see the numbers; one renderer, not two

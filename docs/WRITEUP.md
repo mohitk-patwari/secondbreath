@@ -16,6 +16,11 @@ Nobody in that room can see what they are breathing. Every breath out carries ab
 
 The page needs no login, no sign-up, no cookies and no clicks. By the time it has loaded, it has already run a live fit and a live prediction. The same click path is on the page itself, at `/judges`.
 
+The expected values come from two sources:
+
+- **Steps 3 and 4** show audit figures, copied from `analysis/audit.json`.
+- **Steps 5 to 8** show live-demo output: what the deployed API returned for the demo file and the prefilled form when the tour was written. These are not audit figures, and the demo covers only 2 to 27 October 2023, which is why its rates differ from the full-year audit. Step 8 re-runs the full-year file and should reproduce the audit's fit counts.
+
 1. **Open https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/judges.** A seven-step tour opens at the top of the page.
 2. **Hero: drag the CO2 slider to the far right (5,000 ppm).**
    Expect: "1 breath in 8 has already been through someone else's lungs." The highest reading in the lecture-hall data was 4,957 ppm.
@@ -24,13 +29,13 @@ The page needs no login, no sign-up, no cookies and no clicks. By the time it ha
 4. **Are the halls unusual?**
    Expect: 40 rooms in 3 datasets, of which 24 have a confident decay fit, 9 a confident buildup fit and 3 a design figure. A log-scale figure plots every room, and rooms without a confident fit are drawn hollow.
 5. **Fingerprint your own room: no click needed.** The demo (Hall A, 2–27 Oct 2023) was sent to `POST /fit` on load.
-   Expect: decay 0.75 ACH from 34 fits. Buildup 0.61 ACH, struck through and badged *Uncertain* (4 identifiable fits, 1 discarded). The chart is a grey CO2 trace with the decay stretches in blue and the buildup stretches in orange. There is a gap from 14 to 25 Oct, where the sensor recorded nothing.
+   Expect (live demo output): decay 0.75 ACH from 34 fits. Buildup 0.61 ACH, struck through and badged *Uncertain* (4 identifiable fits, 1 discarded). The chart is a grey CO2 trace with the decay stretches in blue and the buildup stretches in orange. There is a gap from 14 to 25 Oct, where the sensor recorded nothing.
 6. **Predict a session: already filled in** (60 people, 90 minutes, seated and quiet, 363 m³, 0.75 ACH).
-   Expect: peak 2,579 ppm, 1 breath in 17. Max safe occupancy is 16 people for a 1,000 ppm limit and 27 for 1,400 ppm. Change occupants to 16 and press **Predict**: the peak drops to 996 ppm.
+   Expect (live demo output): peak 2,579 ppm, 1 breath in 17. Max safe occupancy is 16 people for a 1,000 ppm limit and 27 for 1,400 ppm. Change occupants to 16 and press **Predict**: the peak drops to 996 ppm.
 7. **Back in Fingerprint, tick "Teaching hours only".**
-   Expect: the demo refits using weekday 08:00–17:59 data only. Decay becomes 0.76 ACH from 30 fits. Buildup has 11 identifiable fits and is still uncertain.
+   Expect (live demo output): the demo refits using weekday 08:00–17:59 data only. Decay becomes 0.76 ACH from 30 fits. Buildup has 11 identifiable fits and is still uncertain.
 8. **Optional, about a minute:** download `Lecture Hall A_raw_data.csv` (8 MB) from [Zenodo 18385830](https://zenodo.org/records/18385830), drop it on the upload box, enter volume 363, keep "Teaching hours only" ticked, and press **Fingerprint**.
-   Expect: decay 0.74 ACH (252 fits) and buildup 1.01 ACH (27 identifiable, 6 discarded). These are the same fit counts as the committed audit. The solver returns 1.0195: the audit rounds that to 1.02, but the page always rounds down, so it shows 1.01.
+   Expect (live demo output): decay 0.74 ACH (252 fits) and buildup 1.01 ACH (27 identifiable, 6 discarded). These are the same fit counts as the committed audit. The solver returns 1.0195: the audit rounds that to 1.02, but the page always rounds down, so it shows 1.01.
 9. **What this project is not, and the footer.**
    Expect: the limits, stated plainly, and all three datasets cited with DOI and CC BY 4.0.
    `curl https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/health` returns 200 with the time of the last audit run.
@@ -120,10 +125,11 @@ Claude Code built this project from a terminal, with three sessions working in p
 
 The MCP server signs its requests as its own scoped IAM user, `secondbreath-dev`, not as the human's user. CloudTrail therefore separates the agent's calls from the human's by principal, not just by user agent. `evidence/mcp-connection-verified.txt` records a `run_script` call (STS `GetCallerIdentity` and CloudFormation `DescribeStacks` on the `secondbreath` stack at 2026-09-29T12:52:46–47Z). CloudTrail recorded that call independently: the user is `secondbreath-dev`, and `invokedBy`, `userAgent` and `sourceIPAddress` are all `aws-mcp.amazonaws.com`. A matching `AwsMcpEvent` in us-east-1 shows the MCP client's user agent ending in `claude-code/2.1.284`. That record links the agent to the account call without relying on anything we wrote ourselves.
 
-The full export in `evidence/cloudtrail-timeline.md` has 939 management events between 2026-09-28T18:45Z and 2026-09-29T12:53Z, of which 103 returned an error. The per-caller breakdown shows how the stack was built:
+The full export in `evidence/cloudtrail-timeline.md` has 1,516 management events between 2026-09-28T18:45Z and 2026-09-29T13:33Z, of which 130 returned an error. The per-caller breakdown shows how the stack was built:
 
-- 617 events by CloudFormation acting for us
-- 149 events from `sam-cli` and 96 from `aws-cli`
+- 983 events by CloudFormation acting for us, 96 by Lambda and 1 by API Gateway
+- 194 from `aws-cli`, 163 from `sam-cli` and 21 from `Boto3`
+- 41 from the agent through the MCP server (`aws-mcp`), plus 15 MCP session events (`mcp-proxy`)
 - 2 from the console
 
 The errors are left in. So is the limit: before the MCP user existed, the agent and the human shared one IAM user, and for those rows only the user agent separates them.
@@ -131,12 +137,18 @@ The errors are left in. So is the limit: before the MCP user existed, the agent 
 **The obstacles, in the order we hit them.**
 
 1. **The MCP endpoint wasn't in our region.** The stack lives in Mumbai, so the first MCP configuration pointed at a Mumbai endpoint, and the hostname failed DNS resolution. The AWS MCP server is served only from us-east-1 and us-west-2. We moved the endpoint to `https://aws-mcp.us-east-1.api.aws/mcp`. The calls it makes still target whichever region we pass, which is `ap-south-1` for everything here, as the CloudTrail records above show.
-2. **Root credentials didn't work.** The first attempt to connect used the account's root credentials, and it failed. It shouldn't have been tried anyway. The fix was to create `secondbreath-dev`, a separate IAM user for the agent, which is why the agent's calls can now be attributed by principal.
+2. **Root credentials, replaced before the connection worked.** That first, DNS-failing attempt used the account's root credentials. Root was never shown to be the problem. Before the connection first worked, though, root was replaced with `secondbreath-dev`, a scoped IAM user for the agent. That change is what makes principal-level attribution in CloudTrail possible.
 3. **`uvx` wasn't installed.** The proxy is launched with `uvx mcp-proxy-for-aws@latest …`, and `uv` wasn't on the Windows machine. We installed it before the MCP server would start.
 4. **PowerShell's byte-order mark.** On Windows PowerShell, `Out-File -Encoding utf8` writes a UTF-8 byte-order mark, and the AWS CLI rejects JSON files that start with one. JSON handed to the CLI is now written with `[IO.File]::WriteAllText(...)`, and the rule is in the project instructions so that no session makes the same mistake twice.
 5. **A cold start that would have shown a scorer a 500.** On 28 Sep at 19:43Z and 19:46Z, `/health` returned 500. It looked like deploy noise, but it was a timeout: importing boto3 at 128 MB took longer than the 5-second limit. The first request from an automated scorer is usually a cold start, so this would have been the first thing a judge saw. The health and site functions now run at 512 MB with a 10-second timeout, and five out of five forced cold starts returned 200. The uptime alarm needs two failures within 10 minutes, so one slow cold start doesn't page anyone.
 6. **Bedrock and CloudFront were blocked by account verification.** This is a new AWS account, and AWS was still verifying it.
-   - **Bedrock:** CloudTrail shows two `Converse` calls on 28 Sep, at 18:56Z and 18:57Z, both refused with `ValidationException`. Bare model IDs fail in this region; only the `apac.` and `in.` inference profiles work. Behind that, the account-level refusal reads `AccessDeniedException: Your account is currently being verified`.
+   - **Bedrock:** two model calls on 28 Sep failed with two different errors.
+     - `apac.amazon.nova-lite-v1:0` returned `AccessDeniedException`: "Your account is currently being verified. Verification normally takes less than 2 hours."
+     - `global.anthropic.claude-haiku-4-5-20251001-v1:0` returned `ValidationException`: "Operation not allowed".
+
+     The CloudTrail export has two `Converse` events, at 18:56:10Z and 18:57:08Z. Both are logged as `ValidationException`, "Operation not allowed", and neither records a model ID. The Nova call's `AccessDeniedException` does not appear in the export. Its text above is what the CLI returned.
+
+     There is a separate trap here. In ap-south-1, `list-foundation-models` shows no Anthropic or Nova models available on demand, while the `apac.` and `in.` inference profiles are all `ACTIVE`. Bare model IDs therefore fail, and only inference-profile IDs work. `apac.` means Asia-Pacific processing, not processing kept inside India.
    - **CloudFront:** CloudTrail shows CloudFormation's `CreateDistributionWithTags` failing with `AccessDenied` at 19:43:22Z. CloudFormation rolled back and deleted the origin access control it had just created.
 
    The design absorbed both. CloudFront sits behind a template parameter (`EnableCloudFront`, default `false`), and until it can be switched on, a small Lambda serves the page from the private bucket. `/explain` was always meant to be model-optional, so it ships with deterministic templates, and its response has a `source` field that currently reads `"template"`. When verification clears, turning on CloudFront is a parameter change, and adding a model to `/explain` is one IAM permission and one function body.
@@ -146,6 +158,8 @@ The errors are left in. So is the limit: before the MCP user existed, the agent 
 **What has been measured.** Three lecture halls, each designed for about six air changes per hour, deliver between 0.74 and 1.09 on the two clean halls, measured two independent ways across a full academic year. Hall B is too scattered to quote. The same method ran on 37 school rooms, where it produced confident rates for 22 of them by decay and 7 by buildup. Every figure can be regenerated from open data with one command.
 
 **What has not been measured.** Health outcomes, attendance and learning: none of that. Nothing has been validated against a tracer-gas test or the halls' own air-handler logs, so the gap between design and measurement is a strong inference from two methods, not a direct inspection. We don't know why the halls fall short. It could be the fan schedules, the dampers or the controls. The site collects no analytics, so we also can't say who has used it.
+
+The halls' timezone is also unresolved. Their `recorded` timestamps carry no timezone, and the pipeline reads them as local Cyprus time. If they are actually UTC, the 08:00–18:00 teaching-hours window is 2 to 3 hours off. The decay fits themselves would not change, because they are fitted on the whole series and only labelled by their start time. What would change is which of them count as teaching hours, and which readings go into the buildup fits, since buildups are fitted on teaching-hours data only. Details are in `analysis/METHOD.md`, section 7, item 6.
 
 **Who it's for.** People who already own a CO2 monitor and have no way to act on its readings:
 

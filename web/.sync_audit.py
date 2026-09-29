@@ -109,7 +109,7 @@ def rooms(audit) -> str:
     out = [f'  <p>The same fits, with the same parameters, ran over <b>{r["total"]} rooms in {len(r["by_dataset"])} open datasets</b>: '
            f'{r["confident_decay"]} with a confident decay fit, {r["confident_buildup"]} with a confident buildup fit, '
            f'and {r["with_design_figure"]} with a published design figure. Rooms without a confident fit are counted here and drawn hollow in the figure, but never quoted as a rate.</p>\n',
-           '  <div class="tablewrap"><table><thead><tr><th>Dataset</th><th>Rooms analysed</th><th>Confident decay</th>'
+           '  <div class="tablewrap"><table class="narrow"><thead><tr><th>Dataset</th><th>Rooms analysed</th><th>Confident decay</th>'
            '<th>Confident buildup</th><th>Design figure</th></tr></thead><tbody>\n']
     for name, d in r["by_dataset"].items():
         out.append(f'<tr><th scope="row">{html.escape(name)}</th><td>{d["rooms"]}</td><td>{d["confident_decay"]}</td>'
@@ -125,9 +125,9 @@ def rooms(audit) -> str:
 
 
 def tour_values(audit, page: str) -> str:
-    """Fill <span data-a="0.decay.fits_teaching"> in the judges' tour from halls[0] etc."""
+    """Fill <span data-a="halls.0.decay.fits_teaching"> in the judges' tour from audit.json."""
     def val(path):
-        v = audit["halls"]
+        v = audit
         for k in path.split("."):
             v = v[int(k)] if isinstance(v, list) else v[k]
         return loc(v)

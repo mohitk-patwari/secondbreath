@@ -34,6 +34,14 @@ body { margin: 0; background: var(--bg); color: var(--ink);
   font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
 .tablewrap { overflow-x: auto; margin: 16px 0; }
 table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .9rem; }
+table.narrow { min-width: 0; }
+table.narrow th, table.narrow td { padding: 8px 4px; }
+/* Wide tables scroll in their own box; keep the row label in view and say that it scrolls.
+   The hint is CSS content so it never reaches a text-only reader. */
+#auditTable tr > :first-child { position: sticky; left: 0; background: var(--bg); z-index: 1; }
+@media (max-width: 600px) {
+  .tablewrap:has(> table:not(.narrow))::before { content: "Scroll sideways for all columns →"; display: block; position: sticky; left: 0; font-size: .8rem; color: var(--ink3); margin-bottom: 4px; }
+}
 th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { color: var(--ink2); font-weight: 600; }
 td b { font-size: 1.15rem; font-variant-numeric: tabular-nums; }
@@ -97,9 +105,11 @@ a { color: var(--co2); }
   <p class="muted">Every number below comes from the live API or from the committed audit. Nothing needs a login, and the page has already run the demo by the time you read this.</p>
   <ol>
     <li><a href="#hero">Hero</a>: drag the slider to the far right (5,000 ppm).
-      <span class="expect">Expect: "1 breath in 8 has already been through someone else's lungs." The lecture-hall peak was <span data-a="1.peak_co2_teaching">4,957</span> ppm.</span></li>
+      <span class="expect">Expect: "1 breath in 8 has already been through someone else's lungs." The lecture-hall peak was <span data-a="halls.1.peak_co2_teaching">4,957</span> ppm.</span></li>
     <li><a href="#finding">The finding</a>: read the table.
-      <span class="expect">Expect: Hall A designed for <span data-a="0.design_ach">5.79</span> ACH, measured <span data-a="0.decay.ach_teaching">0.74</span> by decay (<span data-a="0.decay.fits_teaching">252</span> fits) and <span data-a="0.buildup.ach">1.02</span> by buildup (<span data-a="0.buildup.kept">27</span> fits). Hall B is marked uncertain on both methods, and Hall C's buildup is marked thin (<span data-a="2.buildup.kept">8</span> fits). Four SVG figures follow.</span></li>
+      <span class="expect">Expect: Hall A designed for <span data-a="halls.0.design_ach">5.79</span> ACH, measured <span data-a="halls.0.decay.ach_teaching">0.74</span> by decay (<span data-a="halls.0.decay.fits_teaching">252</span> fits) and <span data-a="halls.0.buildup.ach">1.02</span> by buildup (<span data-a="halls.0.buildup.kept">27</span> fits). Hall B is marked uncertain on both methods, and Hall C's buildup is marked thin (<span data-a="halls.2.buildup.kept">8</span> fits). Four SVG figures follow.</span></li>
+    <li><a href="#rooms">Are the halls unusual?</a>: read the rooms table and the figure under it.
+      <span class="expect">Expect: <span data-a="rooms_analysed.total">40</span> rooms in 3 open datasets, and in the same sentence <span data-a="rooms_analysed.confident_decay">24</span> with a confident decay fit and <span data-a="rooms_analysed.confident_buildup">9</span> with a confident buildup fit. Only the <span data-a="rooms_analysed.with_design_figure">3</span> halls publish a design figure, so the Spain and ENSENSIA rooms carry no shortfall claim, and each says so. In the figure, the halls' confident decay rates sit inside the range of ordinary school classrooms; hollow markers are fits not confident enough to quote.</span></li>
     <li><a href="#fit">Fingerprint your own room</a>: no click needed; the demo (Hall A, 2–27 Oct 2023) loaded on arrival.
       <span class="expect">Expect: decay 0.75 ACH from 34 fits. Buildup 0.61 ACH, struck through and badged "Uncertain" (4 identifiable, 1 discarded). The chart shows a grey CO2 trace with blue decay and orange buildup stretches highlighted, and a break from 14 to 25 Oct where the sensor logged nothing.</span></li>
     <li><a href="#predict">Predict a session</a>: already filled in (60 people, 90 minutes, seated quiet, 363 m³, 0.75 ACH).
@@ -107,9 +117,9 @@ a { color: var(--co2); }
     <li>Back in <a href="#fit">Fingerprint</a>, tick "Teaching hours only".
       <span class="expect">Expect: the demo refits with only weekday 08:00–17:59 data. Decay 0.76 ACH from 30 fits; buildup 11 identifiable fits, still uncertain. A note says upload numbers are not comparable to the audit.</span></li>
     <li>Optional, about 1 minute: download <a href="https://zenodo.org/records/18385830">Lecture Hall A_raw_data.csv</a> (8 MB) from Zenodo, drop it on the upload box, enter volume 363, keep "Teaching hours only" ticked, press Fingerprint.
-      <span class="expect">Expect: decay 0.74 ACH (<span data-a="0.decay.fits_teaching">252</span> fits) and buildup 1.01 ACH (<span data-a="0.buildup.kept">27</span> identifiable, <span data-a="0.buildup.discarded_unidentifiable">6</span> discarded), with the same fit counts as the audit. The solver returns 1.0195 for buildup. The audit rounds that to 1.02; upload results always round down, so the page shows 1.01. The browser trims the 8 MB file to its time and CO2 columns (about 2.3 MB) before upload.</span></li>
+      <span class="expect">Expect: decay 0.74 ACH (<span data-a="halls.0.decay.fits_teaching">252</span> fits) and buildup 1.01 ACH (<span data-a="halls.0.buildup.kept">27</span> identifiable, <span data-a="halls.0.buildup.discarded_unidentifiable">6</span> discarded), with the same fit counts as the audit. The solver returns 1.0195 for buildup. The audit rounds that to 1.02; upload results always round down, so the page shows 1.01. The browser trims the 8 MB file to its time and CO2 columns (about 2.3 MB) before upload.</span></li>
     <li><a href="#caveats">What this project is not</a>, and the footer.
-      <span class="expect">Expect: the limits stated plainly, and the dataset cited with its DOI and CC BY 4.0 licence. <a href="https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/health">/health</a> returns 200 with the time of the last audit run.</span></li>
+      <span class="expect">Expect: the limits stated plainly, and all three datasets cited with authors, DOI and CC BY 4.0 licence. <a href="https://ywny2nj4g5.execute-api.ap-south-1.amazonaws.com/health">/health</a> returns 200 with the time of the last audit run.</span></li>
   </ol>
   <p><a href="#">Close the tour</a></p>
 </section>
@@ -175,7 +185,7 @@ a { color: var(--co2); }
   <p class="muted">Two open school datasets, one from Spain and one from Greece, give ordinary classrooms to compare against. They publish no room volumes or design airflow, so their rates are context only: no shortfall is claimed for them.</p>
 <!-- sync:rooms -->
   <p>The same fits, with the same parameters, ran over <b>40 rooms in 3 open datasets</b>: 24 with a confident decay fit, 9 with a confident buildup fit, and 3 with a published design figure. Rooms without a confident fit are counted here and drawn hollow in the figure, but never quoted as a rate.</p>
-  <div class="tablewrap"><table><thead><tr><th>Dataset</th><th>Rooms analysed</th><th>Confident decay</th><th>Confident buildup</th><th>Design figure</th></tr></thead><tbody>
+  <div class="tablewrap"><table class="narrow"><thead><tr><th>Dataset</th><th>Rooms analysed</th><th>Confident decay</th><th>Confident buildup</th><th>Design figure</th></tr></thead><tbody>
 <tr><th scope="row">Zenodo 18385830 lecture halls</th><td>3</td><td>2</td><td>2</td><td>3</td></tr>
 <tr><th scope="row">Primary classrooms, Castellon, Spain (2021)</th><td>12</td><td>8</td><td>0</td><td>0</td></tr>
 <tr><th scope="row">ENSENSIA schools, Patras, Greece (2023-25)</th><td>25</td><td>14</td><td>7</td><td>0</td></tr>
