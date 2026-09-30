@@ -53,6 +53,13 @@ Zenodo file would be visible.
 | Zenodo 5062837, primary schools, Castellón, Spain, May–Jun 2021 | 12 (6 sensors × 2 schools) | 5 min | UTC (`published_at` ends in `Z` and equals `date_time`) → Europe/Madrid | No |
 | Zenodo 18195710, ENSENSIA, 25 schools, 2023–2025 | 25 (one sensor per school file) | 10 min | UTC per the record's README → Europe/Athens | No |
 
+Zenodo 5062837 is version 2 of concept record 5036227. The Data in Brief paper
+(doi:10.1016/j.dib.2021.107489) cites version 1, 5036228. Checked 1 Oct 2026:
+version 1's `CEIP_SantMiquel_Vilafames.csv` has the same md5 as ours, and its
+`CEIP_Albea_ValldAlba.csv` holds exactly the rows of our `CEIP_LAlbea_ValldAbav2.csv`
+in a different order. The loader sorts by timestamp, so both versions give
+identical results. We cite 5062837 because it is the one we download and checksum (section 9).
+
 All three are CC BY 4.0. **The two school datasets publish no room volume and no
 design airflow, so no design comparison is possible for them.** They report
 fitted rates and rebreathed air only, and `audit.json` says so in each

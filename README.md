@@ -111,7 +111,7 @@ The API contract is in [`docs/API.md`](docs/API.md), and the evidence of how the
 All three datasets are licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The same citations appear in the site footer.
 
 - Kakoulli, C., Michaelides, M. and Kyriacou, A. (2026). *Indoor Environmental Quality Measurements of University Lecture Halls*. Zenodo record 18385830. [doi:10.5281/zenodo.18385830](https://doi.org/10.5281/zenodo.18385830). CC BY 4.0.
-- Trilles, S. (2021). *Co2 concentration, temperature and humidity in primary classrooms during the Covid-19 Safety Measures in Spain*. Zenodo record 5062837. [doi:10.5281/zenodo.5062837](https://doi.org/10.5281/zenodo.5062837). CC BY 4.0.
+- Trilles, S. (2021). *Co2 concentration, temperature and humidity in primary classrooms during the Covid-19 Safety Measures in Spain*. Zenodo record 5062837. [doi:10.5281/zenodo.5062837](https://doi.org/10.5281/zenodo.5062837). CC BY 4.0. This is version 2 of the deposit (all versions: [doi:10.5281/zenodo.5036227](https://doi.org/10.5281/zenodo.5036227)), and it is the version the loader downloads. The accompanying Data in Brief paper ([doi:10.1016/j.dib.2021.107489](https://doi.org/10.1016/j.dib.2021.107489)) cites version 1, 10.5281/zenodo.5036228. Version 1's Vilafamés file is byte-identical to ours. Its Vall d'Alba file has a different name and the same rows in a different order, so both versions give identical results.
 - Apostolopoulos, J., Fouskas, G. and Pandis, S. (2026). *Indoor Air Pollutants (Raw)* (ENSENSIA). Zenodo record 18195710. [doi:10.5281/zenodo.18195710](https://doi.org/10.5281/zenodo.18195710). CC BY 4.0.
 
 ## Licence
