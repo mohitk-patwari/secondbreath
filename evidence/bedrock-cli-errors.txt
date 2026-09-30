@@ -77,3 +77,43 @@ CloudTrail writes its own event for the call. For the account-verification
 AccessDeniedException, this file is the only source; CloudTrail does not
 corroborate it. For the fact that two Converse calls were made and refused
 on 28 Sep, both sources agree.
+
+
+4. Re-test, 2026-09-30 (verbatim terminal output)
+-------------------------------------------------
+
+Run by Claude Code from the repo root on 2026-09-30. The terminal did not
+print timestamps. test-msg.json is the same file, now at evidence/.
+
+$ aws bedrock-runtime converse --region ap-south-1 \
+    --model-id apac.amazon.nova-lite-v1:0 \
+    --messages file://evidence/test-msg.json
+aws: [ERROR]: An error occurred (ValidationException) when calling the
+Converse operation: Operation not allowed
+
+$ aws bedrock-runtime converse --region ap-south-1 \
+    --model-id in.amazon.nova-lite-v1:0 \
+    --messages file://evidence/test-msg.json
+aws: [ERROR]: An error occurred (ValidationException) when calling the
+Converse operation: The provided model identifier is invalid.
+
+Observed, not explained:
+
+- On 28 Sep the terminal showed AccessDeniedException ("Your account is
+  currently being verified") for apac.amazon.nova-lite-v1:0 (section 1).
+  On 30 Sep the same model ID returned ValidationException, "Operation not
+  allowed".
+- in.amazon.nova-lite-v1:0 is rejected as an invalid model identifier.
+
+CloudFront, same session. A CreateDistribution call for a disabled probe
+distribution was refused, and nothing was created:
+
+aws: [ERROR]: An error occurred (AccessDenied) when calling the
+CreateDistribution operation: Your account must be verified before you can
+add new CloudFront resources. To verify your account, please contact AWS
+Support (https://console.aws.amazon.com/support/home#/) and include this
+error message.
+
+This message tells the account holder to contact AWS Support. The text is
+identical to the errorMessage of the 2026-09-28T19:43:22Z
+CreateDistributionWithTags event in evidence/cloudtrail-raw.json.
