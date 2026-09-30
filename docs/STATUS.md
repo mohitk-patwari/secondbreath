@@ -4,6 +4,7 @@
 4 complete. Housekeeping: licence, evidence tidy, line endings
 
 ## Done since last update
+- **T2 (1 Oct): redesign deployed.** Live / and /judges = web/index.html, sha256 a4c86d2b…704a (306,115 bytes, 82,321 gzipped on the wire). GET+HEAD 200 on /, /judges, /health; no-JS hero still "1 breath in 17"; tour modal opens and closes, and is a plain section with JS off. **Rollback:** restore `git show 83bef9a:web/index.html` (sha256 b6e7f29e…45e1e) and run `python backend/deploy_web.py`
 - **Submission visuals**: analysis/figures/png/ (the 5 figures at 1200 px on the page's dark background), method.svg/png (one real Hall A session, 3 Nov 2023, with its buildup and decay fits; year medians 1.02 / 0.74 vs design 5.79 from audit.json), architecture.svg/png (from template.yaml; CloudFront dashed, in front of S3), docs/cover.png (live hero, 1200x675, "1 breath in 17")
 - **LICENSE (MIT, 2026, Mohit Kumar Patwari)** at the root; README.md has a Licence section. MIT covers this repository's code only; the three Zenodo datasets keep their CC BY 4.0 terms. The write-up's "designed to be reused" is now true in law, not just intent
 - **test-msg.json moved to evidence/** (moved, not deleted: it is the `--messages` body of both Converse calls in bedrock-cli-errors.txt). evidence/README.md says what it is. The transcript still reads `file://test-msg.json` on purpose, because it is verbatim terminal output from the repo root
@@ -37,6 +38,7 @@
 3. Nothing else queued
 
 ## Decisions taken
+- Redesign is hierarchy only: long text moved into accordions, tour into a modal, nothing removed; web/.sync_audit.py now writes the new markup, so re-running it after an audit is still the whole update
 - test-msg.json moved, not deleted — the evidence transcript names it, so it's part of that record
 - Transcript path left as `file://test-msg.json` — rewriting verbatim terminal output would falsify it; evidence/README.md explains instead
 - eol=lf for everything — METHOD.md's sha256 claim holds on any OS without relying on each reviewer's autocrlf

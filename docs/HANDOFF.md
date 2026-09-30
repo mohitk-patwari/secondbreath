@@ -181,3 +181,8 @@
   session."
   - **Done (T2, 30 Sep):** hero warning, Predict panel warning and hero
     caption now say "the 8-hour workplace exposure limit" and "leave the room".
+
+## T2 redesign plan (30 Sep) — hierarchy only; nothing removed; built in web/index.next.html
+1. Focal point per section: hero "1 breath in 17" · explainer "1 breath in 24" · finding "0.74 to 1.09" (vs ~6 designed) · rooms "40 rooms" (24 / 9 beside it) · predict "16 people" (max at 1,000 ppm) · fingerprint "your room's rate" · caveats the heading itself.
+2. Spacing scale 4 · 8 · 16 · 24 · 32 · 48 · 96 px; section padding 96 px desktop, 64 px under 640 px. Type: body 16 / 14, headings 24 / 48, nothing else. One accent (blue) and one danger (red); decay blue and buildup orange only inside charts, next to a legend.
+3. One micro-interaction per section: hero, breaths fill with a staggered pop as you drag · explainer, the value bubble rides the thumb · finding, a hall card lifts and underlines its shortfall on hover or focus · rooms, the hovered dataset row lights up · predict, the curve crosshair and tooltip follow the pointer · fingerprint, the drop zone glows on drag-over and each fitted stretch names its rate on hover · caveats, a chevron turns as the accordion opens · tour, the floating button lifts on hover and opens a modal.

@@ -1,6 +1,6 @@
 """Write analysis/audit.json and analysis/figures/*.svg into web/index.html as HTML.
 
-    python web/.sync_audit.py
+    python web/.sync_audit.py           # writes web/index.html; pass another filename to target a copy
 
 Rerun after every audit. The page is one file served by a Lambda that only
 knows index.html, so the figures are inlined rather than linked.
@@ -24,7 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import ventilation as v  # noqa: E402  the shared core, same file the Lambdas copy
-PAGE = ROOT / "web" / "index.html"
+PAGE = ROOT / "web" / (sys.argv[1] if len(sys.argv) > 1 else "index.html")
 FIGS = ["design_vs_measured", "hall_a", "hall_b", "hall_c"]
 THIN = 10  # ponytail: editorial label only, no number depends on it
 # Halls whose confident fits hold only if the timestamps are local time: analysis/METHOD.md
@@ -71,12 +71,14 @@ def finding(halls) -> tuple[str, str, str]:
     peak = max(halls, key=lambda h: h["peak_co2_teaching"])
     short = lambda h: h["hall"].replace("Hall ", "")
 
-    head = f"  Designed for about 6 air changes an hour. Delivered: <b>{n(min(vals))} to {n(max(vals))}</b>.\n"
+    head = f"  Designed for about 6 air changes an hour. Delivered: <b>{n(min(vals))} to {n(max(vals))}</b>\n"  # no trailing stop: it would wrap alone under the 48px number
 
-    badge = lambda t: f' <span class="badge">{t}</span>'
-    def cell(v, sure, lines, thin=False):
-        return (f'<td class="{"" if sure else "uncertain"}"><b>{n(v)}</b>{"" if sure else badge("Uncertain")}'
-                f'{badge("Thin") if thin else ""}<br><span class="small muted">{lines}</span></td>')
+    # One uncertainty signal, in the danger colour; "thin" is a neutral chip.
+    unsure = ' <span class="chip danger">Uncertain</span>'
+    thin_chip = ' <span class="chip">Thin</span>'
+    def cell(label, v, sure, lines, thin=False):
+        return (f'<td data-label="{label}"><b>{n(v)}</b>{"" if sure else unsure}{thin_chip if thin else ""}'
+                f'<br><span class="small muted">{lines}</span></td>')
     rows = []
     for h in halls:
         d, b = h["decay"], h["buildup"]
@@ -84,12 +86,12 @@ def finding(halls) -> tuple[str, str, str]:
         b_lines = f"{b['kept']} fits, {b['discarded_unidentifiable']} discarded · band " + "–".join(map(n, b["ach_iqr"]))
         rows.append(
             f'<tr><th scope="row">{h["hall"]}{TZ_MARK if h["hall"] in TZ_DEPENDENT else ""}</th>\n'
-            f'    <td><b>{n(h["design_ach"])}</b><br><span class="small muted">{loc(h["design_airflow_m3h"])} m³/h, {loc(h["volume_m3"])} m³</span></td>\n'
-            f'    {cell(d["ach_teaching"], d["confident"], d_lines)}\n'
-            f'    {cell(b["ach"], b["confident"], b_lines, 0 < b["kept"] < THIN)}\n'
-            f'    <td>{n(d["shortfall_factor"])}× / {n(b["shortfall_factor"])}×</td>\n'
-            f'    <td>{loc(h["peak_co2_teaching"])} ppm<br><span class="small muted">1 breath in {h["peak_one_breath_in"]}</span></td></tr>\n')
-    table = ('  <div class="tablewrap"><table id="auditTable" aria-describedby="auditNote">'
+            f'    <td data-label="Design ACH"><b>{n(h["design_ach"])}</b><br><span class="small muted">{loc(h["design_airflow_m3h"])} m³/h, {loc(h["volume_m3"])} m³</span></td>\n'
+            f'    {cell("Decay ACH, room emptying", d["ach_teaching"], d["confident"], d_lines)}\n'
+            f'    {cell("Buildup ACH, room occupied", b["ach"], b["confident"], b_lines, 0 < b["kept"] < THIN)}\n'
+            f'    <td data-label="Below design, decay / buildup" class="short">{n(d["shortfall_factor"])}× / {n(b["shortfall_factor"])}×</td>\n'
+            f'    <td data-label="Peak CO2">{loc(h["peak_co2_teaching"])} ppm<br><span class="small muted">1 breath in {h["peak_one_breath_in"]}</span></td></tr>\n')
+    table = ('  <div class="tablewrap"><table id="auditTable" class="stack" aria-describedby="auditNote">'
              '<thead><tr><th>Hall</th><th>Design ACH</th><th>Decay ACH<br><span class="small">room emptying</span></th>'
              '<th>Buildup ACH<br><span class="small">room occupied</span></th><th>Below design<br><span class="small">decay / buildup</span></th>'
              '<th>Peak CO2</th></tr></thead><tbody>\n' + "".join(rows) + "</tbody></table></div>\n")
@@ -114,21 +116,30 @@ def finding(halls) -> tuple[str, str, str]:
 def rooms(audit) -> str:
     r = audit["rooms_analysed"]
     # Never 40 alone: the confident counts travel with the total in every sentence.
-    out = [f'  <p>The same fits, with the same parameters, ran over <b>{r["total"]} rooms in {len(r["by_dataset"])} open datasets</b>: '
+    out = [f'  <p class="focal"><b>{r["total"]} rooms</b> in {len(r["by_dataset"])} open datasets: '
            f'{r["confident_decay"]} with a confident decay fit, {r["confident_buildup"]} with a confident buildup fit, '
-           f'and {r["with_design_figure"]} with a published design figure. Rooms without a confident fit are counted here and drawn hollow in the figure, but never quoted as a rate.</p>\n',
-           '  <div class="tablewrap"><table class="narrow"><thead><tr><th>Dataset</th><th>Rooms analysed</th><th>Confident decay</th>'
+           f'and {r["with_design_figure"]} with a published design figure.</p>\n'
+           '  <ul class="chips"><li class="chip">Same fits, same parameters, every room</li><li class="chip">Hollow marker: not confident, never quoted</li></ul>\n',
+           '  <div class="tablewrap"><table class="narrow stack"><thead><tr><th>Dataset</th><th>Rooms analysed</th><th>Confident decay</th>'
            '<th>Confident buildup</th><th>Design figure</th></tr></thead><tbody>\n']
+    heads = ("Rooms analysed", "Confident decay", "Confident buildup", "Design figure")
+    cells = lambda *xs: "".join(f'<td data-label="{h}">{x}</td>' for h, x in zip(heads, xs))
     for name, d in r["by_dataset"].items():
-        out.append(f'<tr><th scope="row">{html.escape(name)}</th><td>{d["rooms"]}</td><td>{d["confident_decay"]}</td>'
-                   f'<td>{d["confident_buildup"]}</td><td>{d["with_design_figure"]}</td></tr>\n')
-    out.append(f'<tr><th scope="row">All</th><td><b>{r["total"]}</b></td><td><b>{r["confident_decay"]}</b></td>'
-               f'<td><b>{r["confident_buildup"]}</b></td><td><b>{r["with_design_figure"]}</b></td></tr>\n</tbody></table></div>\n')
+        out.append(f'<tr><th scope="row">{html.escape(name)}</th>'
+                   + cells(d["rooms"], d["confident_decay"], d["confident_buildup"], d["with_design_figure"]) + '</tr>\n')
+    out.append('<tr><th scope="row">All</th>'
+               + cells(*(f"<b>{r[k]}</b>" for k in ("total", "confident_decay", "confident_buildup", "with_design_figure")))
+               + '</tr>\n</tbody></table></div>\n')
+    out.append(figure("all_rooms", f" ({r['confident_decay']} with a confident decay fit, {r['confident_buildup']} with a confident buildup fit)"))
+    out.append('  <details class="more"><summary>Why no shortfall is claimed for Spain and Greece, and what hollow markers mean</summary>\n'
+               '  <p>The same fits, with the same parameters, ran in every room. Rooms without a confident fit are counted here and drawn hollow in the figure, but never quoted as a rate.</p>\n'
+               '  <p>Two open school datasets, one from Spain and one from Greece, give ordinary classrooms to compare against. '
+               'They publish no room volumes or design airflow, so their rates are context only: no shortfall is claimed for them.</p>\n')
     for d in audit["other_datasets"]:
         assert d["design_comparison"] is None, f"{d['label']} gained a design figure; revisit the no-shortfall wording"
-        out.append(f'  <p class="note"><b>{html.escape(d["label"])}</b> ({html.escape(d["dataset"])}). '
+        out.append(f'  <p><b>{html.escape(d["label"])}</b> ({html.escape(d["dataset"])}). '
                    f'No shortfall is claimed for these rooms. {html.escape(d["design_note"])}</p>\n')
-    out.append(figure("all_rooms", f" ({r['confident_decay']} with a confident decay fit, {r['confident_buildup']} with a confident buildup fit)"))
+    out.append('  </details>\n')
     return "".join(out)
 
 
@@ -138,7 +149,6 @@ def rooms(audit) -> str:
 # replaces these numbers with live POST /predict results once the visitor changes anything.
 ACTIVITY, OUTDOOR = "seated_quiet", 420.0  # the audit's buildup assumption; the hero says so
 PEOPLE, MINUTES = 60, 90                  # the Predict panel's defaults, so the two agree
-DOTS = 24                                 # people drawn; "+N" past that
 
 
 def presets(audit) -> list[dict]:
@@ -190,12 +200,14 @@ def hero_text(p: dict, res: dict, people: int, minutes: int, m: int) -> dict:
         t.update(head=f"{people} people for {minutes} minutes would take this room past {loc(res['validatedMaxPpm'])} ppm, "
                       "the 8-hour workplace exposure limit. Past that the useful answer is to leave the room, not a number: "
                       "try fewer people or a shorter session.",
-                 red=0, level="na", detail=f"{loc(p['vol'])} m³ at {n(p['ach'])} air changes an hour")
+                 red=0, level="na", chip=f"over {loc(res['validatedMaxPpm'])} ppm",
+                 detail=f"{loc(p['vol'])} m³ at {n(p['ach'])} air changes an hour")
         return t
     t["head"] = (f"After {m} minute{'' if m == 1 else 's'}, <b>1 breath in {max(1, math.floor(1 / f))}</b> "
                  "has already been through someone else's lungs." if f > 0 else "The air in the room is still outdoor air.")
     t["red"] = min(100, math.ceil(f * 100))
     t["level"] = "ok" if s["ppm"] < 1000 else "warn" if s["ppm"] < 1400 else "bad"
+    t["chip"] = {"ok": "under 1,000 ppm", "warn": "1,000 to 1,400 ppm", "bad": "over 1,400 ppm"}[t["level"]]
     t["detail"] = (f"{math.ceil(s['ppm']):,} ppm · {math.ceil(f * 1000) / 10:.1f}% of each breath rebreathed · "
                    f"{loc(p['vol'])} m³ at {n(p['ach'])} air changes an hour · seated, quiet · outdoor {n(OUTDOOR)} ppm")
     return t
@@ -209,8 +221,6 @@ def hero(audit) -> str:
         f'    <button type="button" class="preset" aria-pressed="{"true" if i == 0 else "false"}" data-vol="{n(q["vol"])}" data-ach="{n(q["ach"])}">'
         f'<b>{q["name"]}</b><span>{q["sub"]}</span>'
         + (f'<span class="tz">{q["tz"]}</span>' if "tz" in q else "") + '</button>\n' for i, q in enumerate(ps))
-    dots = "".join(f'<circle cx="{25 + (i % 6) * 30}" cy="{24 + (i // 6) * 28}" r="8"{"" if i < PEOPLE else " hidden"}/>' for i in range(DOTS))
-    more = f"+{PEOPLE - DOTS}" if PEOPLE > DOTS else ""
     grid = "".join('<i class="r"></i>' if i < t["red"] else "<i></i>" for i in range(100))
     data = json.dumps({"minutes": MINUTES, "people": PEOPLE, "result": res}, separators=(",", ":"))
     return f'''  <div class="presets" role="group" aria-label="Choose a room">
@@ -221,25 +231,18 @@ def hero(audit) -> str:
     <div class="slide"><label for="hMins">How long</label><output id="hMinsOut" for="hMins">{MINUTES} min</output>
       <input class="bigrange" id="hMins" type="range" min="5" max="240" step="5" value="{MINUTES}"></div>
   </div>
-  <div class="answer">
-    <figure class="panel"><figcaption>The room from above</figcaption>
-      <svg viewBox="0 0 200 150" role="img" aria-label="Room seen from above with {PEOPLE} people">
-        <rect id="hRoom" class="room {t["level"]}" x="3" y="3" width="194" height="144" rx="18"/>
-        <g id="hDots">{dots}</g>
-        <text id="hMore" x="186" y="138" text-anchor="end">{more}</text>
-      </svg>
-    </figure>
-    <figure class="panel"><figcaption>Your next 100 breaths</figcaption>
-      <div id="hGrid" class="breaths{" na" if t["level"] == "na" else ""}" role="img" aria-label="{t["red"]} of 100 breaths already exhaled by someone else">{grid}</div>
-    </figure>
-  </div>
   <p class="headline" id="hHead" aria-live="polite">{t["head"]}</p>
+  <figure class="panel"><figcaption class="small muted">Your next 100 breaths. Red: already exhaled by someone else.</figcaption>
+    <div id="hGrid" class="breaths{" na" if t["level"] == "na" else ""}" role="img" aria-label="{t["red"]} of 100 breaths already exhaled by someone else">{grid}</div>
+  </figure>
   <p id="hConseq">{t["conseq"]}</p>
-  <p class="small muted" id="hDetail">{t["detail"]}</p>
+  <p class="small muted"><span class="chip" id="hLevel">{t["chip"]}</span> <span id="hDetail">{t["detail"]}</span></p>
   <div class="clock"><button type="button" id="hPlay" class="ghost" aria-label="Play the session">▶</button>
     <input class="bigrange" id="hScrub" type="range" min="0" max="{MINUTES}" step="1" value="{MINUTES}" aria-label="Minute of the session">
     <output id="hMinute" for="hScrub">{MINUTES} min</output></div>
-  <p class="small muted">Room colour: green under 1,000 ppm, amber to 1,400, red above. Red breaths: the share of each breath already exhaled by someone else, rounded up. If the session's peak would pass {loc(v.VALIDATED_MAX_PPM)} ppm, the 8-hour workplace exposure limit (OSHA PEL, ACGIH TLV) used here as a ceiling, the page says so instead of giving a number. Predicted with the same model as <a href="#predict">Predict a session</a>, seated and quiet, outdoor air at {n(OUTDOOR)} ppm. Rates are each hall's decay-fit median over teaching hours; Hall B is left out because its fits are uncertain. {ps[3]["note"]}</p>
+  <details class="more"><summary>How this is calculated</summary>
+  <p class="small">Level chip: under 1,000 ppm, 1,000 to 1,400, or over 1,400. Red breaths: the share of each breath already exhaled by someone else, rounded up. If the session's peak would pass {loc(v.VALIDATED_MAX_PPM)} ppm, the 8-hour workplace exposure limit (OSHA PEL, ACGIH TLV) used here as a ceiling, the page says so instead of giving a number. Predicted with the same model as <a href="#predict">Predict a session</a>, seated and quiet, outdoor air at {n(OUTDOOR)} ppm. Rates are each hall's decay-fit median over teaching hours; Hall B is left out because its fits are uncertain. {ps[3]["note"]}</p>
+  </details>
   <script type="application/json" id="heroData">{data}</script>
 '''
 
@@ -268,15 +271,19 @@ audit = json.loads((ROOT / "analysis" / "audit.json").read_text(encoding="utf-8"
 head, table, agree = finding(audit["halls"])
 
 page = PAGE.read_text(encoding="utf-8")
-page = block("figures", "".join(figure(f) for f in FIGS), page)
+page = block("figures", figure(FIGS[0]) + '  <details class="more"><summary>See the fits: one busy week in each hall</summary>\n'
+             + "".join(figure(f) for f in FIGS[1:]) + "  </details>\n", page)
 page = block("findhead", head, page)
 page = block("findtable", table, page)
 page = block("agree", agree, page)
 page = block("rooms", rooms(audit), page)
 r = audit["rooms_analysed"]
-page = block("forty", f'  <p class="muted">{r["confident_decay"]} of them with a confident decay fit and {r["confident_buildup"]} with a confident '
-                      f'buildup fit, across {len(r["by_dataset"])} open datasets. Only the {r["with_design_figure"]} lecture halls publish '
-                      'a design figure, so the finding starts there.</p>\n', page)
+# 40 never travels without 24 and 9: all three sit in one chip row.
+page = block("forty", f'  <ul class="chips" aria-label="Rooms analysed"><li class="chip">{r["total"]} rooms</li>'
+                      f'<li class="chip">{r["confident_decay"]} with a confident decay fit</li>'
+                      f'<li class="chip">{r["confident_buildup"]} with a confident buildup fit</li>'
+                      f'<li class="chip">{len(r["by_dataset"])} open datasets</li></ul>\n'
+                      f'  <p class="muted">Only the {r["with_design_figure"]} lecture halls publish a design figure, so the finding starts there.</p>\n', page)
 page = block("hero", hero(audit), page)
 # The explainer slider starts at 2,000 ppm; same wording and rounding as explain() in the page.
 page = block("explain", f"  At 2,000 ppm, <b>1 breath in {math.floor(v.one_breath_in(2000.0, OUTDOOR))}</b> "
